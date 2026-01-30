@@ -21,6 +21,7 @@ export default function PfpGenerator() {
     const [pfpShape, setPfpShape] = useState('circle');
     const [shirtDirection, setShirtDirection] = useState('left');
     const [bodyDirection, setBodyDirection] = useState('left');
+    const [costumeDirection, setCostumeDirection] = useState('left');
     const [animatingLayer, setAnimatingLayer] = useState(null);
     const [isExploding, setIsExploding] = useState(false);
 
@@ -75,6 +76,9 @@ export default function PfpGenerator() {
         }
         if (categoryId === 'body') {
             setBodyDirection(Math.random() > 0.5 ? 'left' : 'right');
+        }
+        if (categoryId === 'costume') {
+            setCostumeDirection(Math.random() > 0.5 ? 'left' : 'right');
         }
         setTimeout(() => setAnimatingLayer(null), 500); // Reset after animation duration
     };
@@ -422,11 +426,11 @@ export default function PfpGenerator() {
                         // Determine animation class based on category
                         let animationClass = '';
                         if (isAnimating) {
-                            if (['shirt', 'body'].includes(cat.id)) {
-                                const dir = cat.id === 'shirt' ? shirtDirection : bodyDirection;
+                            if (['shirt', 'body', 'costume'].includes(cat.id)) {
+                                const dir = cat.id === 'shirt' ? shirtDirection : (cat.id === 'costume' ? costumeDirection : bodyDirection);
                                 animationClass = dir === 'left' ? 'animate-fly-left' : 'animate-fly-right';
                             }
-                            else if (cat.id === 'costume') animationClass = 'animate-slide-up-intense';
+                            else if (cat.id === 'eyes') animationClass = 'animate-fade-in';
                             else if (['hat'].includes(cat.id)) animationClass = 'animate-fly-down';
                             else animationClass = 'animate-zoom-in'; // default for border, glasses, chain, mouth
                         }

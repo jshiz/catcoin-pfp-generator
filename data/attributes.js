@@ -28,9 +28,11 @@ export const attributesConfig = [
       { id: 'costume_4', label: 'Ghostface', src: '/assets/costumes/ghostfacemeow.png', type: 'image' },
       { id: 'costume_8', label: 'Gokuat', src: '/assets/costumes/gokuat.png', type: 'image' },
       { id: 'costume_9', label: 'Jason', src: '/assets/costumes/jason.png', type: 'image' },
+      { id: 'costume_12', label: 'Kryptocat', src: '/assets/costumes/kryptocat.png', type: 'image' },
       { id: 'costume_5', label: 'Mad Catz', src: '/assets/costumes/madcatz.png', type: 'image' },
       { id: 'costume_6', label: 'Terminapur', src: '/assets/costumes/terminapur.png', type: 'image' },
       { id: 'costume_10', label: 'Turbocat', src: '/assets/costumes/turbocat.png', type: 'image' },
+      { id: 'costume_11', label: 'Cybercat', src: '/assets/costumes/cybercat.png', type: 'image' },
     ]
   },
   {
@@ -80,8 +82,6 @@ export const attributesConfig = [
     items: [
       { id: 'chain_1', label: 'None', type: 'none' },
       { id: 'chain_2', label: 'Gold', src: '/assets/chain/gold.png', type: 'image' },
-      { id: 'chain_3', label: 'Silver', color: '#9ca3af' },
-      { id: 'chain_4', label: 'Diamond', color: '#e0f2fe' },
     ]
   },
   {
@@ -108,8 +108,6 @@ export const attributesConfig = [
       { id: 'hat_8', label: 'Taxi', src: '/assets/hat/taxi.png', type: 'image' },
       { id: 'hat_9', label: 'Top Hat', src: '/assets/hat/tophat.png', type: 'image' },
       { id: 'hat_10', label: 'Viking', src: '/assets/hat/viking.png', type: 'image' },
-      { id: 'hat_11', label: 'Beanie', color: '#dc2626' },
-      { id: 'hat_12', label: 'Bucket', color: '#2563eb' },
     ]
   },
   {
@@ -118,9 +116,6 @@ export const attributesConfig = [
     zIndex: 70,
     items: [
       { id: 'mouth_1', label: 'None', type: 'none' },
-      { id: 'mouth_2', label: 'Smile', text: ':)' },
-      { id: 'mouth_3', label: 'Grin', text: ':D' },
-      { id: 'mouth_4', label: 'Vampire', text: 'vv' },
     ]
   },
   {
