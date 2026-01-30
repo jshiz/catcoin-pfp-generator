@@ -31,7 +31,7 @@ export const metadata = {
     siteName: 'Catcoin PFP Generator',
     images: [
       {
-        url: '/social%20sharing.jpg',
+        url: '/social-sharing.jpg',
         width: 1200,
         height: 630,
         alt: 'Catcoin PFP Generator Preview',
@@ -43,7 +43,7 @@ export const metadata = {
     card: 'summary_large_image',
     title: "Catcoin PFP Generator",
     description: "Create your custom Catcoin PFP! Slide, Thud, and Meow!",
-    images: ['/social%20sharing.jpg'],
+    images: ['/social-sharing.jpg'],
   },
 };
 
