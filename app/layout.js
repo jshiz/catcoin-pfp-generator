@@ -12,6 +12,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
+  metadataBase: new URL('https://catcoin-pfp-generator.pages.dev'),
   title: "Catcoin PFP Generator",
   description: "The official Catcoin Profile Picture Generator. Slide, Thud, and Meow!",
   icons: {
