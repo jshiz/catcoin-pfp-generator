@@ -133,10 +133,20 @@ export const attributesConfig = [
       { id: 'vibe_neon', label: 'Vibrant', value: 'saturate(2.5) contrast(1.2)' },
       { id: 'vibe_dreamy', label: 'Dreamy', value: 'brightness(1.1) saturate(1.2) blur(0.5px)' },
       { id: 'vibe_8bit', label: '8-Bit', value: 'url(#pixelate)' }, // We'll need SVG filter for this or simulated
-      { id: 'vibe_ghostly', label: 'Ghostly', value: 'opacity(0.8) brightness(1.5) saturate(0.5)' },
-      { id: 'vibe_rainbow', label: 'Rainbow', value: 'hue-rotate(360deg)' }, // Animate? No static hue shift 
+      { id: 'vibe_thermal', label: 'Thermal', value: 'invert(0.8) hue-rotate(180deg) saturate(3)' },
+      { id: 'vibe_popart', label: 'Pop Art', value: 'saturate(5) contrast(1.5) brightness(1.1)' },
+      { id: 'vibe_rainbow', label: 'Rainbow', value: 'hue-rotate(360deg)' },
       { id: 'vibe_glitch', label: 'Glitch', value: 'contrast(1.5) hue-rotate(200deg)' },
-      { id: 'vibe_faded', label: 'Faded', value: 'opacity(0.7) grayscale(0.2) brightness(1.1)' },
+      { id: 'vibe_negative', label: 'Negative', value: 'invert(1)' },
+      { id: 'vibe_deepfry', label: 'Deep Fry', value: 'contrast(3) saturate(3) brightness(1.2)' },
+      { id: 'vibe_sunset', label: 'Sunset', value: 'sepia(0.3) brightness(1.1) saturate(1.6) hue-rotate(-10deg)' },
+      { id: 'vibe_cyanide', label: 'Cyanide', value: 'hue-rotate(140deg) saturate(2)' },
+      { id: 'vibe_royal', label: 'Royal', value: 'sepia(0.5) hue-rotate(240deg) saturate(2)' },
+      { id: 'vibe_toxic', label: 'Toxic', value: 'hue-rotate(60deg) saturate(5)' },
+      { id: 'vibe_arctic', label: 'Arctic', value: 'hue-rotate(180deg) brightness(1.1) contrast(0.9) saturate(1.2)' },
+      { id: 'vibe_bloodmoon', label: 'Blood Moon', value: 'sepia(1) hue-rotate(-50deg) saturate(5)' },
+      { id: 'vibe_vintage', label: 'Vintage', value: 'sepia(0.6) contrast(1.2) brightness(0.8)' },
+      { id: 'vibe_cyber', label: 'Cyber', value: 'hue-rotate(280deg) saturate(2) contrast(1.2)' },
     ]
   },
   {
@@ -292,6 +302,11 @@ export const attributesConfig = [
       { id: 'speech_vibing', label: 'Vibing', text: 'Just Vibing 🌊', emoji: '🌊' },
       { id: 'speech_rekt', label: 'REKT', text: 'Not REKT! ✅', emoji: '✅' },
       { id: 'speech_alpha', label: 'Alpha', text: 'Pure Alpha 🧠', emoji: '🧠' },
+      { id: 'speech_lfg', label: 'LFG', text: 'LFG! 🔥', emoji: '🔥' },
+      { id: 'speech_tothemoon', label: 'Moon Mission', text: 'To The Moon! 🚀🌕', emoji: '🌕' },
+      { id: 'speech_diamond', label: 'Diamond Paws', text: 'Diamond Paws 💎🐾', emoji: '🐾' },
+      { id: 'speech_ape', label: 'Ape In', text: 'Ape In 🦍', emoji: '🦍' },
+      { id: 'speech_based', label: 'Based', text: 'Based 🧱', emoji: '🧱' },
     ]
   }
 ];
