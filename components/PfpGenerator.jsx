@@ -437,7 +437,7 @@ export default function PfpGenerator() {
                                     // Border Control Previews
                                     <div className="absolute inset-0 flex items-center justify-center p-2">
                                         {cat.id === 'border_color' && item.color && (
-                                            <div className="w-full h-full rounded border-2 border-white/20" style={{ backgroundColor: item.color }} />
+                                            <div className="w-full h-full rounded border-4" style={{ borderColor: item.color }} />
                                         )}
                                         {cat.id === 'border_style' && (
                                             <div className="w-full h-full rounded border-white"
@@ -580,11 +580,12 @@ export default function PfpGenerator() {
                                                 const c = item.color;
                                                 // Map to CSS
                                                 if (s === 'double') return `double ${w} ${c}`;
-                                                if (s === 'dashed') return `dashed ${w} ${c}`;
-                                                if (s === 'dotted') return `dotted ${w} ${c}`;
+                                                // Jagged/Wave fallback to dashed/dotted for DOM preview
+                                                if (s === 'dashed' || s === 'jagged') return `dashed ${w} ${c}`;
+                                                if (s === 'dotted' || s === 'wave') return `dotted ${w} ${c}`;
                                                 // Groove/Ridge/etc supported by CSS
                                                 if (['groove', 'ridge', 'inset', 'outset'].includes(s)) return `${s} ${w} ${c}`;
-                                                // Fallback for custom names or standard
+
                                                 return `solid ${w} ${c}`;
                                             })(),
                                             boxShadow: selectedAttributes['border_style']?.value === 'neon' ? `0 0 20px ${item.color}, inset 0 0 20px ${item.color}` : 'none'
