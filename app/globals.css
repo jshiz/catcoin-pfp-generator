@@ -167,6 +167,20 @@
   }
 }
 
+@keyframes radio-marquee {
+  0% {
+    transform: translateX(100%);
+  }
+
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+.animate-radio-marquee {
+  animation: radio-marquee 10s linear infinite;
+}
+
 @keyframes slide-and-thud {
   0% {
     transform: translate(var(--enter-x, 0), var(--enter-y, -100%)) scale(1.2);
