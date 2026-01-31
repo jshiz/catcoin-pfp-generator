@@ -170,6 +170,8 @@ export const attributesConfig = [
       { id: 'shirt_11', label: 'Thrasher', src: '/assets/shirt/thrasher.png', type: 'image' },
       { id: 'shirt_12', label: 'Zodiac', src: '/assets/shirt/zodiac.png', type: 'image' },
       { id: 'shirt_13', label: 'SWAT', src: '/assets/shirt/swat.png', type: 'image' },
+      { id: 'shirt_14', label: 'Open Claw', src: '/assets/shirt/openclaw.png', type: 'image' },
+      { id: 'shirt_15', label: 'White Tee', src: '/assets/shirt/white.png', type: 'image' },
     ]
   },
   {
