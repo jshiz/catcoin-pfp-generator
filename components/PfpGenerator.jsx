@@ -371,8 +371,8 @@ export default function PfpGenerator() {
             {categories.map(cat => (
                 <div key={cat.id} className="space-y-1">
                     <h3 className="text-cat-yellow font-bold uppercase tracking-wider text-[10px] md:text-xs">{cat.label}</h3>
-                    {/* Updated density: 6 columns per row for smaller buttons */}
-                    <div className="grid grid-cols-6 gap-1">
+                    {/* Updated density: 8 columns per row for smaller buttons */}
+                    <div className="grid grid-cols-8 gap-1">
 
                         {/* Render actual items, filtering out hidden ones */}
                         {cat.items.filter(i => !i.hidden).map(item => (
