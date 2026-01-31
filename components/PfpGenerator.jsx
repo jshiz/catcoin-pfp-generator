@@ -224,18 +224,82 @@ export default function PfpGenerator() {
             }
 
             // Draw Border (zIndex 80)
+            // Draw Border (zIndex 80)
             if (cat.id === 'border' && item.color) {
-                ctx.beginPath();
-                ctx.lineWidth = 10;
-                ctx.strokeStyle = item.color;
+                const drawPath = (inset = 0) => {
+                    ctx.beginPath();
+                    if (pfpShape === 'circle') {
+                        ctx.arc(256, 256, 256 - inset, 0, Math.PI * 2);
+                    } else {
+                        ctx.roundRect(inset, inset, 512 - inset * 2, 512 - inset * 2, 60 - inset / 2);
+                    }
+                };
 
-                if (pfpShape === 'circle') {
-                    ctx.arc(256, 256, 256 - 5, 0, Math.PI * 2); // Center of 10px stroke
-                } else {
-                    // Inset slightly so stroke is visible inside clip
-                    ctx.roundRect(5, 5, 512 - 10, 512 - 10, 55);
+                ctx.save();
+                ctx.strokeStyle = item.color;
+                ctx.lineWidth = 10;
+                ctx.lineCap = 'round';
+                ctx.lineJoin = 'round';
+
+                if (item.style === 'bold') ctx.lineWidth = 20;
+                else if (item.style === 'neon') {
+                    ctx.shadowBlur = 20;
+                    ctx.shadowColor = item.color;
+                    ctx.lineWidth = 15;
                 }
-                ctx.stroke();
+
+                if (item.style === 'dashed') ctx.setLineDash([30, 15]);
+                if (item.style === 'dotted') {
+                    ctx.setLineDash([0, 20]);
+                    ctx.lineCap = 'round';
+                    ctx.lineWidth = 15;
+                }
+
+                if (item.style === 'double') {
+                    drawPath(5);
+                    ctx.stroke();
+                    drawPath(25);
+                    ctx.stroke();
+                } else if (item.style === 'jagged') {
+                    // Custom Jagged Path
+                    ctx.beginPath();
+                    const cx = 256, cy = 256, r = 250;
+                    const spikes = 60;
+                    const outerR = r;
+                    const innerR = r - 20;
+
+                    if (pfpShape === 'circle') {
+                        for (let i = 0; i < spikes; i++) {
+                            const step = Math.PI * 2 / spikes;
+                            const angle = i * step;
+                            const x1 = cx + Math.cos(angle) * outerR;
+                            const y1 = cy + Math.sin(angle) * outerR;
+                            ctx.lineTo(x1, y1);
+                            const x2 = cx + Math.cos(angle + step / 2) * innerR;
+                            const y2 = cy + Math.sin(angle + step / 2) * innerR;
+                            ctx.lineTo(x2, y2);
+                        }
+                        ctx.closePath();
+                    } else {
+                        // Simple Rect Zigzag fallback or straight dash? 
+                        // Doing jagged rect path is complex manually, fallback to dashed for square for now
+                        drawPath(10);
+                        ctx.setLineDash([10, 10]);
+                    }
+                    ctx.stroke();
+                } else if (item.style === 'wave') {
+                    // Sine wave logic? simpler to use lineDash fallback for now for stability or just stroke
+                    drawPath(10);
+                    ctx.lineWidth = 15;
+                    ctx.stroke();
+                }
+                else {
+                    // Standard Solid
+                    drawPath(5);
+                    ctx.stroke();
+                }
+
+                ctx.restore();
             }
 
             if (item.text) {
@@ -361,8 +425,15 @@ export default function PfpGenerator() {
                                 ) : cat.id === 'border' && item.color ? (
                                     // For border: Show actual border around container 
                                     <div
-                                        className="absolute inset-0 z-20 pointer-events-none border-[4px]"
-                                        style={{ borderColor: item.color, borderRadius: '4px' }}
+                                        className="absolute inset-0 z-20 pointer-events-none"
+                                        style={{
+                                            border: item.style === 'double' ? 'double 4px ' + item.color :
+                                                item.style === 'dashed' ? 'dashed 2px ' + item.color :
+                                                    item.style === 'dotted' ? 'dotted 3px ' + item.color :
+                                                        'solid 4px ' + item.color,
+                                            borderRadius: '4px',
+                                            boxShadow: item.style === 'neon' ? `0 0 5px ${item.color}` : 'none'
+                                        }}
                                     />
                                 ) : (
                                     // For others: Item is Top
@@ -403,8 +474,9 @@ export default function PfpGenerator() {
     );
 
     // Split categories for desktop wings with specific order
-    const leftIds = ['background', 'border', 'body', 'shirt', 'chain'];
-    const rightIds = ['eyes', 'mouth', 'glasses', 'hat', 'costume'];
+    // Split categories for desktop wings with specific order
+    const leftIds = ['background', 'border', 'body', 'shirt'];
+    const rightIds = ['chain', 'eyes', 'mouth', 'glasses', 'hat', 'costume'];
 
     const leftCategories = leftIds.map(id => attributesConfig.find(c => c.id === id)).filter(Boolean);
     const rightCategories = rightIds.map(id => attributesConfig.find(c => c.id === id)).filter(Boolean);

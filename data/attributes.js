@@ -207,16 +207,16 @@ export const attributesConfig = [
     zIndex: 90,
     items: [
       { id: 'border_1', label: 'None', type: 'none' },
-      { id: 'border_2', label: 'White', color: '#ffffff' },
-      { id: 'border_3', label: 'Neon Yellow', color: '#fad205' },
-      { id: 'border_4', label: 'Cyan', color: '#06b6d4' },
-      { id: 'border_5', label: 'Electric Purple', color: '#a855f7' },
-      { id: 'border_6', label: 'Lime Green', color: '#84cc16' },
-      { id: 'border_7', label: 'Hot Pink', color: '#ec4899' },
-      { id: 'border_8', label: 'Orange Juice', color: '#f97316' },
-      { id: 'border_9', label: 'Red Alert', color: '#ef4444' },
-      { id: 'border_10', label: 'Silver', color: '#9ca3af' },
-      { id: 'border_11', label: 'Gold', color: '#fbbf24' },
+      { id: 'border_solid_white', label: 'Classic White', color: '#ffffff', style: 'solid' },
+      { id: 'border_bold_yellow', label: 'Bold Yellow', color: '#fad205', style: 'bold' },
+      { id: 'border_neon_cyan', label: 'Neon Cyan', color: '#00ffff', style: 'neon' },
+      { id: 'border_jagged_red', label: 'Jagged Red', color: '#ef4444', style: 'jagged' },
+      { id: 'border_dashed_lime', label: 'Dashed Lime', color: '#84cc16', style: 'dashed' },
+      { id: 'border_double_pink', label: 'Double Pink', color: '#ec4899', style: 'double' },
+      { id: 'border_dotted_gold', label: 'Dotted Gold', color: '#fbbf24', style: 'dotted' },
+      { id: 'border_neon_purple', label: 'Neon Purple', color: '#a855f7', style: 'neon' },
+      { id: 'border_jagged_orange', label: 'Jagged Fire', color: '#f97316', style: 'jagged' },
+      { id: 'border_bold_silver', label: 'Bold Silver', color: '#9ca3af', style: 'bold' },
     ]
   }
 ];
