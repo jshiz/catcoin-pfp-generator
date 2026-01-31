@@ -539,7 +539,7 @@ export default function PfpGenerator() {
 
                     {/* Horizontal Scrollable Row */}
                     <div
-                        className="flex gap-2 overflow-x-auto pb-3 pt-1 scroll-smooth snap-x snap-mandatory [&::-webkit-scrollbar]:h-1 [&::-webkit-scrollbar-thumb]:bg-white/10 [&::-webkit-scrollbar-thumb]:rounded-full hover:[&::-webkit-scrollbar-thumb]:bg-white/20"
+                        className="flex gap-2 items-center overflow-x-auto pb-3 pt-1 scroll-smooth snap-x snap-mandatory [&::-webkit-scrollbar]:h-1 [&::-webkit-scrollbar-thumb]:bg-white/10 [&::-webkit-scrollbar-thumb]:rounded-full hover:[&::-webkit-scrollbar-thumb]:bg-white/20"
                         onWheel={(e) => {
                             if (e.deltaY !== 0) {
                                 // Map vertical scroll to horizontal scroll
@@ -550,181 +550,182 @@ export default function PfpGenerator() {
                     >
                         {/* Render actual items, filtering out hidden ones */}
                         {cat.items.filter(i => !i.hidden).map(item => (
-                            <button
-                                key={item.id}
-                                onClick={() => handleAttributeSelect(cat.id, item)}
-                                className={`
+                            <React.Fragment key={item.id}>
+                                <button
+                                    onClick={() => handleAttributeSelect(cat.id, item)}
+                                    className={`
                                     flex-shrink-0 w-[23%] lg:w-[72px] aspect-square border transition-all hover:scale-105 active:scale-95 relative overflow-hidden rounded-xl snap-start
                                     ${selectedAttributes[cat.id]?.id === item.id
-                                        ? 'border-cat-yellow ring-2 ring-cat-yellow/20 shadow-[0_0_15px_rgba(250,210,5,0.2)] bg-white/5'
-                                        : 'border-white/10 bg-[#1e1e24] hover:border-white/30'}
+                                            ? 'border-cat-yellow ring-2 ring-cat-yellow/20 shadow-[0_0_15px_rgba(250,210,5,0.2)] bg-white/5'
+                                            : 'border-white/10 bg-[#1e1e24] hover:border-white/30'}
                                 `}
-                                title={item.label}
-                            >
-                                {/* BASE LAYER */}
-                                {cat.id === 'background' || cat.id === 'speech' ? (
-                                    <div
-                                        className="absolute inset-0"
-                                        style={{ background: item.color || '#2a2a2e' }}
-                                    />
-                                ) : (
-                                    <div className="absolute inset-0 bg-black/20">
-                                        <Image
-                                            src="/assets/body/basic.png"
-                                            alt="Base"
-                                            fill
-                                            className="object-contain opacity-40 grayscale group-hover/category:opacity-60 transition-opacity"
-                                            sizes="120px"
-                                            unoptimized
+                                    title={item.label}
+                                >
+                                    {/* BASE LAYER */}
+                                    {cat.id === 'background' || cat.id === 'speech' ? (
+                                        <div
+                                            className="absolute inset-0"
+                                            style={{ background: item.color || '#2a2a2e' }}
                                         />
-                                    </div>
-                                )}
-
-                                {/* OVERLAY LAYER (The Item) */}
-                                {cat.id === 'background' ? (
-                                    item.type === 'custom' ? (
-                                        <div className="absolute inset-0 flex items-center justify-center text-2xl z-20">
-                                            🎨
-                                        </div>
                                     ) : (
-                                        <div className="absolute inset-0 pointer-events-none">
+                                        <div className="absolute inset-0 bg-black/20">
                                             <Image
                                                 src="/assets/body/basic.png"
-                                                alt="Cat Preview"
+                                                alt="Base"
                                                 fill
-                                                className="object-contain"
+                                                className="object-contain opacity-40 grayscale group-hover/category:opacity-60 transition-opacity"
                                                 sizes="120px"
                                                 unoptimized
                                             />
                                         </div>
-                                    )
-                                ) : (cat.id.startsWith('border') || cat.id === 'vibe' || cat.id === 'speech') ? (
-                                    <div className="absolute inset-0">
-                                        {cat.id === 'border_color' && item.color && (
-                                            <div className="w-full h-full rounded border-[6px]" style={{ borderColor: item.color }} />
-                                        )}
-                                        {cat.id === 'border_style' && (
-                                            <div className="w-full h-full rounded border-white"
-                                                style={{
-                                                    border: (() => {
-                                                        const s = item.value;
-                                                        if (['double', 'dashed', 'dotted', 'groove', 'ridge', 'inset', 'outset'].includes(s)) {
-                                                            return `4px ${s} #fff`;
-                                                        }
-                                                        return '4px solid #fff';
-                                                    })(),
-                                                    boxShadow: item.value === 'neon' ? '0 0 10px #fff' : 'none',
-                                                }}
-                                            />
-                                        )}
-                                        {cat.id === 'border_width' && (
-                                            <div className="w-full h-full border-white/80"
-                                                style={{
-                                                    borderWidth: Math.max(2, item.value / 3) + 'px',
-                                                    borderStyle: 'solid'
-                                                }}
-                                            />
-                                        )}
-                                        {cat.id === 'vibe' && item.type !== 'none' && (
-                                            <div className="absolute inset-0 z-20">
+                                    )}
+
+                                    {/* OVERLAY LAYER (The Item) */}
+                                    {cat.id === 'background' ? (
+                                        item.type === 'custom' ? (
+                                            <div className="absolute inset-0 flex items-center justify-center text-2xl z-20">
+                                                🎨
+                                            </div>
+                                        ) : (
+                                            <div className="absolute inset-0 pointer-events-none">
                                                 <Image
                                                     src="/assets/body/basic.png"
-                                                    alt={item.label}
-                                                    fill
-                                                    style={{ filter: item.value }}
-                                                    className="object-contain"
-                                                    sizes="120px"
-                                                    unoptimized
-                                                />
-                                                <div className="absolute bottom-1 inset-x-1 bg-black/80 text-[7px] font-black py-0.5 rounded tracking-tighter uppercase whitespace-nowrap overflow-hidden">
-                                                    {item.label}
-                                                </div>
-                                            </div>
-                                        )}
-                                        {cat.id === 'speech' && item.type !== 'none' && (
-                                            <div className="absolute inset-0 flex items-center justify-center text-3xl z-20">
-                                                {item.emoji || '💬'}
-                                            </div>
-                                        )}
-                                        {item.type === 'none' && (
-                                            <div className="absolute inset-0 z-20">
-                                                <div className="w-full h-full border-2 border-red-500/40 rounded-full relative overflow-hidden">
-                                                    <div className="absolute top-1/2 left-0 w-full h-0.5 bg-red-500/40 rotate-45"></div>
-                                                </div>
-                                            </div>
-                                        )}
-                                    </div>
-                                ) : (
-                                    <>
-                                        {item.type === 'none' ? (
-                                            <div className="absolute inset-0 z-20">
-                                                <div className="w-full h-full border-2 border-red-500/40 rounded-full relative overflow-hidden">
-                                                    <div className="absolute top-1/2 left-0 w-full h-0.5 bg-red-500/40 rotate-45"></div>
-                                                </div>
-                                            </div>
-                                        ) : item.src ? (
-                                            <div className="absolute inset-0 z-20">
-                                                <Image
-                                                    src={item.src}
-                                                    alt={item.label}
+                                                    alt="Cat Preview"
                                                     fill
                                                     className="object-contain"
                                                     sizes="120px"
                                                     unoptimized
                                                 />
                                             </div>
-                                        ) : item.color ? (
-                                            <div className="absolute inset-0 z-20 flex items-center justify-center">
-                                                <div
-                                                    style={{ backgroundColor: item.color }}
-                                                    className={`w-2/3 h-2/3 shadow-lg ${cat.id === 'glasses' ? '' : 'rounded-full'}`}
+                                        )
+                                    ) : (cat.id.startsWith('border') || cat.id === 'vibe' || cat.id === 'speech') ? (
+                                        <div className="absolute inset-0">
+                                            {cat.id === 'border_color' && item.color && (
+                                                <div className="w-full h-full rounded border-[6px]" style={{ borderColor: item.color }} />
+                                            )}
+                                            {cat.id === 'border_style' && (
+                                                <div className="w-full h-full rounded border-white"
+                                                    style={{
+                                                        border: (() => {
+                                                            const s = item.value;
+                                                            if (['double', 'dashed', 'dotted', 'groove', 'ridge', 'inset', 'outset'].includes(s)) {
+                                                                return `4px ${s} #fff`;
+                                                            }
+                                                            return '4px solid #fff';
+                                                        })(),
+                                                        boxShadow: item.value === 'neon' ? '0 0 10px #fff' : 'none',
+                                                    }}
                                                 />
-                                            </div>
-                                        ) : null}
-                                    </>
-                                )}
-                            </button>
-                        ))}
-
-                        {/* Redesigned Wide Mixer for Horizontal Flow */}
-                        {cat.id === 'background' && selectedAttributes['background']?.id === 'bg_custom' && (
-                            <div className="flex-shrink-0 w-[280px] flex items-center gap-3 p-3 bg-white/5 rounded-xl border border-white/10 animate-fade-in snap-start">
-                                <div className="flex flex-col gap-1 w-[80px]">
-                                    {['solid', 'linear', 'radial'].map(type => (
-                                        <button
-                                            key={type}
-                                            onClick={() => setCustomBackground(prev => ({ ...prev, type }))}
-                                            className={`text-[8px] font-black py-1 rounded transition-colors uppercase ${customBackground.type === type ? 'bg-cat-yellow text-black shadow-lg shadow-cat-yellow/20' : 'bg-white/5 hover:bg-white/10 text-white/50'}`}
-                                        >
-                                            {type.slice(0, 3)}
-                                        </button>
-                                    ))}
-                                </div>
-                                <div className="w-px h-full bg-white/10"></div>
-                                <div className="flex-1 flex gap-3 justify-center">
-                                    <div className="relative group/swatch">
-                                        <input
-                                            type="color"
-                                            value={customBackground.color1}
-                                            onChange={(e) => setCustomBackground(prev => ({ ...prev, color1: e.target.value }))}
-                                            className="w-10 h-10 rounded-full bg-transparent border-2 border-white/20 cursor-pointer overflow-hidden p-0"
-                                        />
-                                        <span className="absolute -bottom-4 left-1/2 -translate-x-1/2 text-[8px] font-bold text-white/40">A</span>
-                                    </div>
-                                    {customBackground.type !== 'solid' && (
-                                        <div className="relative group/swatch">
-                                            <input
-                                                type="color"
-                                                value={customBackground.color2}
-                                                onChange={(e) => setCustomBackground(prev => ({ ...prev, color2: e.target.value }))}
-                                                className="w-10 h-10 rounded-full bg-transparent border-2 border-white/20 cursor-pointer overflow-hidden p-0"
-                                            />
-                                            <span className="absolute -bottom-4 left-1/2 -translate-x-1/2 text-[8px] font-bold text-white/40">B</span>
+                                            )}
+                                            {cat.id === 'border_width' && (
+                                                <div className="w-full h-full border-white/80"
+                                                    style={{
+                                                        borderWidth: Math.max(2, item.value / 3) + 'px',
+                                                        borderStyle: 'solid'
+                                                    }}
+                                                />
+                                            )}
+                                            {cat.id === 'vibe' && item.type !== 'none' && (
+                                                <div className="absolute inset-0 z-20">
+                                                    <Image
+                                                        src="/assets/body/basic.png"
+                                                        alt={item.label}
+                                                        fill
+                                                        style={{ filter: item.value }}
+                                                        className="object-contain"
+                                                        sizes="120px"
+                                                        unoptimized
+                                                    />
+                                                    <div className="absolute bottom-1 inset-x-1 bg-black/80 text-[7px] font-black py-0.5 rounded tracking-tighter uppercase whitespace-nowrap overflow-hidden">
+                                                        {item.label}
+                                                    </div>
+                                                </div>
+                                            )}
+                                            {cat.id === 'speech' && item.type !== 'none' && (
+                                                <div className="absolute inset-0 flex items-center justify-center text-3xl z-20">
+                                                    {item.emoji || '💬'}
+                                                </div>
+                                            )}
+                                            {item.type === 'none' && (
+                                                <div className="absolute inset-0 z-20">
+                                                    <div className="w-full h-full border-2 border-red-500/40 rounded-full relative overflow-hidden">
+                                                        <div className="absolute top-1/2 left-0 w-full h-0.5 bg-red-500/40 rotate-45"></div>
+                                                    </div>
+                                                </div>
+                                            )}
                                         </div>
+                                    ) : (
+                                        <>
+                                            {item.type === 'none' ? (
+                                                <div className="absolute inset-0 z-20">
+                                                    <div className="w-full h-full border-2 border-red-500/40 rounded-full relative overflow-hidden">
+                                                        <div className="absolute top-1/2 left-0 w-full h-0.5 bg-red-500/40 rotate-45"></div>
+                                                    </div>
+                                                </div>
+                                            ) : item.src ? (
+                                                <div className="absolute inset-0 z-20">
+                                                    <Image
+                                                        src={item.src}
+                                                        alt={item.label}
+                                                        fill
+                                                        className="object-contain"
+                                                        sizes="120px"
+                                                        unoptimized
+                                                    />
+                                                </div>
+                                            ) : item.color ? (
+                                                <div className="absolute inset-0 z-20 flex items-center justify-center">
+                                                    <div
+                                                        style={{ backgroundColor: item.color }}
+                                                        className={`w-2/3 h-2/3 shadow-lg ${cat.id === 'glasses' ? '' : 'rounded-full'}`}
+                                                    />
+                                                </div>
+                                            ) : null}
+                                        </>
                                     )}
-                                </div>
-                            </div>
-                        )}
+                                </button>
+
+                                {/* Custom Mixer Inline - Appears immediately after the Custom button when selected */}
+                                {cat.id === 'background' && item.id === 'bg_custom' && selectedAttributes['background']?.id === 'bg_custom' && (
+                                    <div className="flex-shrink-0 w-[200px] lg:w-[240px] h-[72px] lg:h-[72px] flex items-center gap-2 p-1.5 lg:p-2 bg-white/5 rounded-xl border border-cat-yellow/30 animate-in slide-in-from-left-2 fade-in duration-300 snap-start">
+                                        <div className="flex flex-col gap-1 w-[45px] lg:w-[55px]">
+                                            {['solid', 'linear', 'radial'].map(type => (
+                                                <button
+                                                    key={type}
+                                                    onClick={() => setCustomBackground(prev => ({ ...prev, type }))}
+                                                    className={`text-[7px] lg:text-[8px] font-black py-1 rounded transition-colors uppercase ${customBackground.type === type ? 'bg-cat-yellow text-black shadow-lg shadow-cat-yellow/20' : 'bg-white/5 hover:bg-white/10 text-white/50'}`}
+                                                >
+                                                    {type.slice(0, 3)}
+                                                </button>
+                                            ))}
+                                        </div>
+                                        <div className="w-px h-4/5 bg-white/10"></div>
+                                        <div className="flex-1 flex gap-2 lg:gap-3 justify-center items-center">
+                                            <div className="flex flex-col items-center gap-0.5">
+                                                <input
+                                                    type="color"
+                                                    value={customBackground.color1}
+                                                    onChange={(e) => setCustomBackground(prev => ({ ...prev, color1: e.target.value }))}
+                                                    className="w-7 h-7 lg:w-9 lg:h-9 rounded-full bg-transparent border-2 border-white/20 cursor-pointer overflow-hidden p-0"
+                                                />
+                                                <span className="text-[6px] lg:text-[7px] font-bold text-white/30 uppercase">Primary</span>
+                                            </div>
+                                            {customBackground.type !== 'solid' && (
+                                                <div className="flex flex-col items-center gap-0.5">
+                                                    <input
+                                                        type="color"
+                                                        value={customBackground.color2}
+                                                        onChange={(e) => setCustomBackground(prev => ({ ...prev, color2: e.target.value }))}
+                                                        className="w-7 h-7 lg:w-9 lg:h-9 rounded-full bg-transparent border-2 border-white/20 cursor-pointer overflow-hidden p-0"
+                                                    />
+                                                    <span className="text-[6px] lg:text-[7px] font-bold text-white/30 uppercase">Second</span>
+                                                </div>
+                                            )}
+                                        </div>
+                                    </div>
+                                )}
+                            </React.Fragment>
+                        ))}
                     </div>
                 </div>
             ))}
