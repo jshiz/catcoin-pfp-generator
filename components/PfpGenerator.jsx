@@ -18,6 +18,12 @@ export default function PfpGenerator() {
                 initial[cat.id] = cat.items.find(i => i.id === 'body_1') || cat.items[0];
             } else if (cat.id === 'hat') {
                 initial[cat.id] = cat.items.find(i => i.id === 'hat_13') || cat.items[0];
+            } else if (cat.id === 'border_color') {
+                initial[cat.id] = cat.items.find(i => i.id === 'border_c_white') || cat.items[0];
+            } else if (cat.id === 'border_style') {
+                initial[cat.id] = cat.items.find(i => i.id === 'border_s_solid') || cat.items[0];
+            } else if (cat.id === 'border_width') {
+                initial[cat.id] = cat.items.find(i => i.id === 'border_w_md') || cat.items[0];
             } else {
                 initial[cat.id] = cat.items[0];
             }
