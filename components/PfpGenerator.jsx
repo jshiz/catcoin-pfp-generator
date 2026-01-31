@@ -4,7 +4,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
 import { attributesConfig } from '@/data/attributes';
 import ScrollingBackground from './ScrollingBackground';
-import { Download, Share2, Copy, Shuffle, Camera } from 'lucide-react';
+import { Download, Share2, Copy, Shuffle, Camera, Play, Pause, SkipForward, SkipBack, Music } from 'lucide-react';
 
 export default function PfpGenerator() {
     // Initialize state with random items
@@ -34,6 +34,46 @@ export default function PfpGenerator() {
         color2: '#1e3a8a',
         type: 'linear', // 'solid', 'linear', 'radial'
     });
+
+    // Music Player State
+    const songs = [
+        { title: 'Catcoin Army', src: '/music/Catcoin Army.mp3' },
+        { title: 'Claws Out (Catcoin Anthem)', src: '/music/Claws Out (Catcoin Anthem).mp3' },
+        { title: 'Digital Whiskers', src: '/music/Digital Whiskers in a Neon Glow.mp3' },
+        { title: 'Keep It Catcoin', src: '/music/Keep It Catcoin.mp3' },
+        { title: 'The History & The King', src: '/music/The History & The King.mp3' }
+    ];
+    const [currentSongIndex, setCurrentSongIndex] = useState(0);
+    const [isPlaying, setIsPlaying] = useState(false);
+    const audioRef = useRef(null);
+
+    const togglePlay = () => {
+        if (!audioRef.current) return;
+        if (isPlaying) {
+            audioRef.current.pause();
+        } else {
+            audioRef.current.play().catch(e => console.error("Playback error", e));
+        }
+        setIsPlaying(!isPlaying);
+    };
+
+    const skipForward = () => {
+        const nextIndex = (currentSongIndex + 1) % songs.length;
+        setCurrentSongIndex(nextIndex);
+        // Play automatically if was playing
+        if (isPlaying) {
+            setTimeout(() => audioRef.current.play(), 100);
+        }
+    };
+
+    const skipBack = () => {
+        const prevIndex = (currentSongIndex - 1 + songs.length) % songs.length;
+        setCurrentSongIndex(prevIndex);
+        // Play automatically if was playing
+        if (isPlaying) {
+            setTimeout(() => audioRef.current.play(), 100);
+        }
+    };
 
     // Randomize on mount (Client-side only)
     useEffect(() => {
@@ -694,6 +734,49 @@ export default function PfpGenerator() {
             {/* CENTER STAGE */}
             <div className="relative flex flex-col items-center justify-center p-2 lg:p-10 order-1 lg:order-2 shrink-0 lg:flex-1 h-[35dvh] lg:h-auto border-b border-white/10 lg:border-none overflow-hidden">
                 <ScrollingBackground />
+
+                {/* Music Player Bar (Top Middle) */}
+                <div className="absolute top-4 left-1/2 -translate-x-1/2 flex items-center gap-4 px-4 py-2 bg-black/40 backdrop-blur-md rounded-full border border-white/10 z-[100] group/player hover:bg-black/60 transition-all shadow-xl">
+                    <button
+                        onClick={skipBack}
+                        className="text-white/40 hover:text-cat-yellow transition-colors"
+                        title="Previous Song"
+                    >
+                        <SkipBack size={16} fill="currentColor" />
+                    </button>
+
+                    <button
+                        onClick={togglePlay}
+                        className="w-10 h-10 flex items-center justify-center bg-cat-yellow text-black rounded-full hover:scale-110 active:scale-95 transition-all shadow-lg"
+                        title={isPlaying ? "Pause" : "Play Music (Turn it up!)"}
+                    >
+                        {isPlaying ? <Pause size={20} fill="currentColor" /> : <Play size={20} fill="currentColor" className="ml-1" />}
+                    </button>
+
+                    <button
+                        onClick={skipForward}
+                        className="text-white/40 hover:text-cat-yellow transition-colors"
+                        title="Next Song"
+                    >
+                        <SkipForward size={16} fill="currentColor" />
+                    </button>
+
+                    <div className="flex flex-col min-w-[120px] max-w-[200px] overflow-hidden">
+                        <div className="flex items-center gap-1.5 text-[10px] font-bold text-cat-yellow tracking-wider opacity-60">
+                            <Music size={10} />
+                            RADIO
+                        </div>
+                        <div className="text-[11px] font-bold text-white truncate animate-pulse">
+                            {songs[currentSongIndex].title}
+                        </div>
+                    </div>
+
+                    <audio
+                        ref={audioRef}
+                        src={songs[currentSongIndex].src}
+                        onEnded={skipForward}
+                    />
+                </div>
 
                 {/* Main Composition Area */}
                 {/* Main Composition Area */}
