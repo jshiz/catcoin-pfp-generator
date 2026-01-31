@@ -505,12 +505,12 @@ export default function PfpGenerator() {
 
     // Render Control Wing (Now a horizontal category stack)
     const renderControls = (categories) => (
-        <div className="flex flex-col gap-6 py-4 px-2 lg:px-6 h-full overflow-y-auto w-full">
+        <div className="flex flex-col gap-6 lg:gap-2 py-4 lg:py-2 px-2 lg:px-4 h-full overflow-y-auto w-full [&::-webkit-scrollbar]:hidden">
             {categories.map(cat => (
-                <div key={cat.id} className="space-y-2 group/category">
+                <div key={cat.id} className="space-y-2 lg:space-y-1 group/category">
                     <div className="flex items-center gap-2 px-1">
                         <div className="w-1 h-3 bg-cat-yellow rounded-full"></div>
-                        <h3 className="text-white font-black uppercase tracking-tight text-xs lg:text-sm">{cat.label}</h3>
+                        <h3 className="text-white font-black uppercase tracking-tight text-xs lg:text-[10px]">{cat.label}</h3>
                     </div>
 
                     {/* Horizontal Scrollable Row */}
@@ -521,7 +521,7 @@ export default function PfpGenerator() {
                                 key={item.id}
                                 onClick={() => handleAttributeSelect(cat.id, item)}
                                 className={`
-                                    flex-shrink-0 w-[23%] lg:w-[120px] aspect-square border transition-all hover:scale-105 active:scale-95 relative overflow-hidden rounded-xl snap-start
+                                    flex-shrink-0 w-[23%] lg:w-[72px] aspect-square border transition-all hover:scale-105 active:scale-95 relative overflow-hidden rounded-xl snap-start
                                     ${selectedAttributes[cat.id]?.id === item.id
                                         ? 'border-cat-yellow ring-2 ring-cat-yellow/20 shadow-[0_0_15px_rgba(250,210,5,0.2)] bg-white/5'
                                         : 'border-white/10 bg-[#1e1e24] hover:border-white/30'}
@@ -718,7 +718,8 @@ export default function PfpGenerator() {
                     </div>
                     <div className="w-px h-6 bg-white/20 mx-1 hidden xs:block" />
                     <span className="text-cat-yellow font-black tracking-tighter text-lg lg:text-2xl uppercase select-none">
-                        catcoin
+                        <span className="hidden lg:inline">CATCOIN | Cat-O-Matic</span>
+                        <span className="lg:hidden">catcoin</span>
                     </span>
                 </div>
 
@@ -765,9 +766,14 @@ export default function PfpGenerator() {
                 </div>
             </header>
 
-            <div className="flex flex-col flex-1 overflow-hidden">
-                {/* CENTER STAGE (Top half, centered) */}
-                <div className="relative flex flex-col items-center justify-center p-4 lg:p-8 shrink-0 h-[45dvh] lg:h-[60dvh] w-full overflow-hidden">
+            <div className="flex flex-col lg:flex-row flex-1 overflow-hidden">
+                {/* LEFT WING (Desktop) */}
+                <div className="hidden lg:block w-1/4 border-r border-white/10 bg-[#18181c]/50 backdrop-blur-sm z-10 h-full overflow-hidden">
+                    {renderControls(leftCategories)}
+                </div>
+
+                {/* CENTER STAGE */}
+                <div className="relative flex flex-col items-center justify-center p-4 lg:p-8 flex-1 h-[45dvh] lg:h-auto overflow-hidden order-1 lg:order-2">
                     <ScrollingBackground />
 
                     {/* Main Composition Area */}
@@ -965,11 +971,16 @@ export default function PfpGenerator() {
                             <span className="font-black text-sm tracking-wide">SAVE PNG</span>
                         </button>
                     </div>
+
+                    {/* Mobile Controls (Visible only on mobile) */}
+                    <div className="lg:hidden w-full mt-4 flex-1 overflow-y-auto pb-24 border-t border-white/5">
+                        {renderControls(attributesConfig)}
+                    </div>
                 </div>
 
-                {/* CONTROLS AREA (Scrollable Categories) */}
-                <div className="flex-1 overflow-hidden bg-[#18181c] border-t border-white/10 flex flex-col pt-2 pb-20 lg:pb-0">
-                    {renderControls(attributesConfig)}
+                {/* RIGHT WING (Desktop) */}
+                <div className="hidden lg:block w-1/4 border-l border-white/10 bg-[#18181c]/50 backdrop-blur-sm z-10 h-full overflow-hidden order-3">
+                    {renderControls(rightCategories)}
                 </div>
 
                 {/* Mobile Sticky Action Bar */}
