@@ -956,7 +956,7 @@ export default function PfpGenerator() {
                 </div>
 
                 {/* Mobile Sticky Action Bar */}
-                <div className="lg:hidden fixed bottom-0 left-0 right-0 z-[999] bg-[#18181c] border-t border-white/10 px-2 py-2 flex justify-between gap-1 safe-bottom shadow-[0_-5px_20px_rgba(0,0,0,0.5)] min-h-[70px] pointer-events-auto">
+                <div className="lg:hidden fixed bottom-0 left-0 right-0 z-[999] bg-[#18181c] border-t border-white/10 px-2 pt-2 pb-3 flex justify-between gap-1 safe-bottom shadow-[0_-5px_20px_rgba(0,0,0,0.5)] min-h-[70px] pointer-events-auto">
                     <button onClick={randomize} className="flex flex-col items-center justify-center py-2 px-1 flex-1 bg-white/5 border border-white/10 rounded-xl active:scale-90 transition-transform touch-manipulation">
                         <Shuffle size={16} className="text-cat-yellow mb-1" />
                         <span className="text-[9px] font-bold text-white/80 uppercase tracking-tighter">Shuffle</span>
