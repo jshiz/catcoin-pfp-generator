@@ -488,11 +488,11 @@ export default function PfpGenerator() {
                                 title={item.label}
                             >
                                 {/* BASE LAYER */}
-                                {cat.id === 'background' ? (
-                                    // For background: Color is Base
+                                {cat.id === 'background' || cat.id === 'speech' ? (
+                                    // For background/speech: No cat base
                                     <div
                                         className="absolute inset-0"
-                                        style={{ background: item.color || '#333' }}
+                                        style={{ background: item.color || '#2a2a2e' }}
                                     />
                                 ) : (
                                     // For others (and costume now): Basic Cat is Base
