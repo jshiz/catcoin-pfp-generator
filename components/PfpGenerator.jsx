@@ -225,81 +225,92 @@ export default function PfpGenerator() {
 
             // Draw Border (zIndex 80)
             // Draw Border (zIndex 80)
-            if (cat.id === 'border' && item.color) {
-                const drawPath = (inset = 0) => {
-                    ctx.beginPath();
-                    if (pfpShape === 'circle') {
-                        ctx.arc(256, 256, 256 - inset, 0, Math.PI * 2);
-                    } else {
-                        ctx.roundRect(inset, inset, 512 - inset * 2, 512 - inset * 2, 60 - inset / 2);
-                    }
-                };
+            // Draw Border (zIndex 90 - now combined from components)
+            if (cat.id === 'border_color') { // Use border_color as the trigger
+                const bColor = selectedAttributes['border_color'];
+                const bStyle = selectedAttributes['border_style']?.value || 'solid';
+                const bWidth = selectedAttributes['border_width']?.value || 10;
 
-                ctx.save();
-                ctx.strokeStyle = item.color;
-                ctx.lineWidth = 10;
-                ctx.lineCap = 'round';
-                ctx.lineJoin = 'round';
-
-                if (item.style === 'bold') ctx.lineWidth = 20;
-                else if (item.style === 'neon') {
-                    ctx.shadowBlur = 20;
-                    ctx.shadowColor = item.color;
-                    ctx.lineWidth = 15;
-                }
-
-                if (item.style === 'dashed') ctx.setLineDash([30, 15]);
-                if (item.style === 'dotted') {
-                    ctx.setLineDash([0, 20]);
-                    ctx.lineCap = 'round';
-                    ctx.lineWidth = 15;
-                }
-
-                if (item.style === 'double') {
-                    drawPath(5);
-                    ctx.stroke();
-                    drawPath(25);
-                    ctx.stroke();
-                } else if (item.style === 'jagged') {
-                    // Custom Jagged Path
-                    ctx.beginPath();
-                    const cx = 256, cy = 256, r = 250;
-                    const spikes = 60;
-                    const outerR = r;
-                    const innerR = r - 20;
-
-                    if (pfpShape === 'circle') {
-                        for (let i = 0; i < spikes; i++) {
-                            const step = Math.PI * 2 / spikes;
-                            const angle = i * step;
-                            const x1 = cx + Math.cos(angle) * outerR;
-                            const y1 = cy + Math.sin(angle) * outerR;
-                            ctx.lineTo(x1, y1);
-                            const x2 = cx + Math.cos(angle + step / 2) * innerR;
-                            const y2 = cy + Math.sin(angle + step / 2) * innerR;
-                            ctx.lineTo(x2, y2);
+                if (bColor && bColor.type !== 'none' && bColor.color) {
+                    const drawPath = (inset = 0) => {
+                        ctx.beginPath();
+                        if (pfpShape === 'circle') {
+                            ctx.arc(256, 256, 256 - inset, 0, Math.PI * 2);
+                        } else {
+                            ctx.roundRect(inset, inset, 512 - inset * 2, 512 - inset * 2, 60 - inset / 2);
                         }
-                        ctx.closePath();
-                    } else {
-                        // Simple Rect Zigzag fallback or straight dash? 
-                        // Doing jagged rect path is complex manually, fallback to dashed for square for now
-                        drawPath(10);
-                        ctx.setLineDash([10, 10]);
-                    }
-                    ctx.stroke();
-                } else if (item.style === 'wave') {
-                    // Sine wave logic? simpler to use lineDash fallback for now for stability or just stroke
-                    drawPath(10);
-                    ctx.lineWidth = 15;
-                    ctx.stroke();
-                }
-                else {
-                    // Standard Solid
-                    drawPath(5);
-                    ctx.stroke();
-                }
+                    };
 
-                ctx.restore();
+                    ctx.save();
+                    ctx.strokeStyle = bColor.color;
+                    ctx.lineWidth = bWidth;
+                    ctx.lineCap = 'round';
+                    ctx.lineJoin = 'round';
+
+                    if (bStyle === 'neon') {
+                        ctx.shadowBlur = bWidth + 10;
+                        ctx.shadowColor = bColor.color;
+                    }
+
+                    if (bStyle === 'dashed') ctx.setLineDash([bWidth * 3, bWidth * 1.5]);
+                    if (bStyle === 'dotted') {
+                        ctx.setLineDash([0, bWidth * 2]);
+                        ctx.lineCap = 'round';
+                    }
+
+                    if (bStyle === 'double') {
+                        const gap = bWidth;
+                        // Outer
+                        ctx.lineWidth = bWidth / 2;
+                        drawPath(bWidth / 4);
+                        ctx.stroke();
+                        // Inner
+                        drawPath(bWidth * 1.5);
+                        ctx.stroke();
+                    } else if (bStyle === 'jagged') {
+                        // Custom Jagged Path
+                        ctx.beginPath();
+                        const cx = 256, cy = 256;
+                        // Approximate jagged path radius
+                        const r = 256 - bWidth;
+                        const spikes = 60;
+                        const outerR = r;
+                        const innerR = r - bWidth;
+
+                        if (pfpShape === 'circle') {
+                            for (let i = 0; i < spikes; i++) {
+                                const step = Math.PI * 2 / spikes;
+                                const angle = i * step;
+                                const x1 = cx + Math.cos(angle) * outerR;
+                                const y1 = cy + Math.sin(angle) * outerR;
+                                ctx.lineTo(x1, y1);
+                                const x2 = cx + Math.cos(angle + step / 2) * innerR;
+                                const y2 = cy + Math.sin(angle + step / 2) * innerR;
+                                ctx.lineTo(x2, y2);
+                            }
+                            ctx.closePath();
+                            ctx.stroke();
+                        } else {
+                            // Square ZigZag (Simplified Dash fallback for complexity)
+                            drawPath(bWidth / 2);
+                            ctx.setLineDash([bWidth, bWidth]);
+                            ctx.stroke();
+                        }
+                    } else if (bStyle === 'wave') {
+                        drawPath(bWidth / 2);
+                        // Waves are hard without path2d manipulation libraries or complex loops
+                        // Fallback to stylized dash
+                        ctx.setLineDash([bWidth * 2, bWidth]);
+                        ctx.stroke();
+                    }
+                    else {
+                        // Standard Solid
+                        drawPath(bWidth / 2); // Center stroke on the inset line
+                        ctx.stroke();
+                    }
+
+                    ctx.restore();
+                }
             }
 
             if (item.text) {
@@ -422,19 +433,31 @@ export default function PfpGenerator() {
                                             sizes="100px"
                                         />
                                     </div>
-                                ) : cat.id === 'border' && item.color ? (
-                                    // For border: Show actual border around container 
-                                    <div
-                                        className="absolute inset-0 z-20 pointer-events-none"
-                                        style={{
-                                            border: item.style === 'double' ? 'double 4px ' + item.color :
-                                                item.style === 'dashed' ? 'dashed 2px ' + item.color :
-                                                    item.style === 'dotted' ? 'dotted 3px ' + item.color :
-                                                        'solid 4px ' + item.color,
-                                            borderRadius: '4px',
-                                            boxShadow: item.style === 'neon' ? `0 0 5px ${item.color}` : 'none'
-                                        }}
-                                    />
+                                ) : cat.id.startsWith('border') ? (
+                                    // Border Control Previews
+                                    <div className="absolute inset-0 flex items-center justify-center p-2">
+                                        {cat.id === 'border_color' && item.color && (
+                                            <div className="w-full h-full rounded border-2 border-white/20" style={{ backgroundColor: item.color }} />
+                                        )}
+                                        {cat.id === 'border_style' && (
+                                            <div className="w-full h-full rounded border-white"
+                                                style={{
+                                                    border: '2px ' + (item.value === 'double' ? 'double' : item.value === 'dashed' ? 'dashed' : item.value === 'dotted' ? 'dotted' : 'solid') + ' #fff',
+                                                    boxShadow: item.value === 'neon' ? '0 0 5px #fff' : 'none',
+                                                    // rough approx for jagged/wave/etc
+                                                }}
+                                            />
+                                        )}
+                                        {cat.id === 'border_width' && (
+                                            <div className="bg-white rounded-full"
+                                                style={{
+                                                    width: item.value / 2 + 'px',
+                                                    height: item.value / 2 + 'px'
+                                                }}
+                                            />
+                                        )}
+                                        {item.type === 'none' && <div className="text-red-500 font-bold text-xs">X</div>}
+                                    </div>
                                 ) : (
                                     // For others: Item is Top
                                     <>
@@ -474,8 +497,7 @@ export default function PfpGenerator() {
     );
 
     // Split categories for desktop wings with specific order
-    // Split categories for desktop wings with specific order
-    const leftIds = ['background', 'border', 'body', 'shirt'];
+    const leftIds = ['background', 'border_color', 'border_style', 'border_width', 'body', 'shirt'];
     const rightIds = ['chain', 'eyes', 'mouth', 'glasses', 'hat', 'costume'];
 
     const leftCategories = leftIds.map(id => attributesConfig.find(c => c.id === id)).filter(Boolean);

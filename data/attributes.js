@@ -202,21 +202,48 @@ export const attributesConfig = [
     ]
   },
   {
-    id: 'border',
-    label: 'Border',
+    id: 'border_color',
+    label: 'Border Color',
     zIndex: 90,
     items: [
-      { id: 'border_1', label: 'None', type: 'none' },
-      { id: 'border_solid_white', label: 'Classic White', color: '#ffffff', style: 'solid' },
-      { id: 'border_bold_yellow', label: 'Bold Yellow', color: '#fad205', style: 'bold' },
-      { id: 'border_neon_cyan', label: 'Neon Cyan', color: '#00ffff', style: 'neon' },
-      { id: 'border_jagged_red', label: 'Jagged Red', color: '#ef4444', style: 'jagged' },
-      { id: 'border_dashed_lime', label: 'Dashed Lime', color: '#84cc16', style: 'dashed' },
-      { id: 'border_double_pink', label: 'Double Pink', color: '#ec4899', style: 'double' },
-      { id: 'border_dotted_gold', label: 'Dotted Gold', color: '#fbbf24', style: 'dotted' },
-      { id: 'border_neon_purple', label: 'Neon Purple', color: '#a855f7', style: 'neon' },
-      { id: 'border_jagged_orange', label: 'Jagged Fire', color: '#f97316', style: 'jagged' },
-      { id: 'border_bold_silver', label: 'Bold Silver', color: '#9ca3af', style: 'bold' },
+      { id: 'border_color_none', label: 'None', type: 'none' },
+      { id: 'border_c_white', label: 'White', color: '#ffffff' },
+      { id: 'border_c_yellow', label: 'Cat Yellow', color: '#fad205' },
+      { id: 'border_c_cyan', label: 'Cyan', color: '#06b6d4' },
+      { id: 'border_c_purple', label: 'Purple', color: '#a855f7' },
+      { id: 'border_c_lime', label: 'Lime', color: '#84cc16' },
+      { id: 'border_c_pink', label: 'Hot Pink', color: '#ec4899' },
+      { id: 'border_c_orange', label: 'Orange', color: '#f97316' },
+      { id: 'border_c_red', label: 'Red', color: '#ef4444' },
+      { id: 'border_c_silver', label: 'Silver', color: '#9ca3af' },
+      { id: 'border_c_gold', label: 'Gold', color: '#fbbf24' },
+      { id: 'border_c_black', label: 'Black', color: '#000000' },
+    ]
+  },
+  {
+    id: 'border_style',
+    label: 'Border Pattern',
+    zIndex: 91, // Virtual z-index, affects ordering in UI
+    items: [
+      { id: 'border_s_solid', label: 'Solid', value: 'solid' },
+      { id: 'border_s_dashed', label: 'Dashed', value: 'dashed' },
+      { id: 'border_s_dotted', label: 'Dotted', value: 'dotted' },
+      { id: 'border_s_double', label: 'Double', value: 'double' },
+      { id: 'border_s_neon', label: 'Neon Glow', value: 'neon' },
+      { id: 'border_s_jagged', label: 'Jagged', value: 'jagged' },
+      { id: 'border_s_wave', label: 'Waves', value: 'wave' },
+      { id: 'border_s_groove', label: 'Groove', value: 'groove' },
+    ]
+  },
+  {
+    id: 'border_width',
+    label: 'Border Size',
+    zIndex: 92, // Virtual z-index
+    items: [
+      { id: 'border_w_sm', label: 'Small', value: 10 },
+      { id: 'border_w_md', label: 'Medium', value: 20 },
+      { id: 'border_w_lg', label: 'Large', value: 35 },
+      { id: 'border_w_xl', label: 'Chonky', value: 50 },
     ]
   }
 ];
