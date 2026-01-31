@@ -147,9 +147,26 @@ export default function PfpGenerator() {
 
         // 1. Background Layer (zIndex 10)
         const bgItem = selectedAttributes['background'];
-        if (bgItem?.color) {
-            ctx.fillStyle = bgItem.color;
-            ctx.fillRect(0, 0, 512, 512);
+        if (bgItem) {
+            if (bgItem.canvasGradient) {
+                const cg = bgItem.canvasGradient;
+                let gradient;
+                if (cg.type === 'linear') {
+                    gradient = ctx.createLinearGradient(cg.x0, cg.y0, cg.x1, cg.y1);
+                } else if (cg.type === 'radial') {
+                    gradient = ctx.createRadialGradient(cg.x0, cg.y0, cg.r0, cg.x1, cg.y1, cg.r1);
+                }
+
+                if (gradient && cg.stops) {
+                    cg.stops.forEach(stop => gradient.addColorStop(stop[0], stop[1]));
+                    ctx.fillStyle = gradient;
+                } else if (bgItem.color) {
+                    ctx.fillStyle = bgItem.color;
+                }
+            } else if (bgItem.color) {
+                ctx.fillStyle = bgItem.color;
+            }
+            if (ctx.fillStyle) ctx.fillRect(0, 0, 512, 512);
         }
 
         // 2. Base Cat Layer (zIndex 20) - Deprecated, now handled by dynamic "body" attribute (zIndex 20)

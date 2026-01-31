@@ -14,6 +14,71 @@ export const attributesConfig = [
       { id: 'bg_8', label: 'Teal', color: '#115e59' },
       { id: 'bg_9', label: 'Burnt Orange', color: '#c2410c' },
       { id: 'bg_10', label: 'Hot Pink', color: '#be185d' },
+      // Gradient Backgrounds
+      {
+        id: 'bg_grad_1', label: 'Sunset Drive',
+        color: 'linear-gradient(to bottom, #f97316, #ec4899, #8b5cf6)',
+        canvasGradient: {
+          type: 'linear', x0: 0, y0: 0, x1: 0, y1: 512,
+          stops: [[0, '#f97316'], [0.5, '#ec4899'], [1, '#8b5cf6']]
+        }
+      },
+      {
+        id: 'bg_grad_2', label: 'Ocean Breeze',
+        color: 'linear-gradient(to bottom right, #06b6d4, #3b82f6, #1e3a8a)',
+        canvasGradient: {
+          type: 'linear', x0: 0, y0: 0, x1: 512, y1: 512,
+          stops: [[0, '#06b6d4'], [0.5, '#3b82f6'], [1, '#1e3a8a']]
+        }
+      },
+      {
+        id: 'bg_grad_3', label: 'Neon Cyber',
+        color: 'linear-gradient(135deg, #18181c, #4c1d95, #c026d3)',
+        canvasGradient: {
+          type: 'linear', x0: 0, y0: 0, x1: 512, y1: 512,
+          stops: [[0, '#18181c'], [0.5, '#4c1d95'], [1, '#c026d3']]
+        }
+      },
+      {
+        id: 'bg_grad_4', label: 'Golden Hour',
+        color: 'radial-gradient(circle at center, #facc15, #ca8a04, #854d0e)',
+        canvasGradient: {
+          type: 'radial', x0: 256, y0: 256, r0: 0, x1: 256, y1: 256, r1: 360,
+          stops: [[0, '#facc15'], [0.5, '#ca8a04'], [1, '#854d0e']]
+        }
+      },
+      {
+        id: 'bg_grad_5', label: 'Forest Mist',
+        color: 'linear-gradient(to top, #022c22, #047857, #34d399)',
+        canvasGradient: {
+          type: 'linear', x0: 0, y0: 512, x1: 0, y1: 0,
+          stops: [[0, '#022c22'], [0.5, '#047857'], [1, '#34d399']]
+        }
+      },
+      {
+        id: 'bg_grad_6', label: 'Cotton Candy',
+        color: 'linear-gradient(to right, #f472b6, #e879f9, #a78bfa)',
+        canvasGradient: {
+          type: 'linear', x0: 0, y0: 0, x1: 512, y1: 0,
+          stops: [[0, '#f472b6'], [0.5, '#e879f9'], [1, '#a78bfa']]
+        }
+      },
+      {
+        id: 'bg_grad_7', label: 'Midnight City',
+        color: 'linear-gradient(to bottom, #000000, #1e1b4b, #312e81)',
+        canvasGradient: {
+          type: 'linear', x0: 0, y0: 0, x1: 0, y1: 512,
+          stops: [[0, '#000000'], [0.4, '#1e1b4b'], [1, '#312e81']]
+        }
+      },
+      {
+        id: 'bg_grad_8', label: 'Lava Flow',
+        color: 'radial-gradient(circle at top left, #ef4444, #991b1b, #450a0a)',
+        canvasGradient: {
+          type: 'radial', x0: 0, y0: 0, r0: 0, x1: 256, y1: 256, r1: 724,
+          stops: [[0, '#ef4444'], [0.4, '#991b1b'], [1, '#450a0a']]
+        }
+      },
     ]
   },
   {
