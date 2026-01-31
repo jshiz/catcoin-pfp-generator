@@ -635,8 +635,8 @@ export default function PfpGenerator() {
     );
 
     // Split categories for desktop wings with specific order
-    const leftIds = ['background', 'body', 'shirt', 'costume', 'vibe'];
-    const rightIds = ['chain', 'eyes', 'mouth', 'glasses', 'hat', 'border_color', 'border_style', 'border_width', 'speech'];
+    const leftIds = ['background', 'border_color', 'border_style', 'border_width', 'speech', 'vibe'];
+    const rightIds = ['body', 'shirt', 'hat', 'eyes', 'glasses', 'mouth', 'chain', 'costume'];
 
     const leftCategories = leftIds.map(id => attributesConfig.find(c => c.id === id)).filter(Boolean);
     const rightCategories = rightIds.map(id => attributesConfig.find(c => c.id === id)).filter(Boolean);
@@ -796,13 +796,13 @@ export default function PfpGenerator() {
                     <canvas ref={canvasRef} width={512} height={512} className="hidden" />
 
                     {/* SVG Filters for Vibes */}
-                    <svg className="hidden">
-                        <filter id="pixelate" x="0" y="0">
+                    <svg style={{ position: 'absolute', width: 0, height: 0, overflow: 'hidden' }} aria-hidden="true">
+                        <filter id="pixelate" x="0" y="0" width="100%" height="100%">
                             <feFlood x="4" y="4" height="2" width="2" />
-                            <feComposite width="10" height="10" />
+                            <feComposite width="8" height="8" />
                             <feTile result="a" />
                             <feComposite in="SourceGraphic" in2="a" operator="in" />
-                            <feMorphology operator="dilate" radius="4" />
+                            <feMorphology operator="dilate" radius="3" />
                         </filter>
                     </svg>
                 </div>
