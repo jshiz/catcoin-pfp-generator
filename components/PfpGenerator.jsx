@@ -916,38 +916,56 @@ export default function PfpGenerator() {
                                 <canvas ref={canvasRef} width={512} height={512} className="hidden" />
                             </div>
 
-                            {/* Border Layer (Overlayed Outside Clipping) */}
-                            <div
-                                className={`absolute z-20 pointer-events-none transition-all duration-300 ${pfpShape === 'circle' ? 'rounded-full' : 'rounded-none'}`}
+                            {/* Border Overlay (SVG powered for pixel-perfect patterns) */}
+                            <svg
+                                className="absolute inset-0 z-20 pointer-events-none w-full h-full overflow-visible"
                                 style={{
-                                    top: '0.5px',
-                                    left: '0.5px',
-                                    width: 'calc(100% - 1px)',
-                                    height: 'calc(100% - 1px)',
-                                    boxSizing: 'border-box',
-                                    outline: '1px solid transparent', // Forces better anti-aliasing in Webkit
-                                    borderWidth: (() => {
-                                        const bWidth = selectedAttributes['border_width']?.value || 10;
-                                        return `${bWidth}px`;
-                                    })(),
-                                    borderStyle: (() => {
-                                        const bStyle = selectedAttributes['border_style']?.value || 'solid';
-                                        return ['double', 'dashed', 'dotted', 'groove', 'ridge', 'inset', 'outset'].includes(bStyle) ? bStyle : 'solid';
-                                    })(),
-                                    borderColor: (() => {
-                                        const bColor = selectedAttributes['border_color'];
-                                        return bColor?.color || 'transparent';
-                                    })(),
-                                    boxShadow: (() => {
+                                    filter: (() => {
                                         const bColor = selectedAttributes['border_color'];
                                         const bStyle = selectedAttributes['border_style']?.value || 'solid';
                                         if (bColor && bColor.type !== 'none' && bColor.color && bStyle === 'neon') {
-                                            return `0 0 20px ${bColor.color}, inset 0 0 20px ${bColor.color}`;
+                                            return `drop-shadow(0 0 10px ${bColor.color})`;
                                         }
                                         return 'none';
                                     })()
                                 }}
-                            />
+                            >
+                                {(() => {
+                                    const bColor = selectedAttributes['border_color'];
+                                    if (!bColor || bColor.type === 'none' || !bColor.color) {
+                                        // Default thin ring
+                                        return pfpShape === 'circle' ? (
+                                            <circle cx="50%" cy="50%" r="calc(50% - 0.5px)" fill="none" stroke="rgba(255,255,255,0.15)" strokeWidth="1" />
+                                        ) : (
+                                            <rect x="0.5" y="0.5" width="calc(100% - 1px)" height="calc(100% - 1px)" fill="none" stroke="rgba(255,255,255,0.15)" strokeWidth="1" />
+                                        );
+                                    }
+
+                                    const bStyle = selectedAttributes['border_style']?.value || 'solid';
+                                    const bWidth = selectedAttributes['border_width']?.value || 10;
+                                    const color = bColor.color;
+
+                                    // Map CSS styles to dash arrays
+                                    let dashArray = 'none';
+                                    if (bStyle === 'dashed') dashArray = `${bWidth * 2} ${bWidth}`;
+                                    if (bStyle === 'dotted') dashArray = `1 ${bWidth * 1.5}`;
+
+                                    const commonProps = {
+                                        fill: 'none',
+                                        stroke: color,
+                                        strokeWidth: bWidth,
+                                        strokeDasharray: dashArray,
+                                        strokeLinecap: bStyle === 'dotted' ? 'round' : 'butt',
+                                        className: "transition-all duration-300"
+                                    };
+
+                                    if (pfpShape === 'circle') {
+                                        return <circle cx="50%" cy="50%" r={`calc(50% - ${bWidth / 2}px)`} {...commonProps} />;
+                                    } else {
+                                        return <rect x={bWidth / 2} y={bWidth / 2} width={`calc(100% - ${bWidth}px)`} height={`calc(100% - ${bWidth}px)`} {...commonProps} />;
+                                    }
+                                })()}
+                            </svg>
                         </div>
 
                         {/* Desktop Action Bar */}
