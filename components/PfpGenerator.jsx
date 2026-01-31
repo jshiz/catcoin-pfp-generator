@@ -444,28 +444,15 @@ export default function PfpGenerator() {
                                                 style={{
                                                     border: (() => {
                                                         const s = item.value;
-                                                        if (s === 'double') return '4px double #fff';
-                                                        if (s === 'dashed') return '2px dashed #fff';
-                                                        if (s === 'dotted') return '3px dotted #fff';
-                                                        if (s === 'groove') return '4px groove #fff';
-                                                        if (s === 'ridge') return '4px ridge #fff';
-                                                        if (s === 'jagged') return 'none'; // handled by clip-path
+                                                        if (['double', 'dashed', 'dotted', 'groove', 'ridge', 'inset', 'outset'].includes(s)) {
+                                                            return `3px ${s} #fff`;
+                                                        }
                                                         return '3px solid #fff';
                                                     })(),
-                                                    // Jagged imitation:
-                                                    clipPath: item.value === 'jagged' ? 'polygon(0% 0%, 10% 10%, 20% 0%, 30% 10%, 40% 0%, 50% 10%, 60% 0%, 70% 10%, 80% 0%, 90% 10%, 100% 0%, 100% 100%, 90% 90%, 80% 100%, 70% 90%, 60% 100%, 50% 90%, 40% 100%, 30% 90%, 20% 100%, 10% 90%, 0% 100%, 0% 0%)' : 'none',
-                                                    // Fallback border for jagged if clip-path not supported well in context? No, clip-path cuts content. 
-                                                    // Better Jagged visualization: use a pseudo-border via background. 
-                                                    // Actually simple clip path on a white filled div is hard because we want transparent center.
-                                                    // Let's stick to 'dashed' for jagged but thicker? Or just accept distinct CSS styles.
                                                     boxShadow: item.value === 'neon' ? '0 0 5px #fff, inset 0 0 3px #fff' : 'none',
-                                                    backgroundColor: item.value === 'jagged' ? '#fff' : 'transparent', // Jagged needs fill to show cuts? No.
+                                                    backgroundColor: 'transparent',
                                                 }}
                                             >
-                                                {/* Special handling for Jagged to look like frame */}
-                                                {item.value === 'jagged' && (
-                                                    <div className="absolute inset-[4px] bg-black/50 rounded-sm" style={{ clipPath: 'inherit' }}></div>
-                                                )}
                                             </div>
                                         )}
                                         {cat.id === 'border_width' && (
@@ -600,13 +587,10 @@ export default function PfpGenerator() {
                                                 const w = (selectedAttributes['border_width']?.value || 10) + 'px';
                                                 const c = item.color;
                                                 // Map to CSS
-                                                if (s === 'double') return `double ${w} ${c}`;
-                                                // Jagged/Wave fallback to dashed/dotted for DOM preview
-                                                if (s === 'dashed' || s === 'jagged') return `dashed ${w} ${c}`;
-                                                if (s === 'dotted' || s === 'wave') return `dotted ${w} ${c}`;
-                                                // Groove/Ridge/etc supported by CSS
-                                                if (['groove', 'ridge', 'inset', 'outset'].includes(s)) return `${s} ${w} ${c}`;
-
+                                                if (['double', 'dashed', 'dotted', 'groove', 'ridge', 'inset', 'outset'].includes(s)) {
+                                                    return `${s} ${w} ${c}`;
+                                                }
+                                                // Fallback
                                                 return `solid ${w} ${c}`;
                                             })(),
                                             boxShadow: selectedAttributes['border_style']?.value === 'neon' ? `0 0 20px ${item.color}, inset 0 0 20px ${item.color}` : 'none'

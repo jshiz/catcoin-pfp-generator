@@ -236,8 +236,8 @@ export const attributesConfig = [
       { id: 'border_s_dotted', label: 'Dotted', value: 'dotted' },
       { id: 'border_s_double', label: 'Double', value: 'double' },
       { id: 'border_s_neon', label: 'Neon Glow', value: 'neon' },
-      { id: 'border_s_jagged', label: 'Jagged', value: 'jagged' },
-      { id: 'border_s_wave', label: 'Waves', value: 'wave' },
+      { id: 'border_s_ridge', label: 'Ridge', value: 'ridge' },
+      { id: 'border_s_inset', label: 'Inset', value: 'inset' },
       { id: 'border_s_groove', label: 'Groove', value: 'groove' },
     ]
   },
