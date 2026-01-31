@@ -771,208 +771,110 @@ export default function PfpGenerator() {
                     {renderControls(leftCategories)}
                 </div>
 
-                {/* CENTER STAGE */}
-                <div className="relative flex flex-col items-center justify-center p-4 lg:p-8 flex-1 h-[45dvh] lg:h-auto overflow-hidden order-1 lg:order-2">
-                    <ScrollingBackground />
+                {/* CENTER COLUMN (Preview + Mobile Controls) */}
+                <div className="flex flex-col flex-1 overflow-hidden order-1 lg:order-2">
+                    {/* Preview Stage */}
+                    <div className="relative flex flex-col items-center justify-center p-4 lg:p-8 h-[45dvh] lg:h-full lg:flex-1 lg:pb-56 shrink-0 overflow-hidden">
+                        <ScrollingBackground />
 
-                    {/* Main Composition Area */}
-                    <div
-                        className={`relative w-auto h-[85%] aspect-square bg-black shadow-2xl overflow-hidden border-4 border-white/10 group z-10 transition-all duration-300 ease-spring ${pfpShape === 'circle' ? 'rounded-full' : 'rounded-none'}`}
-                        style={{
-                            filter: selectedAttributes['vibe']?.value || 'none'
-                        }}
-                    >
-
-
-
-                        {/* Explosion Effect Layer (Behind everything but background? Or just behind costume?) 
-                        Background is zIndex 10. We want this visible. zIndex 15.
-                    */}
-                        {isExploding && (
-                            <div className="absolute inset-0 z-[15] flex items-center justify-center pointer-events-none">
-                                <div className="w-full h-full bg-radial-gradient(circle, rgba(255,255,255,0.8) 0%, rgba(250,210,5,0) 70%) animate-explode scale-150 rounded-full"></div>
-                                {/* Inner Burst */}
-                                <div className="absolute w-1/2 h-1/2 bg-cat-yellow/50 rounded-full animate-explode delay-75"></div>
-                            </div>
-                        )}
-
-                        {/* Layers */}
-                        {attributesConfig.sort((a, b) => a.zIndex - b.zIndex).map(cat => {
-                            const item = selectedAttributes[cat.id];
-                            if (!item || (item.type === 'none' && !item.src)) return null;
-
-                            const isAnimating = animatingLayer === cat.id || animatingLayer === 'all';
-
-                            // Determine animation class based on category
-                            let animationClass = '';
-                            if (isAnimating) {
-                                if (['shirt', 'body', 'costume'].includes(cat.id)) {
-                                    const dir = cat.id === 'shirt' ? shirtDirection : (cat.id === 'costume' ? costumeDirection : bodyDirection);
-                                    animationClass = dir === 'left' ? 'animate-fly-left' : 'animate-fly-right';
-                                }
-                                else if (cat.id === 'eyes') animationClass = 'animate-fade-in';
-                                else if (['hat'].includes(cat.id)) animationClass = 'animate-fly-down';
-                                else if (cat.id === 'mouth') animationClass = 'animate-pop-in';
-                                else animationClass = 'animate-zoom-in'; // default for border, glasses, chain
-                            }
-
-                            return (
-                                <div
-                                    key={cat.id}
-                                    className={`absolute inset-0 transition-transform duration-75 ${animationClass}`}
-                                    style={{ zIndex: cat.zIndex }}
-                                >
-                                    {/* Background Layer (Color) */}
-                                    {cat.id === 'background' && (
-                                        <div className="w-full h-full" style={{
-                                            background: item.id === 'bg_custom' ? (
-                                                customBackground.type === 'solid' ? customBackground.color1 :
-                                                    customBackground.type === 'linear' ? `linear-gradient(to bottom, ${customBackground.color1}, ${customBackground.color2})` :
-                                                        `radial-gradient(circle at center, ${customBackground.color1}, ${customBackground.color2})`
-                                            ) : (item.color || 'transparent')
-                                        }} />
-                                    )}
-
-                                    {/* Border Layer (Shape) */}
-                                    {cat.id === 'border_color' && item.color && (
-                                        <div
-                                            className={`absolute inset-0 pointer-events-none transition-all duration-300 ${pfpShape === 'circle' ? 'rounded-full' : 'rounded-none'}`}
-                                            style={{
-                                                border: (() => {
-                                                    const s = selectedAttributes['border_style']?.value || 'solid';
-                                                    const w = (selectedAttributes['border_width']?.value || 10) + 'px';
-                                                    const c = item.color;
-                                                    // Map to CSS
-                                                    if (['double', 'dashed', 'dotted', 'groove', 'ridge', 'inset', 'outset'].includes(s)) {
-                                                        return `${s} ${w} ${c}`;
-                                                    }
-                                                    // Fallback
-                                                    return `solid ${w} ${c}`;
-                                                })(),
-                                                boxShadow: selectedAttributes['border_style']?.value === 'neon' ? `0 0 20px ${item.color}, inset 0 0 20px ${item.color}` : 'none'
-                                            }}
-                                        >
-                                            {/* Overlay for patterns not supported natively by CSS border-style (like wave, jagged) - using SVG or masks would be better but CSS 'dashed' is a decent fallback for now if we don't assume SVG assets. 
-                                            If 'jagged' is selected, we can try a clip-path or background-image hack, 
-                                            but to keep it working comfortably:
-                                        */}
-                                        </div>
-                                    )}
-
-                                    {item.emoji && cat.id === 'speech' && (
-                                        <div
-                                            className={`absolute z-[95] animate-pop-in pointer-events-none transition-all duration-500`}
-                                            style={{
-                                                top: pfpShape === 'circle' ? '52%' : '54%',
-                                                right: pfpShape === 'circle' ? '12%' : '8%',
-                                            }}
-                                        >
-                                            <div className="relative bg-white text-black w-10 h-10 lg:w-12 lg:h-12 flex items-center justify-center rounded-xl shadow-2xl border-2 border-black text-xl lg:text-2xl">
-                                                {item.emoji}
-                                                {/* Pointer */}
-                                                <div className="absolute bottom-[-8px] left-[10%] w-0 h-0 border-l-[8px] border-l-transparent border-r-[8px] border-r-transparent border-t-[8px] border-t-white"></div>
-                                                <div className="absolute bottom-[-11px] left-[10%] w-0 h-0 border-l-[9px] border-l-transparent border-r-[9px] border-r-transparent border-t-[9px] border-t-black -z-10"></div>
-                                            </div>
-                                        </div>
-                                    )}
-                                    {item.src && (
-                                        <div className="w-full h-full relative pointer-events-none">
-                                            <Image
-                                                src={item.src}
-                                                alt={`${cat.id}-${item.label}`}
-                                                fill
-                                                className="object-contain"
-                                                sizes="(max-width: 768px) 100vw, 512px"
-                                                priority={cat.id === 'shirt'} // Prioritize Shirt loading
-                                                unoptimized
-                                            />
-                                        </div>
-                                    )}
-
-                                    {/* Placeholder Shapes (Legacy Colors) */}
-                                    {item.color && !['background', 'border', 'border_color'].includes(cat.id) && !item.src && (
-                                        // Centered layered rects for accessories
-                                        <div
-                                            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
-                                            style={{
-                                                backgroundColor: item.color,
-                                                width: `${300 - (cat.zIndex > 20 ? cat.zIndex - 20 : 0) * 2}px`,
-                                                height: `${300 - (cat.zIndex > 20 ? cat.zIndex - 20 : 0) * 2}px`,
-                                                borderRadius: cat.id === 'glasses' ? '0' : '20px'
-                                            }}
-                                        />
-                                    )}
-
-
+                        {/* Main Composition Area */}
+                        <div
+                            className={`relative w-auto h-[85%] aspect-square bg-black shadow-2xl overflow-hidden border-4 border-white/10 group z-10 transition-all duration-300 ease-spring ${pfpShape === 'circle' ? 'rounded-full' : 'rounded-none'}`}
+                            style={{
+                                filter: selectedAttributes['vibe']?.value || 'none'
+                            }}
+                        >
+                            {/* Explosion Effect */}
+                            {isExploding && (
+                                <div className="absolute inset-0 z-[15] flex items-center justify-center pointer-events-none">
+                                    <div className="w-full h-full bg-radial-gradient(circle, rgba(255,255,255,0.8) 0%, rgba(250,210,5,0) 70%) animate-explode scale-150 rounded-full"></div>
+                                    <div className="absolute w-1/2 h-1/2 bg-cat-yellow/50 rounded-full animate-explode delay-75"></div>
                                 </div>
-                            );
-                        })}
+                            )}
 
-                        {/* Hidden Canvas for Compositing */}
-                        <canvas ref={canvasRef} width={512} height={512} className="hidden" />
+                            {/* Layers */}
+                            {attributesConfig.sort((a, b) => a.zIndex - b.zIndex).map(cat => {
+                                const item = selectedAttributes[cat.id];
+                                if (!item || (item.type === 'none' && !item.src)) return null;
+                                const isAnimating = animatingLayer === cat.id || animatingLayer === 'all';
+                                let animationClass = '';
+                                if (isAnimating) {
+                                    if (['shirt', 'body', 'costume'].includes(cat.id)) {
+                                        const dir = cat.id === 'shirt' ? shirtDirection : (cat.id === 'costume' ? costumeDirection : bodyDirection);
+                                        animationClass = dir === 'left' ? 'animate-fly-left' : 'animate-fly-right';
+                                    }
+                                    else if (cat.id === 'eyes') animationClass = 'animate-fade-in';
+                                    else if (['hat'].includes(cat.id)) animationClass = 'animate-fly-down';
+                                    else if (cat.id === 'mouth') animationClass = 'animate-pop-in';
+                                    else animationClass = 'animate-zoom-in';
+                                }
+                                return (
+                                    <div key={cat.id} className={`absolute inset-0 transition-transform duration-75 ${animationClass}`} style={{ zIndex: cat.zIndex }}>
+                                        {cat.id === 'background' && (
+                                            <div className="w-full h-full" style={{
+                                                background: item.id === 'bg_custom' ? (
+                                                    customBackground.type === 'solid' ? customBackground.color1 :
+                                                        customBackground.type === 'linear' ? `linear-gradient(to bottom, ${customBackground.color1}, ${customBackground.color2})` :
+                                                            `radial-gradient(circle at center, ${customBackground.color1}, ${customBackground.color2})`
+                                                ) : (item.color || 'transparent')
+                                            }} />
+                                        )}
+                                        {cat.id === 'border_color' && item.color && (
+                                            <div className={`absolute inset-0 pointer-events-none transition-all duration-300 ${pfpShape === 'circle' ? 'rounded-full' : 'rounded-none'}`}
+                                                style={{
+                                                    border: (() => {
+                                                        const s = selectedAttributes['border_style']?.value || 'solid';
+                                                        const w = (selectedAttributes['border_width']?.value || 10) + 'px';
+                                                        return ['double', 'dashed', 'dotted', 'groove', 'ridge', 'inset', 'outset'].includes(s) ? `${s} ${w} ${item.color}` : `solid ${w} ${item.color}`;
+                                                    })(), boxShadow: selectedAttributes['border_style']?.value === 'neon' ? `0 0 20px ${item.color}, inset 0 0 20px ${item.color}` : 'none'
+                                                }} />
+                                        )}
+                                        {item.emoji && cat.id === 'speech' && (
+                                            <div className={`absolute z-[95] animate-pop-in pointer-events-none transition-all duration-500`} style={{ top: pfpShape === 'circle' ? '50%' : '52%', right: pfpShape === 'circle' ? '12%' : '8%' }}>
+                                                <div className="relative bg-white text-black w-10 h-10 lg:w-12 lg:h-12 flex items-center justify-center rounded-xl shadow-2xl border-2 border-black text-xl lg:text-2xl">
+                                                    {item.emoji}
+                                                    <div className="absolute bottom-[-8px] left-[10%] w-0 h-0 border-l-[8px] border-l-transparent border-r-[8px] border-r-transparent border-t-[8px] border-t-white"></div>
+                                                    <div className="absolute bottom-[-11px] left-[10%] w-0 h-0 border-l-[9px] border-l-transparent border-r-[9px] border-r-transparent border-t-[9px] border-t-black -z-10"></div>
+                                                </div>
+                                            </div>
+                                        )}
+                                        {item.src && (
+                                            <div className="w-full h-full relative pointer-events-none">
+                                                <Image src={item.src} alt={`${cat.id}-${item.label}`} fill className="object-contain" sizes="(max-width: 768px) 100vw, 512px" priority={cat.id === 'shirt'} unoptimized />
+                                            </div>
+                                        )}
+                                        {item.color && !['background', 'border', 'border_color'].includes(cat.id) && !item.src && (
+                                            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2" style={{ backgroundColor: item.color, width: `${300 - (cat.zIndex > 20 ? cat.zIndex - 20 : 0) * 2}px`, height: `${300 - (cat.zIndex > 20 ? cat.zIndex - 20 : 0) * 2}px`, borderRadius: cat.id === 'glasses' ? '0' : '20px' }} />
+                                        )}
+                                    </div>
+                                );
+                            })}
+                            <canvas ref={canvasRef} width={512} height={512} className="hidden" />
+                        </div>
 
-                        {/* SVG Filters for Vibes */}
-                        <svg style={{ position: 'absolute', width: 0, height: 0, overflow: 'hidden' }} aria-hidden="true">
-                            <filter id="pixelate" x="0" y="0" width="100%" height="100%">
-                                <feFlood x="4" y="4" height="2" width="2" />
-                                <feComposite width="8" height="8" />
-                                <feTile result="a" />
-                                <feComposite in="SourceGraphic" in2="a" operator="in" />
-                                <feMorphology operator="dilate" radius="3" />
-                            </filter>
-                            <filter id="pixelate-highres" x="0" y="0" width="100%" height="100%">
-                                <feFlood x="12" y="12" height="6" width="6" />
-                                <feComposite width="24" height="24" />
-                                <feTile result="a" />
-                                <feComposite in="SourceGraphic" in2="a" operator="in" />
-                                <feMorphology operator="dilate" radius="10" />
-                            </filter>
-                        </svg>
-                    </div>
-
-                    {/* Desktop Action Bar (Fixed Bottom Pill) */}
-                    <div className="hidden lg:flex fixed bottom-8 left-1/2 -translate-x-1/2 gap-4 bg-[#18181c]/80 p-2 pr-2 pl-4 rounded-full border border-white/10 shadow-[0_20px_40px_rgba(0,0,0,0.5)] backdrop-blur-xl z-50 hover:bg-[#18181c]/90 transition-all">
-                        <button
-                            onClick={randomize}
-                            className="flex items-center gap-2 px-4 py-2 hover:bg-white/10 rounded-full text-cat-yellow transition-all hover:scale-105 active:scale-95 group"
-                            title="Randomize Attributes"
-                        >
-                            <Shuffle size={20} className="group-hover:rotate-180 transition-transform duration-500" />
-                            <span className="font-bold text-sm tracking-wide">SHUFFLE</span>
-                        </button>
-
-                        {/* Shape Toggle */}
-                        <button
-                            onClick={() => setPfpShape(prev => prev === 'circle' ? 'square' : 'circle')}
-                            className="flex items-center gap-2 px-3 py-2 hover:bg-white/10 rounded-full text-white transition-all hover:scale-105 active:scale-95 group"
-                            title="Toggle Shape"
-                        >
-                            <div className={`w-5 h-5 border-2 border-current transition-all duration-300 ${pfpShape === 'circle' ? 'rounded-full' : 'rounded-md'}`}></div>
-                        </button>
-
-                        <div className="w-px bg-white/10 my-2 self-stretch"></div>
-
-                        <button
-                            onClick={handleCopy}
-                            className="flex items-center gap-2 px-4 py-2 hover:bg-white/10 rounded-full text-white transition-all hover:scale-105 active:scale-95 group"
-                            title="Copy Image to Clipboard"
-                        >
-                            <Copy size={20} className="group-hover:-rotate-12 transition-transform" />
-                            <span className="font-bold text-sm tracking-wide">COPY</span>
-                        </button>
-
-                        <button
-                            onClick={handleDownload}
-                            className="flex items-center gap-2 px-6 py-2 bg-cat-yellow text-black rounded-full hover:bg-[#fff04b] transition-all hover:scale-105 active:scale-95 shadow-[0_0_20px_rgba(250,210,5,0.2)] ml-2"
-                            title="Download Transparent PNG"
-                        >
-                            <Download size={20} />
-                            <span className="font-black text-sm tracking-wide">SAVE PNG</span>
-                        </button>
+                        {/* Desktop Action Bar */}
+                        <div className="hidden lg:flex fixed bottom-8 left-1/2 -translate-x-1/2 gap-4 bg-[#18181c]/80 p-2 pr-2 pl-4 rounded-full border border-white/10 shadow-[0_20px_40px_rgba(0,0,0,0.5)] backdrop-blur-xl z-50 hover:bg-[#18181c]/90 transition-all">
+                            <button onClick={randomize} className="flex items-center gap-2 px-4 py-2 hover:bg-white/10 rounded-full text-cat-yellow transition-all hover:scale-105 active:scale-95 group" title="Shuffle">
+                                <Shuffle size={20} className="group-hover:rotate-180 transition-transform duration-500" />
+                                <span className="font-bold text-sm tracking-wide">SHUFFLE</span>
+                            </button>
+                            <button onClick={() => setPfpShape(prev => prev === 'circle' ? 'square' : 'circle')} className="flex items-center gap-2 px-3 py-2 hover:bg-white/10 rounded-full text-white transition-all hover:scale-105 active:scale-95 group" title="Toggle Shape">
+                                <div className={`w-5 h-5 border-2 border-current transition-all duration-300 ${pfpShape === 'circle' ? 'rounded-full' : 'rounded-md'}`}></div>
+                            </button>
+                            <div className="w-px bg-white/10 my-2 self-stretch"></div>
+                            <button onClick={handleCopy} className="flex items-center gap-2 px-4 py-2 hover:bg-white/10 rounded-full text-white transition-all hover:scale-105 active:scale-95 group" title="Copy">
+                                <Copy size={20} className="group-hover:-rotate-12 transition-transform" />
+                                <span className="font-bold text-sm tracking-wide">COPY</span>
+                            </button>
+                            <button onClick={handleDownload} className="flex items-center gap-2 px-6 py-2 bg-cat-yellow text-black rounded-full hover:bg-[#fff04b] transition-all hover:scale-105 active:scale-95 shadow-[0_0_20px_rgba(250,210,5,0.2)] ml-2" title="Save">
+                                <Download size={20} />
+                                <span className="font-black text-sm tracking-wide">SAVE PNG</span>
+                            </button>
+                        </div>
                     </div>
 
                     {/* Mobile Controls (Visible only on mobile) */}
-                    <div className="lg:hidden w-full mt-4 flex-1 overflow-y-auto pb-24 border-t border-white/5">
+                    <div className="lg:hidden flex-1 overflow-y-auto pb-32 border-t border-white/10 bg-[#18181c]">
                         {renderControls(attributesConfig)}
                     </div>
                 </div>
@@ -984,26 +886,15 @@ export default function PfpGenerator() {
 
                 {/* Mobile Sticky Action Bar */}
                 <div className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-[#18181c]/95 backdrop-blur-xl border-t border-white/10 p-3 flex justify-between gap-3 safe-bottom pb-8 shadow-[0_-10px_30px_rgba(0,0,0,0.5)]">
-                    <button
-                        onClick={randomize}
-                        className="flex flex-col items-center justify-center p-2 flex-1 bg-white/5 border border-white/10 rounded-xl active:scale-95 transition-transform"
-                    >
+                    <button onClick={randomize} className="flex flex-col items-center justify-center p-2 flex-1 bg-white/5 border border-white/10 rounded-xl active:scale-95 transition-transform">
                         <Shuffle size={18} className="text-cat-yellow mb-1" />
                         <span className="text-[10px] font-bold text-white/80 uppercase tracking-tighter">Shuffle</span>
                     </button>
-
-                    <button
-                        onClick={() => setPfpShape(prev => prev === 'circle' ? 'square' : 'circle')}
-                        className="flex flex-col items-center justify-center p-2 flex-1 bg-white/5 border border-white/10 rounded-xl active:scale-95 transition-transform"
-                    >
+                    <button onClick={() => setPfpShape(prev => prev === 'circle' ? 'square' : 'circle')} className="flex flex-col items-center justify-center p-2 flex-1 bg-white/5 border border-white/10 rounded-xl active:scale-95 transition-transform">
                         <div className={`w-4 h-4 border-2 border-white mb-1.5 transition-all duration-300 ${pfpShape === 'circle' ? 'rounded-full' : 'rounded-sm'}`}></div>
                         <span className="text-[10px] font-bold text-white/80 uppercase tracking-tighter">Shape</span>
                     </button>
-
-                    <button
-                        onClick={handleDownload}
-                        className="flex flex-col items-center justify-center p-2 flex-[1.5] bg-cat-yellow text-black rounded-xl active:scale-95 shadow-lg shadow-cat-yellow/20 transition-transform font-black text-[10px] uppercase"
-                    >
+                    <button onClick={handleDownload} className="flex flex-col items-center justify-center p-2 flex-[1.5] bg-cat-yellow text-black rounded-xl active:scale-95 shadow-lg shadow-cat-yellow/20 transition-transform font-black text-[10px] uppercase">
                         <Download size={22} className="mb-1" />
                         SAVE
                     </button>
@@ -1018,6 +909,13 @@ export default function PfpGenerator() {
                     <feTile result="a" />
                     <feComposite in="SourceGraphic" in2="a" operator="in" />
                     <feMorphology operator="dilate" radius="3" />
+                </filter>
+                <filter id="pixelate-highres" x="0" y="0" width="100%" height="100%">
+                    <feFlood x="12" y="12" height="6" width="6" />
+                    <feComposite width="24" height="24" />
+                    <feTile result="a" />
+                    <feComposite in="SourceGraphic" in2="a" operator="in" />
+                    <feMorphology operator="dilate" radius="10" />
                 </filter>
             </svg>
         </div>
