@@ -85,6 +85,7 @@ export const attributesConfig = [
       { id: 'chain_2', label: 'Gold', src: '/assets/chain/gold.png', type: 'image' },
       { id: 'chain_3', label: 'Cross', src: '/assets/chain/cross.png', type: 'image' },
       { id: 'chain_4', label: 'Money', src: '/assets/chain/money.png', type: 'image' },
+      { id: 'chain_5', label: 'Chains', src: '/assets/chain/chains.png', type: 'image' },
     ]
   },
   {
