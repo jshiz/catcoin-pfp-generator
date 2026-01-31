@@ -416,37 +416,34 @@ export default function PfpGenerator() {
                 }
             }
 
-            // Draw Speech Bubbles
-            if (cat.id === 'speech' && item.text) {
+            // Draw Speech Bubbles (Emoji Only)
+            if (cat.id === 'speech' && item.emoji) {
                 ctx.save();
-                ctx.font = 'bold 28px Arial';
-                const textWidth = ctx.measureText(item.text).width;
-                const bubbleW = Math.min(textWidth + 40, 400);
-                const bubbleH = 54;
-                const bx = 480 - bubbleW;
-                const by = 260; // Lowered to near mouth
+                ctx.font = '50px Arial'; // Larger font for single emoji
+                const bubbleSize = 70;
+                const bx = 420; // Positioned near mouth
+                const by = 260;
 
                 ctx.fillStyle = 'white';
                 ctx.strokeStyle = 'black';
                 ctx.lineWidth = 3;
 
                 ctx.beginPath();
-                ctx.roundRect(bx, by, bubbleW, bubbleH, 18);
+                ctx.roundRect(bx, by, bubbleSize, bubbleSize, 18);
                 ctx.fill();
                 ctx.stroke();
 
                 // Pointer
                 ctx.beginPath();
-                ctx.moveTo(bx + 20, by + bubbleH);
-                ctx.lineTo(bx + 5, by + bubbleH + 15);
-                ctx.lineTo(bx + 40, by + bubbleH);
+                ctx.moveTo(bx + 15, by + bubbleSize);
+                ctx.lineTo(bx + 0, by + bubbleSize + 12);
+                ctx.lineTo(bx + 30, by + bubbleSize);
                 ctx.fill();
                 ctx.stroke();
 
-                ctx.fillStyle = 'black';
                 ctx.textAlign = 'center';
                 ctx.textBaseline = 'middle';
-                ctx.fillText(item.text, bx + bubbleW / 2, by + bubbleH / 2 + 2);
+                ctx.fillText(item.emoji, bx + bubbleSize / 2, by + bubbleSize / 2 + 4);
                 ctx.restore();
             }
         }
@@ -857,19 +854,19 @@ export default function PfpGenerator() {
                                         </div>
                                     )}
 
-                                    {item.text && cat.id === 'speech' && (
+                                    {item.emoji && cat.id === 'speech' && (
                                         <div
                                             className={`absolute z-[95] animate-pop-in pointer-events-none transition-all duration-500`}
                                             style={{
                                                 top: pfpShape === 'circle' ? '52%' : '54%',
-                                                right: pfpShape === 'circle' ? '6%' : '4%',
+                                                right: pfpShape === 'circle' ? '12%' : '8%',
                                             }}
                                         >
-                                            <div className="relative bg-white text-black px-4 py-2 rounded-2xl shadow-2xl border-2 border-black font-black text-sm lg:text-base max-w-[200px] text-center leading-tight">
-                                                {item.text}
+                                            <div className="relative bg-white text-black w-10 h-10 lg:w-12 lg:h-12 flex items-center justify-center rounded-xl shadow-2xl border-2 border-black text-xl lg:text-2xl">
+                                                {item.emoji}
                                                 {/* Pointer */}
-                                                <div className="absolute bottom-[-10px] left-[15%] w-0 h-0 border-l-[10px] border-l-transparent border-r-[10px] border-r-transparent border-t-[10px] border-t-white"></div>
-                                                <div className="absolute bottom-[-13px] left-[15%] w-0 h-0 border-l-[11px] border-l-transparent border-r-[11px] border-r-transparent border-t-[11px] border-t-black -z-10"></div>
+                                                <div className="absolute bottom-[-8px] left-[10%] w-0 h-0 border-l-[8px] border-l-transparent border-r-[8px] border-r-transparent border-t-[8px] border-t-white"></div>
+                                                <div className="absolute bottom-[-11px] left-[10%] w-0 h-0 border-l-[9px] border-l-transparent border-r-[9px] border-r-transparent border-t-[9px] border-t-black -z-10"></div>
                                             </div>
                                         </div>
                                     )}
