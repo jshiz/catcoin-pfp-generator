@@ -142,6 +142,11 @@ export const attributesConfig = [
       { id: 'shirt_5', label: 'Snowy', src: '/assets/shirt/snowy.png', type: 'image' },
       { id: 'shirt_6', label: 'Sweater', src: '/assets/shirt/sweater.png', type: 'image' },
       { id: 'shirt_7', label: 'Balenciaga', src: '/assets/shirt/balenciaga.png', type: 'image' },
+      { id: 'shirt_8', label: 'Champion', src: '/assets/shirt/champion.png', type: 'image' },
+      { id: 'shirt_9', label: 'Hilfiger', src: '/assets/shirt/hilfiger.png', type: 'image' },
+      { id: 'shirt_10', label: 'JNCO', src: '/assets/shirt/jnco.png', type: 'image' },
+      { id: 'shirt_11', label: 'Thrasher', src: '/assets/shirt/thrasher.png', type: 'image' },
+      { id: 'shirt_12', label: 'Zodiac', src: '/assets/shirt/zodiac.png', type: 'image' },
     ]
   },
   {
