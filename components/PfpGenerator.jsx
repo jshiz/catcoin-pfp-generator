@@ -695,8 +695,8 @@ export default function PfpGenerator() {
     );
 
     // Split categories for desktop wings with specific order
-    const leftIds = ['background', 'border_color', 'border_style', 'border_width', 'speech', 'vibe'];
-    const rightIds = ['body', 'shirt', 'hat', 'eyes', 'glasses', 'mouth', 'chain', 'costume'];
+    const leftIds = ['background', 'border_color', 'border_style', 'border_width', 'speech', 'vibe', 'costume'];
+    const rightIds = ['body', 'shirt', 'hat', 'eyes', 'glasses', 'mouth', 'chain'];
 
     const leftCategories = leftIds.map(id => attributesConfig.find(c => c.id === id)).filter(Boolean);
     const rightCategories = rightIds.map(id => attributesConfig.find(c => c.id === id)).filter(Boolean);
