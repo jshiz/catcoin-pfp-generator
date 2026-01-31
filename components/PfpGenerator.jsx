@@ -88,6 +88,28 @@ export default function PfpGenerator() {
     // Handle attribute selection
     const handleAttributeSelect = (categoryId, item) => {
         setSelectedAttributes(prev => {
+            // TOGGLE LOGIC: If clicking the same item that's already selected
+            if (prev[categoryId]?.id === item.id) {
+                const category = attributesConfig.find(c => c.id === categoryId);
+                const noneItem = category.items.find(i => i.type === 'none' || i.id.includes('none'));
+
+                // For categories that REQUIRE a selection (like background/body), 
+                // falling back to 'none' might be invalid or undesirable.
+                // Revert to first item for these, or 'none' for others.
+                if (categoryId === 'background' || categoryId === 'body') {
+                    const fallback = category.items.find(i => !i.hidden) || category.items[0];
+                    // Only toggle if we aren't already on the fallback
+                    if (prev[categoryId].id !== fallback.id) {
+                        return { ...prev, [categoryId]: fallback };
+                    }
+                    return prev; // Stay as is if clicking the fallback
+                }
+
+                if (noneItem) {
+                    return { ...prev, [categoryId]: noneItem };
+                }
+            }
+
             const next = { ...prev, [categoryId]: item };
 
             // COSTUME LOGIC
