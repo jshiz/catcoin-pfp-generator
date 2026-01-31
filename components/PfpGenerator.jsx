@@ -444,7 +444,8 @@ export default function PfpGenerator() {
                             }
                             else if (cat.id === 'eyes') animationClass = 'animate-fade-in';
                             else if (['hat'].includes(cat.id)) animationClass = 'animate-fly-down';
-                            else animationClass = 'animate-zoom-in'; // default for border, glasses, chain, mouth
+                            else if (cat.id === 'mouth') animationClass = 'animate-pop-in';
+                            else animationClass = 'animate-zoom-in'; // default for border, glasses, chain
                         }
 
                         return (
