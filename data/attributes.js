@@ -92,6 +92,7 @@ export const attributesConfig = [
       { id: 'glasses_1', label: 'None', type: 'none' },
       { id: 'glasses_2', label: 'Old Skool', src: '/assets/glasses/old-skool.png', type: 'image' },
       { id: 'glasses_3', label: 'Reading', src: '/assets/glasses/reading.png', type: 'image' },
+      { id: 'glasses_4', label: 'Ski', src: '/assets/glasses/ski.png', type: 'image' },
     ]
   },
   {
