@@ -116,7 +116,7 @@ export const attributesConfig = [
   {
     id: 'mouth',
     label: 'Mouth',
-    zIndex: 30,
+    zIndex: 65,
     items: [
       { id: 'mouth_1', label: 'None', type: 'none' },
       { id: 'mouth_2', label: 'Grill', src: '/assets/mouth/grill.png', type: 'image' },
