@@ -166,7 +166,7 @@ export default function PfpGenerator() {
 
                 // Fallback to visible DOM element if high-res failed
                 if (!imgToDraw) {
-                    const visibleImg = document.querySelector(`img[alt="${item.label}"]`);
+                    const visibleImg = document.querySelector(`img[alt="${cat.id}-${item.label}"]`);
                     if (visibleImg && visibleImg.complete && visibleImg.naturalWidth > 0) {
                         imgToDraw = visibleImg;
                     }
@@ -459,7 +459,7 @@ export default function PfpGenerator() {
                                     <div className="w-full h-full relative pointer-events-none">
                                         <Image
                                             src={item.src}
-                                            alt={item.label}
+                                            alt={`${cat.id}-${item.label}`}
                                             fill
                                             className="object-contain"
                                             sizes="(max-width: 768px) 100vw, 512px"
