@@ -471,30 +471,34 @@ export default function PfpGenerator() {
         if (!canvas) return;
 
         // Temporarily resize canvas to High Res for export
-        const originalWidth = canvas.width;
-        const originalHeight = canvas.height;
         canvas.width = 2048;
         canvas.height = 2048;
 
         const ctx = canvas.getContext('2d');
-        // Reset and Draw
-        // ctx.restore(); // Be careful with restore if stack empty
-        // Best to just clean slate
         ctx.globalCompositeOperation = 'source-over';
 
         await drawToCanvas(ctx);
 
-        const link = document.createElement('a');
-        link.download = `catcoin-pfp-${Date.now()}.png`;
-        link.href = canvas.toDataURL('image/png', 1.0); // Max quality
-        link.click();
+        canvas.toBlob((blob) => {
+            if (!blob) {
+                console.error('Blob generation failed');
+                return;
+            }
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.download = `catcoin-pfp-${Date.now()}.png`;
+            link.href = url;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
 
-        // Restore low-res (hidden) canvas size? 
-        // Actually, kept hidden so size doesn't matter much for DOM flow, 
-        // but 2048 might use memory. 
-        // We can revert if needed.
-        canvas.width = 512;
-        canvas.height = 512;
+            // Cleanup
+            setTimeout(() => {
+                URL.revokeObjectURL(url);
+                canvas.width = 512;
+                canvas.height = 512;
+            }, 100);
+        }, 'image/png', 1.0);
     };
 
     const handleCopy = async () => {
@@ -919,21 +923,25 @@ export default function PfpGenerator() {
                 </div>
 
                 {/* Mobile Sticky Action Bar */}
-                <div className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-[#18181c]/95 backdrop-blur-xl border-t border-white/10 p-3 flex justify-between gap-2 safe-bottom pb-8 shadow-[0_-10px_30px_rgba(0,0,0,0.5)]">
+                <div className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-[#18181c]/95 backdrop-blur-xl border-t border-white/10 p-2.5 flex justify-between gap-1.5 safe-bottom pb-8 shadow-[0_-10px_30px_rgba(0,0,0,0.5)]">
                     <button onClick={randomize} className="flex flex-col items-center justify-center p-2 flex-1 bg-white/5 border border-white/10 rounded-xl active:scale-95 transition-transform">
-                        <Shuffle size={18} className="text-cat-yellow mb-1" />
-                        <span className="text-[10px] font-bold text-white/80 uppercase tracking-tighter">Shuffle</span>
-                    </button>
-                    <button onClick={handleClear} className="flex flex-col items-center justify-center p-2 flex-1 bg-white/5 border border-white/10 rounded-xl active:scale-95 transition-transform">
-                        <Trash2 size={18} className="text-white/60 mb-1" />
-                        <span className="text-[10px] font-bold text-white/80 uppercase tracking-tighter">Clear</span>
+                        <Shuffle size={16} className="text-cat-yellow mb-1" />
+                        <span className="text-[9px] font-bold text-white/80 uppercase tracking-tighter">Shuffle</span>
                     </button>
                     <button onClick={() => setPfpShape(prev => prev === 'circle' ? 'square' : 'circle')} className="flex flex-col items-center justify-center p-2 flex-1 bg-white/5 border border-white/10 rounded-xl active:scale-95 transition-transform">
-                        <div className={`w-4 h-4 border-2 border-white mb-1.5 transition-all duration-300 ${pfpShape === 'circle' ? 'rounded-full' : 'rounded-sm'}`}></div>
-                        <span className="text-[10px] font-bold text-white/80 uppercase tracking-tighter">Shape</span>
+                        <div className={`w-3.5 h-3.5 border-2 border-white mb-1.5 transition-all duration-300 ${pfpShape === 'circle' ? 'rounded-full' : 'rounded-sm'}`}></div>
+                        <span className="text-[9px] font-bold text-white/80 uppercase tracking-tighter">Shape</span>
                     </button>
-                    <button onClick={handleDownload} className="flex flex-col items-center justify-center p-2 flex-[1.5] bg-cat-yellow text-black rounded-xl active:scale-95 shadow-lg shadow-cat-yellow/20 transition-transform font-black text-[10px] uppercase">
-                        <Download size={22} className="mb-1" />
+                    <button onClick={handleCopy} className="flex flex-col items-center justify-center p-2 flex-1 bg-white/5 border border-white/10 rounded-xl active:scale-95 transition-transform">
+                        <Copy size={16} className="text-white/60 mb-1" />
+                        <span className="text-[9px] font-bold text-white/80 uppercase tracking-tighter">Copy</span>
+                    </button>
+                    <button onClick={handleClear} className="flex flex-col items-center justify-center p-2 flex-1 bg-white/5 border border-white/10 rounded-xl active:scale-95 transition-transform">
+                        <Trash2 size={16} className="text-white/40 mb-1" />
+                        <span className="text-[9px] font-bold text-white/80 uppercase tracking-tighter">Clear</span>
+                    </button>
+                    <button onClick={handleDownload} className="flex flex-col items-center justify-center p-2 flex-[1.2] bg-cat-yellow text-black rounded-xl active:scale-95 shadow-lg shadow-cat-yellow/20 transition-transform font-black text-[10px] uppercase">
+                        <Download size={20} className="mb-0.5" />
                         SAVE
                     </button>
                 </div>
