@@ -328,7 +328,7 @@ export default function PfpGenerator() {
                                     // For background: Color is Base
                                     <div
                                         className="absolute inset-0"
-                                        style={{ backgroundColor: item.color || '#333' }}
+                                        style={{ background: item.color || '#333' }}
                                     />
                                 ) : cat.id === 'costume' ? (
                                     // For Costume: transparent/dark base, no body underlay
@@ -473,7 +473,7 @@ export default function PfpGenerator() {
                             >
                                 {/* Background Layer (Color) */}
                                 {item.color && cat.id === 'background' && (
-                                    <div className="w-full h-full" style={{ backgroundColor: item.color }} />
+                                    <div className="w-full h-full" style={{ background: item.color }} />
                                 )}
 
                                 {/* Border Layer (Shape) */}
