@@ -525,7 +525,7 @@ export default function PfpGenerator() {
 
     // Render Control Wing (Now a horizontal category stack)
     const renderControls = (categories) => (
-        <div className="flex flex-col gap-6 lg:gap-2 py-4 lg:py-2 px-2 lg:px-4 h-full overflow-y-auto w-full [&::-webkit-scrollbar]:hidden">
+        <div className="flex flex-col gap-6 lg:gap-2 py-4 lg:py-2 px-2 lg:px-4 w-full">
             {categories.map(cat => (
                 <div key={cat.id} className="space-y-2 lg:space-y-1 group/category">
                     <div className="flex items-center gap-2 px-1">
@@ -800,7 +800,7 @@ export default function PfpGenerator() {
 
             <div className="flex flex-col lg:flex-row flex-1 overflow-hidden">
                 {/* LEFT WING (Desktop) */}
-                <div className="hidden lg:block w-1/4 border-r border-white/10 bg-[#18181c]/50 backdrop-blur-sm z-10 h-full overflow-hidden">
+                <div className="hidden lg:block w-1/4 border-r border-white/10 bg-[#18181c]/50 backdrop-blur-sm z-10 h-full overflow-y-auto [&::-webkit-scrollbar]:hidden">
                     {renderControls(leftCategories)}
                 </div>
 
@@ -912,18 +912,18 @@ export default function PfpGenerator() {
                     </div>
 
                     {/* Mobile Controls (Visible only on mobile) */}
-                    <div className="lg:hidden flex-1 overflow-y-auto pb-32 border-t border-white/10 bg-[#18181c]">
+                    <div className="lg:hidden flex-1 overflow-y-auto pb-24 border-t border-white/10 bg-[#18181c]/50">
                         {renderControls(attributesConfig)}
                     </div>
                 </div>
 
                 {/* RIGHT WING (Desktop) */}
-                <div className="hidden lg:block w-1/4 border-l border-white/10 bg-[#18181c]/50 backdrop-blur-sm z-10 h-full overflow-hidden order-3">
+                <div className="hidden lg:block w-1/4 border-l border-white/10 bg-[#18181c]/50 backdrop-blur-sm z-10 h-full overflow-y-auto [&::-webkit-scrollbar]:hidden order-3">
                     {renderControls(rightCategories)}
                 </div>
 
                 {/* Mobile Sticky Action Bar */}
-                <div className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-[#18181c]/95 backdrop-blur-xl border-t border-white/10 p-2 flex justify-between gap-1 safe-bottom pb-4 shadow-[0_-10px_30px_rgba(0,0,0,0.5)]">
+                <div className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-[#18181c]/90 backdrop-blur-xl border-t border-white/10 p-2 flex justify-between gap-1 safe-bottom pb-4 shadow-[0_-5px_15px_rgba(0,0,0,0.3)]">
                     <button onClick={randomize} className="flex flex-col items-center justify-center p-2 flex-1 bg-white/5 border border-white/10 rounded-xl active:scale-95 transition-transform">
                         <Shuffle size={16} className="text-cat-yellow mb-1" />
                         <span className="text-[9px] font-bold text-white/80 uppercase tracking-tighter">Shuffle</span>
