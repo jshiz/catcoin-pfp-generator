@@ -1,36 +1,61 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+<div align="center">
+  <img src="https://catcoin.io/assets/images/logo.png" alt="Catcoin Logo" width="200"/>
 
-## Getting Started
+  # Catcoin PFP Generator
 
-First, run the development server:
+  **The ultimate community tool for customizing your Catcoin identity.**
+  
+  [![Website](https://img.shields.io/badge/Website-catcoin.io-orange)](https://www.catcoin.io/)
+  [![Twitter](https://img.shields.io/badge/Twitter-@officialcatcoin-blue)](https://x.com/officialcatcoin)
+  [![Telegram](https://img.shields.io/badge/Telegram-Join%20Chat-blue)](https://t.me/officialcatcoin)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+</div>
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+## 🐱 About The Project
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+This **Catcoin PFP Generator** was built to empower the Catcoin community (`$CAT`) to create unique, personalized avatars. Whether you want to rock a gold chain, sport some laser eyes, or vibe with a neon border, this tool puts the creativity in your hands.
 
-## Learn More
+It serves as a fun way to spread brand awareness, show solidarity on social media, and just have a good time with the meme.
 
-To learn more about Next.js, take a look at the following resources:
+**Key Features:**
+*   **Infinite Combinations:** Mix and match shirts, hats, glasses, chains, and backgrounds.
+*   **Custom Borders:** Add flair with neon, ridge, and inset borders in various colors.
+*   **Interactive Preview:** See changes in real-time with a slick UI.
+*   **One-Click Download:** Export high-quality images ready for Twitter, Telegram, or Discord.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🔗 Official Links
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Stay connected with the Catcoin ecosystem:
 
-## Deploy on Vercel
+*   **Website:** [catcoin.io](https://www.catcoin.io/)
+*   **Contract:** `0xC0FE7F77ed2f522978b719372282ca89de8cF3e4`
+*   **DexScreener:** [View Chart](https://dexscreener.com/ethereum/0xd7b5d68827f8a8859b135d3f86c76c43368ffed4)
+*   **CoinMarketCap:** [Catcoin on CMC](https://coinmarketcap.com/currencies/catcoin-io/)
+*   **CoinGecko:** [Catcoin on CG](https://www.coingecko.com/en/coins/catcoin-2)
+*   **Etherscan:** [View Contract](https://etherscan.io/token/0xC0FE7F77ed2f522978b719372282ca89de8cF3e4)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 👨‍💻 Created By
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+This project was developed with ❤️ by **jShiz**.
+
+*   **Telegram:** [@jShiz](https://t.me/jShiz)
+
+> "Building for the community, one pixel at a time."
+
+## 🛠️ How to Context
+
+This generator is a Next.js web application designed for speed and responsiveness. It layers assets dynamically using HTML5 Canvas for the final export, ensuring your PFP looks crisp regardless of the combination.
+
+### Tech Stack
+*   **Framework:** Next.js
+*   **Styling:** Tailwind CSS
+*   **Logic:** React Hooks & Local State
+*   **Export:** Dynamic Canvas Rendering
+
+---
+
+<div align="center">
+  <sub>Catcoin is a community-driven project. This tool is a contribution to the HODLers.</sub>
+</div>
