@@ -519,7 +519,7 @@ export default function PfpGenerator() {
                                             sizes="100px"
                                         />
                                     </div>
-                                ) : cat.id.startsWith('border') ? (
+                                ) : (cat.id.startsWith('border') || cat.id === 'vibe' || cat.id === 'speech') ? (
                                     // Border Control Previews
                                     <div className="absolute inset-0">
                                         {cat.id === 'border_color' && item.color && (
