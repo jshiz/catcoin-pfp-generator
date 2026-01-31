@@ -945,7 +945,7 @@ export default function PfpGenerator() {
                     </div>
 
                     {/* Mobile Controls (Visible only on mobile) */}
-                    <div className="lg:hidden flex-1 overflow-y-auto pb-24 border-t border-white/10 bg-[#18181c]/50">
+                    <div className="lg:hidden flex-1 overflow-y-auto pb-28 border-t border-white/10 bg-[#18181c]/50">
                         {renderControls(attributesConfig)}
                     </div>
                 </div>
@@ -956,16 +956,16 @@ export default function PfpGenerator() {
                 </div>
 
                 {/* Mobile Sticky Action Bar */}
-                <div className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-[#18181c]/90 backdrop-blur-xl border-t border-white/10 p-2 flex justify-between gap-1 safe-bottom pb-4 shadow-[0_-5px_15px_rgba(0,0,0,0.3)]">
-                    <button onClick={randomize} className="flex flex-col items-center justify-center p-2 flex-1 bg-white/5 border border-white/10 rounded-xl active:scale-95 transition-transform">
+                <div className="lg:hidden fixed bottom-0 left-0 right-0 z-[999] bg-[#18181c] border-t border-white/10 px-2 py-2 flex justify-between gap-1 safe-bottom shadow-[0_-5px_20px_rgba(0,0,0,0.5)] min-h-[70px] pointer-events-auto">
+                    <button onClick={randomize} className="flex flex-col items-center justify-center py-2 px-1 flex-1 bg-white/5 border border-white/10 rounded-xl active:scale-90 transition-transform touch-manipulation">
                         <Shuffle size={16} className="text-cat-yellow mb-1" />
                         <span className="text-[9px] font-bold text-white/80 uppercase tracking-tighter">Shuffle</span>
                     </button>
-                    <button onClick={() => setPfpShape(prev => prev === 'circle' ? 'square' : 'circle')} className="flex flex-col items-center justify-center p-2 flex-1 bg-white/5 border border-white/10 rounded-xl active:scale-95 transition-transform">
+                    <button onClick={() => setPfpShape(prev => prev === 'circle' ? 'square' : 'circle')} className="flex flex-col items-center justify-center py-2 px-1 flex-1 bg-white/5 border border-white/10 rounded-xl active:scale-90 transition-transform touch-manipulation">
                         <div className={`w-3.5 h-3.5 border-2 border-white mb-1.5 transition-all duration-300 ${pfpShape === 'circle' ? 'rounded-full' : 'rounded-sm'}`}></div>
                         <span className="text-[9px] font-bold text-white/80 uppercase tracking-tighter">Shape</span>
                     </button>
-                    <button onClick={handleCopy} className="flex flex-col items-center justify-center p-2 flex-1 bg-white/5 border border-white/10 rounded-xl active:scale-95 transition-transform">
+                    <button onClick={handleCopy} className="flex flex-col items-center justify-center py-2 px-1 flex-1 bg-white/5 border border-white/10 rounded-xl active:scale-90 transition-transform touch-manipulation">
                         {showCopyCheck ? (
                             <Check size={16} className="text-green-500 animate-in zoom-in duration-300 mb-1" />
                         ) : (
@@ -975,11 +975,11 @@ export default function PfpGenerator() {
                             {showCopyCheck ? 'Copied' : 'Copy'}
                         </span>
                     </button>
-                    <button onClick={handleClear} className="flex flex-col items-center justify-center p-2 flex-1 bg-white/5 border border-white/10 rounded-xl active:scale-95 transition-transform">
+                    <button onClick={handleClear} className="flex flex-col items-center justify-center py-2 px-1 flex-1 bg-white/5 border border-white/10 rounded-xl active:scale-90 transition-transform touch-manipulation">
                         <Trash2 size={16} className="text-white/40 mb-1" />
                         <span className="text-[9px] font-bold text-white/80 uppercase tracking-tighter">Clear</span>
                     </button>
-                    <button onClick={handleDownload} className="flex flex-col items-center justify-center p-2 flex-[1.2] bg-cat-yellow text-black rounded-xl active:scale-95 shadow-lg shadow-cat-yellow/20 transition-transform font-black text-[10px] uppercase">
+                    <button onClick={handleDownload} className="flex flex-col items-center justify-center py-2 px-1 flex-[1.4] bg-cat-yellow text-black rounded-xl active:scale-90 shadow-lg shadow-cat-yellow/20 transition-transform font-black text-[10px] uppercase touch-manipulation">
                         <Download size={20} className="mb-0.5" />
                         SAVE
                     </button>
