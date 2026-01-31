@@ -839,13 +839,17 @@ export default function PfpGenerator() {
 
                 {/* CENTER COLUMN (Preview + Mobile Controls) */}
                 <div className="flex flex-col flex-1 overflow-hidden order-1 lg:order-2">
-                    {/* Preview Stage */}
-                    <div className="relative flex flex-col items-center justify-center p-4 lg:p-8 h-[45dvh] lg:h-full lg:flex-1 lg:pb-32 shrink-0 overflow-hidden">
+                    {/* Preview Stage - Removed overflow-hidden to prevent clipping borders */}
+                    <div className="relative flex flex-col items-center justify-center p-4 lg:p-8 h-[45dvh] lg:h-full lg:flex-1 lg:pb-32 shrink-0">
                         <ScrollingBackground />
 
                         <div
                             className={`relative w-auto h-[85%] lg:h-[95%] aspect-square shadow-2xl transition-all duration-300 ease-spring ${pfpShape === 'circle' ? 'rounded-full' : 'rounded-none'}`}
-                            style={{ backgroundColor: '#000' }}
+                            style={{
+                                backgroundColor: '#000',
+                                overflow: 'visible',
+                                willChange: 'transform'
+                            }}
                         >
                             {/* Inner Composition (Clipped Content) */}
                             <div
@@ -918,15 +922,17 @@ export default function PfpGenerator() {
                                 className={`absolute inset-0 z-20 pointer-events-none transition-all duration-300 ${pfpShape === 'circle' ? 'rounded-full' : 'rounded-none'}`}
                                 style={{
                                     boxSizing: 'border-box',
-                                    border: (() => {
-                                        const bColor = selectedAttributes['border_color'];
-                                        const bStyle = selectedAttributes['border_style']?.value || 'solid';
+                                    borderWidth: (() => {
                                         const bWidth = selectedAttributes['border_width']?.value || 10;
-                                        if (bColor && bColor.type !== 'none' && bColor.color) {
-                                            const s = ['double', 'dashed', 'dotted', 'groove', 'ridge', 'inset', 'outset'].includes(bStyle) ? bStyle : 'solid';
-                                            return `${bWidth}px ${s} ${bColor.color}`;
-                                        }
-                                        return '1px solid rgba(255,255,255,0.15)';
+                                        return `${bWidth}px`;
+                                    })(),
+                                    borderStyle: (() => {
+                                        const bStyle = selectedAttributes['border_style']?.value || 'solid';
+                                        return ['double', 'dashed', 'dotted', 'groove', 'ridge', 'inset', 'outset'].includes(bStyle) ? bStyle : 'solid';
+                                    })(),
+                                    borderColor: (() => {
+                                        const bColor = selectedAttributes['border_color'];
+                                        return bColor?.color || 'transparent';
                                     })(),
                                     boxShadow: (() => {
                                         const bColor = selectedAttributes['border_color'];
