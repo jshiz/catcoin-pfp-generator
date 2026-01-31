@@ -43,6 +43,7 @@ export const attributesConfig = [
       { id: 'body_none', label: 'None', type: 'none', hidden: true },
       { id: 'body_1', label: 'Basic', src: '/assets/body/basic.png', type: 'image' },
       { id: 'body_2', label: 'Black', src: '/assets/body/black.png', type: 'image' },
+      { id: 'body_9', label: 'Camo', src: '/assets/body/camo.png', type: 'image' },
       { id: 'body_3', label: 'Cheetah', src: '/assets/body/cheetah.png', type: 'image' },
       { id: 'body_4', label: 'Chrome', src: '/assets/body/chrome.png', type: 'image' },
       { id: 'body_5', label: 'Ghost', src: '/assets/body/ghost.png', type: 'image' },
