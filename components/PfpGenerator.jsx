@@ -537,18 +537,17 @@ export default function PfpGenerator() {
         canvas.toBlob(async blob => {
             if (blob) {
                 try {
-                    // Try the standard modern way first
-                    const item = new ClipboardItem({ [blob.type]: blob });
-                    await navigator.clipboard.write([item]);
+                    const data = [new ClipboardItem({ [blob.type]: blob })];
+                    await navigator.clipboard.write(data);
                     setShowCopyCheck(true);
                     setTimeout(() => setShowCopyCheck(false), 2000);
                 } catch (err) {
-                    console.error('Clipboard API failed, trying fallback', err);
-                    // Fallback: If it's a transient user gesture issue, alert might help (though we want to avoid it)
-                    // But usually, Telegram blocks this if it's not perfectly sync.
-                    // Let's at least log it.
+                    console.error('Clipboard failed:', err);
+                    // Minimal alert for Telegram where clipboard often fails silently
+                    if (navigator.userAgent.match(/Telegram/i)) {
+                        alert("Please long-press the image to copy/save on this browser.");
+                    }
                 }
-                // Restore size
                 canvas.width = 512;
                 canvas.height = 512;
             }
@@ -838,7 +837,7 @@ export default function PfpGenerator() {
                 </div>
 
                 {/* CENTER COLUMN (Preview + Mobile Controls) */}
-                <div className="flex flex-col flex-1 overflow-hidden order-1 lg:order-2">
+                <div className="flex flex-col flex-1 order-1 lg:order-2 min-h-0">
                     {/* Preview Stage - Removed overflow-hidden to prevent clipping borders */}
                     <div className="relative flex flex-col items-center justify-center p-4 lg:p-8 h-[45dvh] lg:h-full lg:flex-1 lg:pb-32 shrink-0">
                         <ScrollingBackground />
@@ -919,9 +918,14 @@ export default function PfpGenerator() {
 
                             {/* Border Layer (Overlayed Outside Clipping) */}
                             <div
-                                className={`absolute inset-0 z-20 pointer-events-none transition-all duration-300 ${pfpShape === 'circle' ? 'rounded-full' : 'rounded-none'}`}
+                                className={`absolute z-20 pointer-events-none transition-all duration-300 ${pfpShape === 'circle' ? 'rounded-full' : 'rounded-none'}`}
                                 style={{
+                                    top: '0.5px',
+                                    left: '0.5px',
+                                    width: 'calc(100% - 1px)',
+                                    height: 'calc(100% - 1px)',
                                     boxSizing: 'border-box',
+                                    outline: '1px solid transparent', // Forces better anti-aliasing in Webkit
                                     borderWidth: (() => {
                                         const bWidth = selectedAttributes['border_width']?.value || 10;
                                         return `${bWidth}px`;
