@@ -880,12 +880,12 @@ export default function PfpGenerator() {
                                             }} />
                                         )}
                                         {cat.id === 'border_color' && item.color && (
-                                            <div className={`absolute inset-[0.5px] pointer-events-none transition-all duration-300 box-border ${pfpShape === 'circle' ? 'rounded-full' : 'rounded-none'}`}
+                                            <div className={`absolute inset-[1px] pointer-events-none transition-all duration-300 box-border ${pfpShape === 'circle' ? 'rounded-full' : 'rounded-none'}`}
                                                 style={{
                                                     border: (() => {
                                                         const s = selectedAttributes['border_style']?.value || 'solid';
                                                         const w = (selectedAttributes['border_width']?.value || 10) + 'px';
-                                                        return ['double', 'dashed', 'dotted', 'groove', 'ridge', 'inset', 'outset'].includes(s) ? `${s} ${w} ${item.color}` : `solid ${w} ${item.color}`;
+                                                        return ['double', 'dashed', 'dotted', 'groove', 'ridge', 'inset', 'outset'].includes(s) ? `${w} ${s} ${item.color}` : `${w} solid ${item.color}`;
                                                     })(), boxShadow: selectedAttributes['border_style']?.value === 'neon' ? `0 0 20px ${item.color}, inset 0 0 20px ${item.color}` : 'none'
                                                 }} />
                                         )}
