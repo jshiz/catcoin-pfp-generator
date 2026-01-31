@@ -4,7 +4,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
 import { attributesConfig } from '@/data/attributes';
 import ScrollingBackground from './ScrollingBackground';
-import { Download, Share2, Copy, Shuffle, Camera, Play, Pause, SkipForward, SkipBack, Music } from 'lucide-react';
+import { Download, Share2, Copy, Shuffle, Camera, Play, Pause, SkipForward, SkipBack, Music, Trash2 } from 'lucide-react';
 
 export default function PfpGenerator() {
     // Initialize state with random items
@@ -154,6 +154,22 @@ export default function PfpGenerator() {
         setAnimatingLayer('all');
         setShirtDirection(Math.random() > 0.5 ? 'left' : 'right');
         setBodyDirection(Math.random() > 0.5 ? 'left' : 'right');
+        setTimeout(() => setAnimatingLayer(null), 500);
+    };
+
+    const handleClear = () => {
+        const newSelection = {};
+        attributesConfig.forEach(cat => {
+            if (cat.id === 'background') {
+                newSelection[cat.id] = cat.items[0]; // Midnight
+            } else if (cat.id === 'body') {
+                newSelection[cat.id] = cat.items.find(i => i.id === 'body_1') || cat.items[1]; // Basic
+            } else {
+                newSelection[cat.id] = cat.items.find(i => i.type === 'none' || i.id.includes('none')) || cat.items[0];
+            }
+        });
+        setSelectedAttributes(newSelection);
+        setAnimatingLayer('all');
         setTimeout(() => setAnimatingLayer(null), 500);
     };
 
@@ -867,6 +883,11 @@ export default function PfpGenerator() {
                                 <Shuffle size={20} className="group-hover:rotate-180 transition-transform duration-500" />
                                 <span className="font-bold text-sm tracking-wide">SHUFFLE</span>
                             </button>
+                            <button onClick={handleClear} className="flex items-center gap-2 px-4 py-2 hover:bg-white/10 rounded-full text-white/60 hover:text-white transition-all hover:scale-105 active:scale-95 group" title="Clear All">
+                                <Trash2 size={20} className="group-hover:rotate-12 transition-transform" />
+                                <span className="font-bold text-sm tracking-wide">CLEAR</span>
+                            </button>
+                            <div className="w-px bg-white/10 my-2 self-stretch"></div>
                             <button onClick={() => setPfpShape(prev => prev === 'circle' ? 'square' : 'circle')} className="flex items-center gap-2 px-3 py-2 hover:bg-white/10 rounded-full text-white transition-all hover:scale-105 active:scale-95 group" title="Toggle Shape">
                                 <div className={`w-5 h-5 border-2 border-current transition-all duration-300 ${pfpShape === 'circle' ? 'rounded-full' : 'rounded-md'}`}></div>
                             </button>
@@ -894,10 +915,14 @@ export default function PfpGenerator() {
                 </div>
 
                 {/* Mobile Sticky Action Bar */}
-                <div className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-[#18181c]/95 backdrop-blur-xl border-t border-white/10 p-3 flex justify-between gap-3 safe-bottom pb-8 shadow-[0_-10px_30px_rgba(0,0,0,0.5)]">
+                <div className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-[#18181c]/95 backdrop-blur-xl border-t border-white/10 p-3 flex justify-between gap-2 safe-bottom pb-8 shadow-[0_-10px_30px_rgba(0,0,0,0.5)]">
                     <button onClick={randomize} className="flex flex-col items-center justify-center p-2 flex-1 bg-white/5 border border-white/10 rounded-xl active:scale-95 transition-transform">
                         <Shuffle size={18} className="text-cat-yellow mb-1" />
                         <span className="text-[10px] font-bold text-white/80 uppercase tracking-tighter">Shuffle</span>
+                    </button>
+                    <button onClick={handleClear} className="flex flex-col items-center justify-center p-2 flex-1 bg-white/5 border border-white/10 rounded-xl active:scale-95 transition-transform">
+                        <Trash2 size={18} className="text-white/60 mb-1" />
+                        <span className="text-[10px] font-bold text-white/80 uppercase tracking-tighter">Clear</span>
                     </button>
                     <button onClick={() => setPfpShape(prev => prev === 'circle' ? 'square' : 'circle')} className="flex flex-col items-center justify-center p-2 flex-1 bg-white/5 border border-white/10 rounded-xl active:scale-95 transition-transform">
                         <div className={`w-4 h-4 border-2 border-white mb-1.5 transition-all duration-300 ${pfpShape === 'circle' ? 'rounded-full' : 'rounded-sm'}`}></div>
