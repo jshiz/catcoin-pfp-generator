@@ -534,19 +534,25 @@ export default function PfpGenerator() {
         const ctx = canvas.getContext('2d');
         await drawToCanvas(ctx); // await needed now
 
-        canvas.toBlob(blob => {
+        canvas.toBlob(async blob => {
             if (blob) {
-                navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })])
-                    .then(() => {
-                        setShowCopyCheck(true);
-                        setTimeout(() => setShowCopyCheck(false), 2000);
-                    })
-                    .catch(err => console.error('Copy failed', err));
+                try {
+                    // Try the standard modern way first
+                    const item = new ClipboardItem({ [blob.type]: blob });
+                    await navigator.clipboard.write([item]);
+                    setShowCopyCheck(true);
+                    setTimeout(() => setShowCopyCheck(false), 2000);
+                } catch (err) {
+                    console.error('Clipboard API failed, trying fallback', err);
+                    // Fallback: If it's a transient user gesture issue, alert might help (though we want to avoid it)
+                    // But usually, Telegram blocks this if it's not perfectly sync.
+                    // Let's at least log it.
+                }
                 // Restore size
                 canvas.width = 512;
                 canvas.height = 512;
             }
-        });
+        }, 'image/png');
     };
 
     // Render Control Wing (Now a horizontal category stack)
@@ -837,90 +843,99 @@ export default function PfpGenerator() {
                     <div className="relative flex flex-col items-center justify-center p-4 lg:p-8 h-[45dvh] lg:h-full lg:flex-1 lg:pb-32 shrink-0 overflow-hidden">
                         <ScrollingBackground />
 
-                        {/* Main Composition Area */}
-                        <div
-                            className={`relative w-auto h-[85%] lg:h-[95%] aspect-square bg-black shadow-2xl overflow-hidden group z-10 transition-all duration-300 ease-spring ${pfpShape === 'circle' ? 'rounded-full' : 'rounded-none'}`}
-                            style={{
-                                filter: selectedAttributes['vibe']?.value || 'none',
-                                transform: 'translateZ(0)',
-                                boxSizing: 'border-box',
-                                border: (() => {
-                                    const bColor = selectedAttributes['border_color'];
-                                    const bStyle = selectedAttributes['border_style']?.value || 'solid';
-                                    const bWidth = selectedAttributes['border_width']?.value || 10;
-                                    if (bColor && bColor.type !== 'none' && bColor.color) {
-                                        const s = ['double', 'dashed', 'dotted', 'groove', 'ridge', 'inset', 'outset'].includes(bStyle) ? bStyle : 'solid';
-                                        return `${bWidth}px ${s} ${bColor.color}`;
-                                    }
-                                    return '1px solid rgba(255,255,255,0.15)';
-                                })(),
-                                boxShadow: (() => {
-                                    const bColor = selectedAttributes['border_color'];
-                                    const bStyle = selectedAttributes['border_style']?.value || 'solid';
-                                    if (bColor && bColor.type !== 'none' && bColor.color && bStyle === 'neon') {
-                                        return `0 0 20px ${bColor.color}, inset 0 0 20px ${bColor.color}`;
-                                    }
-                                    return 'none';
-                                })()
-                            }}
-                        >
-                            {/* Explosion Effect */}
-                            {isExploding && (
-                                <div className="absolute inset-0 z-[15] flex items-center justify-center pointer-events-none">
-                                    <div className="w-full h-full bg-radial-gradient(circle, rgba(255,255,255,0.8) 0%, rgba(250,210,5,0) 70%) animate-explode scale-150 rounded-full"></div>
-                                    <div className="absolute w-1/2 h-1/2 bg-cat-yellow/50 rounded-full animate-explode delay-75"></div>
-                                </div>
-                            )}
-
-                            {/* Layers */}
-                            {attributesConfig.sort((a, b) => a.zIndex - b.zIndex).map(cat => {
-                                const item = selectedAttributes[cat.id];
-                                if (!item || (item.type === 'none' && !item.src)) return null;
-                                const isAnimating = animatingLayer === cat.id || animatingLayer === 'all';
-                                let animationClass = '';
-                                if (isAnimating) {
-                                    if (['shirt', 'body', 'costume'].includes(cat.id)) {
-                                        const dir = cat.id === 'shirt' ? shirtDirection : (cat.id === 'costume' ? costumeDirection : bodyDirection);
-                                        animationClass = dir === 'left' ? 'animate-fly-left' : 'animate-fly-right';
-                                    }
-                                    else if (cat.id === 'eyes') animationClass = 'animate-fade-in';
-                                    else if (['hat'].includes(cat.id)) animationClass = 'animate-fly-down';
-                                    else if (cat.id === 'mouth') animationClass = 'animate-pop-in';
-                                    else animationClass = 'animate-zoom-in';
-                                }
-                                return (
-                                    <div key={cat.id} className={`absolute inset-0 transition-transform duration-75 ${animationClass}`} style={{ zIndex: cat.zIndex }}>
-                                        {cat.id === 'background' && (
-                                            <div className="w-full h-full" style={{
-                                                background: item.id === 'bg_custom' ? (
-                                                    customBackground.type === 'solid' ? customBackground.color1 :
-                                                        customBackground.type === 'linear' ? `linear-gradient(to bottom, ${customBackground.color1}, ${customBackground.color2})` :
-                                                            `radial-gradient(circle at center, ${customBackground.color1}, ${customBackground.color2})`
-                                                ) : (item.color || 'transparent')
-                                            }} />
-                                        )}
-
-                                        {item.emoji && cat.id === 'speech' && (
-                                            <div className={`absolute z-[95] animate-pop-in pointer-events-none transition-all duration-500`} style={{ top: pfpShape === 'circle' ? '50%' : '52%', right: pfpShape === 'circle' ? '12%' : '8%' }}>
-                                                <div className="relative bg-white text-black w-10 h-10 lg:w-12 lg:h-12 flex items-center justify-center rounded-xl shadow-2xl border-2 border-black text-xl lg:text-2xl">
-                                                    {item.emoji}
-                                                    <div className="absolute bottom-[-8px] left-[10%] w-0 h-0 border-l-[8px] border-l-transparent border-r-[8px] border-r-transparent border-t-[8px] border-t-white"></div>
-                                                    <div className="absolute bottom-[-11px] left-[10%] w-0 h-0 border-l-[9px] border-l-transparent border-r-[9px] border-r-transparent border-t-[9px] border-t-black -z-10"></div>
-                                                </div>
-                                            </div>
-                                        )}
-                                        {item.src && (
-                                            <div className="w-full h-full relative pointer-events-none">
-                                                <Image src={item.src} alt={`${cat.id}-${item.label}`} fill className="object-contain" sizes="(max-width: 768px) 100vw, 512px" priority={cat.id === 'shirt'} unoptimized />
-                                            </div>
-                                        )}
-                                        {item.color && !['background', 'border', 'border_color'].includes(cat.id) && !item.src && (
-                                            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2" style={{ backgroundColor: item.color, width: `${300 - (cat.zIndex > 20 ? cat.zIndex - 20 : 0) * 2}px`, height: `${300 - (cat.zIndex > 20 ? cat.zIndex - 20 : 0) * 2}px`, borderRadius: cat.id === 'glasses' ? '0' : '20px' }} />
-                                        )}
+                        <div className={`relative w-full h-[85%] lg:h-[95%] aspect-square shadow-2xl transition-all duration-300 ease-spring ${pfpShape === 'circle' ? 'rounded-full' : 'rounded-none'}`}>
+                            {/* Inner Composition (Clipped Content) */}
+                            <div
+                                className={`absolute inset-0 overflow-hidden z-10 ${pfpShape === 'circle' ? 'rounded-full' : 'rounded-none'}`}
+                                style={{
+                                    filter: selectedAttributes['vibe']?.value || 'none',
+                                    transform: 'translateZ(0)', // Force GPU
+                                    backgroundColor: '#000'
+                                }}
+                            >
+                                {/* Explosion Effect */}
+                                {isExploding && (
+                                    <div className="absolute inset-0 z-[15] flex items-center justify-center pointer-events-none">
+                                        <div className="w-full h-full bg-radial-gradient(circle, rgba(255,255,255,0.8) 0%, rgba(250,210,5,0) 70%) animate-explode scale-150 rounded-full"></div>
+                                        <div className="absolute w-1/2 h-1/2 bg-cat-yellow/50 rounded-full animate-explode delay-75"></div>
                                     </div>
-                                );
-                            })}
-                            <canvas ref={canvasRef} width={512} height={512} className="hidden" />
+                                )}
+
+                                {/* Layers */}
+                                {attributesConfig.sort((a, b) => a.zIndex - b.zIndex).map(cat => {
+                                    const item = selectedAttributes[cat.id];
+                                    if (!item || (item.type === 'none' && !item.src)) return null;
+                                    const isAnimating = animatingLayer === cat.id || animatingLayer === 'all';
+                                    let animationClass = '';
+                                    if (isAnimating) {
+                                        if (['shirt', 'body', 'costume'].includes(cat.id)) {
+                                            const dir = cat.id === 'shirt' ? shirtDirection : (cat.id === 'costume' ? costumeDirection : bodyDirection);
+                                            animationClass = dir === 'left' ? 'animate-fly-left' : 'animate-fly-right';
+                                        }
+                                        else if (cat.id === 'eyes') animationClass = 'animate-fade-in';
+                                        else if (['hat'].includes(cat.id)) animationClass = 'animate-fly-down';
+                                        else if (cat.id === 'mouth') animationClass = 'animate-pop-in';
+                                        else animationClass = 'animate-zoom-in';
+                                    }
+                                    return (
+                                        <div key={cat.id} className={`absolute inset-0 transition-transform duration-75 ${animationClass}`} style={{ zIndex: cat.zIndex }}>
+                                            {cat.id === 'background' && (
+                                                <div className="w-full h-full" style={{
+                                                    background: item.id === 'bg_custom' ? (
+                                                        customBackground.type === 'solid' ? customBackground.color1 :
+                                                            customBackground.type === 'linear' ? `linear-gradient(to bottom, ${customBackground.color1}, ${customBackground.color2})` :
+                                                                `radial-gradient(circle at center, ${customBackground.color1}, ${customBackground.color2})`
+                                                    ) : (item.color || 'transparent')
+                                                }} />
+                                            )}
+                                            {item.emoji && cat.id === 'speech' && (
+                                                <div className={`absolute z-[95] animate-pop-in pointer-events-none transition-all duration-500`} style={{ top: pfpShape === 'circle' ? '50%' : '52%', right: pfpShape === 'circle' ? '12%' : '8%' }}>
+                                                    <div className="relative bg-white text-black w-10 h-10 lg:w-12 lg:h-12 flex items-center justify-center rounded-xl shadow-2xl border-2 border-black text-xl lg:text-2xl">
+                                                        {item.emoji}
+                                                        <div className="absolute bottom-[-8px] left-[10%] w-0 h-0 border-l-[8px] border-l-transparent border-r-[8px] border-r-transparent border-t-[8px] border-t-white"></div>
+                                                        <div className="absolute bottom-[-11px] left-[10%] w-0 h-0 border-l-[9px] border-l-transparent border-r-[9px] border-r-transparent border-t-[9px] border-t-black -z-10"></div>
+                                                    </div>
+                                                </div>
+                                            )}
+                                            {item.src && (
+                                                <div className="w-full h-full relative pointer-events-none">
+                                                    <Image src={item.src} alt={`${cat.id}-${item.label}`} fill className="object-contain" sizes="(max-width: 768px) 100vw, 512px" priority={cat.id === 'shirt'} unoptimized />
+                                                </div>
+                                            )}
+                                            {item.color && !['background', 'border', 'border_color'].includes(cat.id) && !item.src && (
+                                                <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2" style={{ backgroundColor: item.color, width: `${300 - (cat.zIndex > 20 ? cat.zIndex - 20 : 0) * 2}px`, height: `${300 - (cat.zIndex > 20 ? cat.zIndex - 20 : 0) * 2}px`, borderRadius: cat.id === 'glasses' ? '0' : '20px' }} />
+                                            )}
+                                        </div>
+                                    );
+                                })}
+                                <canvas ref={canvasRef} width={512} height={512} className="hidden" />
+                            </div>
+
+                            {/* Border Layer (Overlayed Outside Clipping) */}
+                            <div
+                                className={`absolute inset-0 z-20 pointer-events-none transition-all duration-300 ${pfpShape === 'circle' ? 'rounded-full' : 'rounded-none'}`}
+                                style={{
+                                    boxSizing: 'border-box',
+                                    border: (() => {
+                                        const bColor = selectedAttributes['border_color'];
+                                        const bStyle = selectedAttributes['border_style']?.value || 'solid';
+                                        const bWidth = selectedAttributes['border_width']?.value || 10;
+                                        if (bColor && bColor.type !== 'none' && bColor.color) {
+                                            const s = ['double', 'dashed', 'dotted', 'groove', 'ridge', 'inset', 'outset'].includes(bStyle) ? bStyle : 'solid';
+                                            return `${bWidth}px ${s} ${bColor.color}`;
+                                        }
+                                        return '1px solid rgba(255,255,255,0.15)';
+                                    })(),
+                                    boxShadow: (() => {
+                                        const bColor = selectedAttributes['border_color'];
+                                        const bStyle = selectedAttributes['border_style']?.value || 'solid';
+                                        if (bColor && bColor.type !== 'none' && bColor.color && bStyle === 'neon') {
+                                            return `0 0 20px ${bColor.color}, inset 0 0 20px ${bColor.color}`;
+                                        }
+                                        return 'none';
+                                    })()
+                                }}
+                            />
                         </div>
 
                         {/* Desktop Action Bar */}
