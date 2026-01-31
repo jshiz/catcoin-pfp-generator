@@ -514,7 +514,16 @@ export default function PfpGenerator() {
                     </div>
 
                     {/* Horizontal Scrollable Row */}
-                    <div className="flex gap-2 overflow-x-auto pb-3 pt-1 scroll-smooth snap-x snap-mandatory [&::-webkit-scrollbar]:h-1 [&::-webkit-scrollbar-thumb]:bg-white/10 [&::-webkit-scrollbar-thumb]:rounded-full hover:[&::-webkit-scrollbar-thumb]:bg-white/20">
+                    <div
+                        className="flex gap-2 overflow-x-auto pb-3 pt-1 scroll-smooth snap-x snap-mandatory [&::-webkit-scrollbar]:h-1 [&::-webkit-scrollbar-thumb]:bg-white/10 [&::-webkit-scrollbar-thumb]:rounded-full hover:[&::-webkit-scrollbar-thumb]:bg-white/20"
+                        onWheel={(e) => {
+                            if (e.deltaY !== 0) {
+                                // Map vertical scroll to horizontal scroll
+                                e.currentTarget.scrollLeft += e.deltaY;
+                                e.preventDefault();
+                            }
+                        }}
+                    >
                         {/* Render actual items, filtering out hidden ones */}
                         {cat.items.filter(i => !i.hidden).map(item => (
                             <button
