@@ -45,6 +45,16 @@ export default function PfpGenerator() {
         type: 'linear', // 'solid', 'linear', 'radial'
     });
 
+    // Device detection for responsive adjustments
+    const [isMobile, setIsMobile] = useState(false);
+
+    useEffect(() => {
+        const checkMobile = () => setIsMobile(window.innerWidth < 1024);
+        checkMobile();
+        window.addEventListener('resize', checkMobile);
+        return () => window.removeEventListener('resize', checkMobile);
+    }, []);
+
     // Music Player State
     const songs = [
         { title: 'Catcoin Army', src: '/music/Catcoin Army.mp3' },
@@ -981,7 +991,13 @@ export default function PfpGenerator() {
                                     }
 
                                     const bStyle = selectedAttributes['border_style']?.value || 'solid';
-                                    const bWidth = selectedAttributes['border_width']?.value || 10;
+                                    let bWidth = selectedAttributes['border_width']?.value || 10;
+
+                                    // Scale down border width on mobile so Chonky/Large don't overwhelm the smaller screen
+                                    if (isMobile) {
+                                        bWidth = bWidth * 0.6;
+                                    }
+
                                     const color = bColor.color;
 
                                     // Map CSS styles to dash arrays
