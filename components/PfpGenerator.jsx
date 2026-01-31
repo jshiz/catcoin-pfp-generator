@@ -839,9 +839,29 @@ export default function PfpGenerator() {
 
                         {/* Main Composition Area */}
                         <div
-                            className={`relative w-auto h-[85%] lg:h-[95%] aspect-square bg-black shadow-2xl overflow-hidden ring-1 ring-white/10 group z-10 transition-all duration-300 ease-spring ${pfpShape === 'circle' ? 'rounded-full' : 'rounded-none'}`}
+                            className={`relative w-auto h-[85%] lg:h-[95%] aspect-square bg-black shadow-2xl overflow-hidden group z-10 transition-all duration-300 ease-spring ${pfpShape === 'circle' ? 'rounded-full' : 'rounded-none'}`}
                             style={{
-                                filter: selectedAttributes['vibe']?.value || 'none'
+                                filter: selectedAttributes['vibe']?.value || 'none',
+                                transform: 'translateZ(0)',
+                                boxSizing: 'border-box',
+                                border: (() => {
+                                    const bColor = selectedAttributes['border_color'];
+                                    const bStyle = selectedAttributes['border_style']?.value || 'solid';
+                                    const bWidth = selectedAttributes['border_width']?.value || 10;
+                                    if (bColor && bColor.type !== 'none' && bColor.color) {
+                                        const s = ['double', 'dashed', 'dotted', 'groove', 'ridge', 'inset', 'outset'].includes(bStyle) ? bStyle : 'solid';
+                                        return `${bWidth}px ${s} ${bColor.color}`;
+                                    }
+                                    return '1px solid rgba(255,255,255,0.15)';
+                                })(),
+                                boxShadow: (() => {
+                                    const bColor = selectedAttributes['border_color'];
+                                    const bStyle = selectedAttributes['border_style']?.value || 'solid';
+                                    if (bColor && bColor.type !== 'none' && bColor.color && bStyle === 'neon') {
+                                        return `0 0 20px ${bColor.color}, inset 0 0 20px ${bColor.color}`;
+                                    }
+                                    return 'none';
+                                })()
                             }}
                         >
                             {/* Explosion Effect */}
@@ -879,16 +899,7 @@ export default function PfpGenerator() {
                                                 ) : (item.color || 'transparent')
                                             }} />
                                         )}
-                                        {cat.id === 'border_color' && item.color && (
-                                            <div className={`absolute inset-[1px] pointer-events-none transition-all duration-300 box-border ${pfpShape === 'circle' ? 'rounded-full' : 'rounded-none'}`}
-                                                style={{
-                                                    border: (() => {
-                                                        const s = selectedAttributes['border_style']?.value || 'solid';
-                                                        const w = (selectedAttributes['border_width']?.value || 10) + 'px';
-                                                        return ['double', 'dashed', 'dotted', 'groove', 'ridge', 'inset', 'outset'].includes(s) ? `${w} ${s} ${item.color}` : `${w} solid ${item.color}`;
-                                                    })(), boxShadow: selectedAttributes['border_style']?.value === 'neon' ? `0 0 20px ${item.color}, inset 0 0 20px ${item.color}` : 'none'
-                                                }} />
-                                        )}
+
                                         {item.emoji && cat.id === 'speech' && (
                                             <div className={`absolute z-[95] animate-pop-in pointer-events-none transition-all duration-500`} style={{ top: pfpShape === 'circle' ? '50%' : '52%', right: pfpShape === 'circle' ? '12%' : '8%' }}>
                                                 <div className="relative bg-white text-black w-10 h-10 lg:w-12 lg:h-12 flex items-center justify-center rounded-xl shadow-2xl border-2 border-black text-xl lg:text-2xl">
