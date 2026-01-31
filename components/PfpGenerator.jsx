@@ -719,54 +719,57 @@ export default function PfpGenerator() {
     const rightCategories = rightIds.map(id => attributesConfig.find(c => c.id === id)).filter(Boolean);
 
     return (
-        <div className="flex flex-col lg:flex-row h-[100dvh] bg-[#18181c] text-white overflow-hidden font-sans">
+        <div className="flex flex-col h-[100dvh] bg-[#18181c] text-white overflow-hidden font-sans">
 
-            {/* Mobile Header */}
-            <div className="lg:hidden p-4 text-center text-cat-yellow font-bold text-xl border-b border-white/10 shrink-0 z-20 bg-[#18181c]">
-                CAT-O-MATIC
-            </div>
+            {/* UNIFIED HEADER (Logo | Catcoin + Music) */}
+            <header className="flex items-center justify-between px-4 py-2 lg:py-3 bg-[#18181c] border-b border-white/10 shrink-0 z-[100] w-full shadow-2xl">
+                {/* Left: Logo | CATCOIN */}
+                <div className="flex items-center gap-2">
+                    <div className="relative w-8 h-8 lg:w-10 lg:h-10">
+                        <Image
+                            src="/assets/catcoin-logo.png"
+                            alt="Logo"
+                            fill
+                            className="object-contain rounded-full border border-white/10"
+                        />
+                    </div>
+                    <div className="w-px h-6 bg-white/20 mx-1 hidden xs:block" />
+                    <span className="text-cat-yellow font-black tracking-tighter text-lg lg:text-2xl uppercase select-none">
+                        catcoin
+                    </span>
+                </div>
 
-            {/* LEFT WING (Desktop) */}
-            <div className="hidden lg:block w-1/4 border-r border-white/10 bg-[#18181c]/50 backdrop-blur-sm z-10 order-1 h-full overflow-hidden">
-                {renderControls(leftCategories)}
-            </div>
+                {/* Right: Music Player */}
+                <div className="flex items-center gap-2 lg:gap-4 px-3 py-1 bg-white/5 backdrop-blur-md rounded-full border border-white/5 transition-all shadow-lg overflow-hidden max-w-[60%] sm:max-w-none">
+                    <div className="flex items-center gap-1.5 lg:gap-3">
+                        <button
+                            onClick={skipBack}
+                            className="text-white/30 hover:text-cat-yellow transition-colors"
+                        >
+                            <SkipBack size={14} fill="currentColor" />
+                        </button>
 
-            {/* CENTER STAGE */}
-            <div className="relative flex flex-col items-center justify-center p-2 lg:p-10 order-1 lg:order-2 shrink-0 lg:flex-1 h-[35dvh] lg:h-auto border-b border-white/10 lg:border-none overflow-hidden">
-                <ScrollingBackground />
+                        <button
+                            onClick={togglePlay}
+                            className="w-8 h-8 lg:w-9 lg:h-9 flex items-center justify-center bg-cat-yellow text-black rounded-full hover:scale-105 active:scale-95 transition-all shadow-lg shrink-0"
+                        >
+                            {isPlaying ? <Pause size={16} fill="currentColor" /> : <Play size={16} fill="currentColor" className="ml-0.5" />}
+                        </button>
 
-                {/* Music Player Bar (Top Middle) */}
-                <div className="absolute top-4 left-1/2 -translate-x-1/2 flex items-center gap-4 px-4 py-2 bg-black/40 backdrop-blur-md rounded-full border border-white/10 z-[100] group/player hover:bg-black/60 transition-all shadow-xl">
-                    <button
-                        onClick={skipBack}
-                        className="text-white/40 hover:text-cat-yellow transition-colors"
-                        title="Previous Song"
-                    >
-                        <SkipBack size={16} fill="currentColor" />
-                    </button>
+                        <button
+                            onClick={skipForward}
+                            className="text-white/30 hover:text-cat-yellow transition-colors"
+                        >
+                            <SkipForward size={14} fill="currentColor" />
+                        </button>
+                    </div>
 
-                    <button
-                        onClick={togglePlay}
-                        className="w-10 h-10 flex items-center justify-center bg-cat-yellow text-black rounded-full hover:scale-110 active:scale-95 transition-all shadow-lg"
-                        title={isPlaying ? "Pause" : "Play Music (Turn it up!)"}
-                    >
-                        {isPlaying ? <Pause size={20} fill="currentColor" /> : <Play size={20} fill="currentColor" className="ml-1" />}
-                    </button>
-
-                    <button
-                        onClick={skipForward}
-                        className="text-white/40 hover:text-cat-yellow transition-colors"
-                        title="Next Song"
-                    >
-                        <SkipForward size={16} fill="currentColor" />
-                    </button>
-
-                    <div className="flex flex-col min-w-[120px] max-w-[200px] overflow-hidden">
-                        <div className="flex items-center gap-1.5 text-[10px] font-bold text-cat-yellow tracking-wider opacity-60">
-                            <Music size={10} />
-                            RADIO
+                    <div className="hidden sm:flex flex-col min-w-[100px] lg:min-w-[150px] max-w-[200px] border-l border-white/10 pl-3">
+                        <div className="flex items-center gap-1.5 text-[8px] font-bold text-cat-yellow tracking-widest opacity-60 uppercase">
+                            <Music size={8} />
+                            Radio
                         </div>
-                        <div className="text-[11px] font-bold text-white truncate animate-pulse">
+                        <div className="text-[10px] lg:text-[11px] font-bold text-white truncate animate-pulse leading-none mt-0.5">
                             {songs[currentSongIndex].title}
                         </div>
                     </div>
@@ -777,250 +780,260 @@ export default function PfpGenerator() {
                         onEnded={skipForward}
                     />
                 </div>
+            </header>
 
-                {/* Main Composition Area */}
-                {/* Main Composition Area */}
-                <div
-                    className={`relative w-auto h-[85%] aspect-square bg-black shadow-2xl overflow-hidden border-4 border-white/10 group z-10 transition-all duration-300 ease-spring ${pfpShape === 'circle' ? 'rounded-full' : 'rounded-none'}`}
-                    style={{
-                        filter: selectedAttributes['vibe']?.value || 'none'
-                    }}
-                >
+            <div className="flex flex-col lg:flex-row flex-1 overflow-hidden">
+                {/* LEFT WING (Desktop) */}
+                <div className="hidden lg:block w-1/4 border-r border-white/10 bg-[#18181c]/50 backdrop-blur-sm z-10 order-1 h-full overflow-hidden">
+                    {renderControls(leftCategories)}
+                </div>
+
+                {/* CENTER STAGE */}
+                <div className="relative flex flex-col items-center justify-center p-2 lg:p-10 order-1 lg:order-2 shrink-0 lg:flex-1 h-[35dvh] lg:h-auto overflow-hidden">
+                    <ScrollingBackground />
+
+                    {/* Main Composition Area */}
+                    <div
+                        className={`relative w-auto h-[85%] aspect-square bg-black shadow-2xl overflow-hidden border-4 border-white/10 group z-10 transition-all duration-300 ease-spring ${pfpShape === 'circle' ? 'rounded-full' : 'rounded-none'}`}
+                        style={{
+                            filter: selectedAttributes['vibe']?.value || 'none'
+                        }}
+                    >
 
 
 
-                    {/* Explosion Effect Layer (Behind everything but background? Or just behind costume?) 
+                        {/* Explosion Effect Layer (Behind everything but background? Or just behind costume?) 
                         Background is zIndex 10. We want this visible. zIndex 15.
                     */}
-                    {isExploding && (
-                        <div className="absolute inset-0 z-[15] flex items-center justify-center pointer-events-none">
-                            <div className="w-full h-full bg-radial-gradient(circle, rgba(255,255,255,0.8) 0%, rgba(250,210,5,0) 70%) animate-explode scale-150 rounded-full"></div>
-                            {/* Inner Burst */}
-                            <div className="absolute w-1/2 h-1/2 bg-cat-yellow/50 rounded-full animate-explode delay-75"></div>
-                        </div>
-                    )}
+                        {isExploding && (
+                            <div className="absolute inset-0 z-[15] flex items-center justify-center pointer-events-none">
+                                <div className="w-full h-full bg-radial-gradient(circle, rgba(255,255,255,0.8) 0%, rgba(250,210,5,0) 70%) animate-explode scale-150 rounded-full"></div>
+                                {/* Inner Burst */}
+                                <div className="absolute w-1/2 h-1/2 bg-cat-yellow/50 rounded-full animate-explode delay-75"></div>
+                            </div>
+                        )}
 
-                    {/* Layers */}
-                    {attributesConfig.sort((a, b) => a.zIndex - b.zIndex).map(cat => {
-                        const item = selectedAttributes[cat.id];
-                        if (!item || (item.type === 'none' && !item.src)) return null;
+                        {/* Layers */}
+                        {attributesConfig.sort((a, b) => a.zIndex - b.zIndex).map(cat => {
+                            const item = selectedAttributes[cat.id];
+                            if (!item || (item.type === 'none' && !item.src)) return null;
 
-                        const isAnimating = animatingLayer === cat.id || animatingLayer === 'all';
+                            const isAnimating = animatingLayer === cat.id || animatingLayer === 'all';
 
-                        // Determine animation class based on category
-                        let animationClass = '';
-                        if (isAnimating) {
-                            if (['shirt', 'body', 'costume'].includes(cat.id)) {
-                                const dir = cat.id === 'shirt' ? shirtDirection : (cat.id === 'costume' ? costumeDirection : bodyDirection);
-                                animationClass = dir === 'left' ? 'animate-fly-left' : 'animate-fly-right';
+                            // Determine animation class based on category
+                            let animationClass = '';
+                            if (isAnimating) {
+                                if (['shirt', 'body', 'costume'].includes(cat.id)) {
+                                    const dir = cat.id === 'shirt' ? shirtDirection : (cat.id === 'costume' ? costumeDirection : bodyDirection);
+                                    animationClass = dir === 'left' ? 'animate-fly-left' : 'animate-fly-right';
+                                }
+                                else if (cat.id === 'eyes') animationClass = 'animate-fade-in';
+                                else if (['hat'].includes(cat.id)) animationClass = 'animate-fly-down';
+                                else if (cat.id === 'mouth') animationClass = 'animate-pop-in';
+                                else animationClass = 'animate-zoom-in'; // default for border, glasses, chain
                             }
-                            else if (cat.id === 'eyes') animationClass = 'animate-fade-in';
-                            else if (['hat'].includes(cat.id)) animationClass = 'animate-fly-down';
-                            else if (cat.id === 'mouth') animationClass = 'animate-pop-in';
-                            else animationClass = 'animate-zoom-in'; // default for border, glasses, chain
-                        }
 
-                        return (
-                            <div
-                                key={cat.id}
-                                className={`absolute inset-0 transition-transform duration-75 ${animationClass}`}
-                                style={{ zIndex: cat.zIndex }}
-                            >
-                                {/* Background Layer (Color) */}
-                                {cat.id === 'background' && (
-                                    <div className="w-full h-full" style={{
-                                        background: item.id === 'bg_custom' ? (
-                                            customBackground.type === 'solid' ? customBackground.color1 :
-                                                customBackground.type === 'linear' ? `linear-gradient(to bottom, ${customBackground.color1}, ${customBackground.color2})` :
-                                                    `radial-gradient(circle at center, ${customBackground.color1}, ${customBackground.color2})`
-                                        ) : (item.color || 'transparent')
-                                    }} />
-                                )}
+                            return (
+                                <div
+                                    key={cat.id}
+                                    className={`absolute inset-0 transition-transform duration-75 ${animationClass}`}
+                                    style={{ zIndex: cat.zIndex }}
+                                >
+                                    {/* Background Layer (Color) */}
+                                    {cat.id === 'background' && (
+                                        <div className="w-full h-full" style={{
+                                            background: item.id === 'bg_custom' ? (
+                                                customBackground.type === 'solid' ? customBackground.color1 :
+                                                    customBackground.type === 'linear' ? `linear-gradient(to bottom, ${customBackground.color1}, ${customBackground.color2})` :
+                                                        `radial-gradient(circle at center, ${customBackground.color1}, ${customBackground.color2})`
+                                            ) : (item.color || 'transparent')
+                                        }} />
+                                    )}
 
-                                {/* Border Layer (Shape) */}
-                                {cat.id === 'border_color' && item.color && (
-                                    <div
-                                        className={`absolute inset-0 pointer-events-none transition-all duration-300 ${pfpShape === 'circle' ? 'rounded-full' : 'rounded-none'}`}
-                                        style={{
-                                            border: (() => {
-                                                const s = selectedAttributes['border_style']?.value || 'solid';
-                                                const w = (selectedAttributes['border_width']?.value || 10) + 'px';
-                                                const c = item.color;
-                                                // Map to CSS
-                                                if (['double', 'dashed', 'dotted', 'groove', 'ridge', 'inset', 'outset'].includes(s)) {
-                                                    return `${s} ${w} ${c}`;
-                                                }
-                                                // Fallback
-                                                return `solid ${w} ${c}`;
-                                            })(),
-                                            boxShadow: selectedAttributes['border_style']?.value === 'neon' ? `0 0 20px ${item.color}, inset 0 0 20px ${item.color}` : 'none'
-                                        }}
-                                    >
-                                        {/* Overlay for patterns not supported natively by CSS border-style (like wave, jagged) - using SVG or masks would be better but CSS 'dashed' is a decent fallback for now if we don't assume SVG assets. 
+                                    {/* Border Layer (Shape) */}
+                                    {cat.id === 'border_color' && item.color && (
+                                        <div
+                                            className={`absolute inset-0 pointer-events-none transition-all duration-300 ${pfpShape === 'circle' ? 'rounded-full' : 'rounded-none'}`}
+                                            style={{
+                                                border: (() => {
+                                                    const s = selectedAttributes['border_style']?.value || 'solid';
+                                                    const w = (selectedAttributes['border_width']?.value || 10) + 'px';
+                                                    const c = item.color;
+                                                    // Map to CSS
+                                                    if (['double', 'dashed', 'dotted', 'groove', 'ridge', 'inset', 'outset'].includes(s)) {
+                                                        return `${s} ${w} ${c}`;
+                                                    }
+                                                    // Fallback
+                                                    return `solid ${w} ${c}`;
+                                                })(),
+                                                boxShadow: selectedAttributes['border_style']?.value === 'neon' ? `0 0 20px ${item.color}, inset 0 0 20px ${item.color}` : 'none'
+                                            }}
+                                        >
+                                            {/* Overlay for patterns not supported natively by CSS border-style (like wave, jagged) - using SVG or masks would be better but CSS 'dashed' is a decent fallback for now if we don't assume SVG assets. 
                                             If 'jagged' is selected, we can try a clip-path or background-image hack, 
                                             but to keep it working comfortably:
                                         */}
-                                    </div>
-                                )}
-
-                                {item.text && cat.id === 'speech' && (
-                                    <div
-                                        className={`absolute z-[95] animate-pop-in pointer-events-none transition-all duration-500`}
-                                        style={{
-                                            top: pfpShape === 'circle' ? '35%' : '10%',
-                                            right: pfpShape === 'circle' ? '15%' : '10%',
-                                        }}
-                                    >
-                                        <div className="relative bg-white text-black px-4 py-2 rounded-2xl shadow-xl border-2 border-black font-bold text-lg whitespace-nowrap min-w-[80px] text-center">
-                                            {item.text}
-                                            {/* Pointer */}
-                                            <div className="absolute bottom-[-10px] left-[20%] w-0 h-0 border-l-[10px] border-l-transparent border-r-[10px] border-r-transparent border-t-[10px] border-t-white"></div>
-                                            <div className="absolute bottom-[-13px] left-[20%] w-0 h-0 border-l-[11px] border-l-transparent border-r-[11px] border-r-transparent border-t-[11px] border-t-black -z-10"></div>
                                         </div>
-                                    </div>
-                                )}
-                                {item.src && (
-                                    <div className="w-full h-full relative pointer-events-none">
-                                        <Image
-                                            src={item.src}
-                                            alt={`${cat.id}-${item.label}`}
-                                            fill
-                                            className="object-contain"
-                                            sizes="(max-width: 768px) 100vw, 512px"
-                                            priority={cat.id === 'shirt'} // Prioritize Shirt loading
-                                            unoptimized
+                                    )}
+
+                                    {item.text && cat.id === 'speech' && (
+                                        <div
+                                            className={`absolute z-[95] animate-pop-in pointer-events-none transition-all duration-500`}
+                                            style={{
+                                                top: pfpShape === 'circle' ? '35%' : '10%',
+                                                right: pfpShape === 'circle' ? '15%' : '10%',
+                                            }}
+                                        >
+                                            <div className="relative bg-white text-black px-4 py-2 rounded-2xl shadow-xl border-2 border-black font-bold text-lg whitespace-nowrap min-w-[80px] text-center">
+                                                {item.text}
+                                                {/* Pointer */}
+                                                <div className="absolute bottom-[-10px] left-[20%] w-0 h-0 border-l-[10px] border-l-transparent border-r-[10px] border-r-transparent border-t-[10px] border-t-white"></div>
+                                                <div className="absolute bottom-[-13px] left-[20%] w-0 h-0 border-l-[11px] border-l-transparent border-r-[11px] border-r-transparent border-t-[11px] border-t-black -z-10"></div>
+                                            </div>
+                                        </div>
+                                    )}
+                                    {item.src && (
+                                        <div className="w-full h-full relative pointer-events-none">
+                                            <Image
+                                                src={item.src}
+                                                alt={`${cat.id}-${item.label}`}
+                                                fill
+                                                className="object-contain"
+                                                sizes="(max-width: 768px) 100vw, 512px"
+                                                priority={cat.id === 'shirt'} // Prioritize Shirt loading
+                                                unoptimized
+                                            />
+                                        </div>
+                                    )}
+
+                                    {/* Placeholder Shapes (Legacy Colors) */}
+                                    {item.color && !['background', 'border', 'border_color'].includes(cat.id) && !item.src && (
+                                        // Centered layered rects for accessories
+                                        <div
+                                            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
+                                            style={{
+                                                backgroundColor: item.color,
+                                                width: `${300 - (cat.zIndex > 20 ? cat.zIndex - 20 : 0) * 2}px`,
+                                                height: `${300 - (cat.zIndex > 20 ? cat.zIndex - 20 : 0) * 2}px`,
+                                                borderRadius: cat.id === 'glasses' ? '0' : '20px'
+                                            }}
                                         />
-                                    </div>
-                                )}
-
-                                {/* Placeholder Shapes (Legacy Colors) */}
-                                {item.color && !['background', 'border', 'border_color'].includes(cat.id) && !item.src && (
-                                    // Centered layered rects for accessories
-                                    <div
-                                        className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
-                                        style={{
-                                            backgroundColor: item.color,
-                                            width: `${300 - (cat.zIndex > 20 ? cat.zIndex - 20 : 0) * 2}px`,
-                                            height: `${300 - (cat.zIndex > 20 ? cat.zIndex - 20 : 0) * 2}px`,
-                                            borderRadius: cat.id === 'glasses' ? '0' : '20px'
-                                        }}
-                                    />
-                                )}
+                                    )}
 
 
-                            </div>
-                        );
-                    })}
+                                </div>
+                            );
+                        })}
 
-                    {/* Hidden Canvas for Compositing */}
-                    <canvas ref={canvasRef} width={512} height={512} className="hidden" />
+                        {/* Hidden Canvas for Compositing */}
+                        <canvas ref={canvasRef} width={512} height={512} className="hidden" />
 
-                    {/* SVG Filters for Vibes */}
-                    <svg style={{ position: 'absolute', width: 0, height: 0, overflow: 'hidden' }} aria-hidden="true">
-                        <filter id="pixelate" x="0" y="0" width="100%" height="100%">
-                            <feFlood x="4" y="4" height="2" width="2" />
-                            <feComposite width="8" height="8" />
-                            <feTile result="a" />
-                            <feComposite in="SourceGraphic" in2="a" operator="in" />
-                            <feMorphology operator="dilate" radius="3" />
-                        </filter>
-                        <filter id="pixelate-highres" x="0" y="0" width="100%" height="100%">
-                            <feFlood x="12" y="12" height="6" width="6" />
-                            <feComposite width="24" height="24" />
-                            <feTile result="a" />
-                            <feComposite in="SourceGraphic" in2="a" operator="in" />
-                            <feMorphology operator="dilate" radius="10" />
-                        </filter>
-                    </svg>
+                        {/* SVG Filters for Vibes */}
+                        <svg style={{ position: 'absolute', width: 0, height: 0, overflow: 'hidden' }} aria-hidden="true">
+                            <filter id="pixelate" x="0" y="0" width="100%" height="100%">
+                                <feFlood x="4" y="4" height="2" width="2" />
+                                <feComposite width="8" height="8" />
+                                <feTile result="a" />
+                                <feComposite in="SourceGraphic" in2="a" operator="in" />
+                                <feMorphology operator="dilate" radius="3" />
+                            </filter>
+                            <filter id="pixelate-highres" x="0" y="0" width="100%" height="100%">
+                                <feFlood x="12" y="12" height="6" width="6" />
+                                <feComposite width="24" height="24" />
+                                <feTile result="a" />
+                                <feComposite in="SourceGraphic" in2="a" operator="in" />
+                                <feMorphology operator="dilate" radius="10" />
+                            </filter>
+                        </svg>
+                    </div>
+
+                    {/* Desktop Action Bar (Fixed Bottom Pill) */}
+                    <div className="hidden lg:flex fixed bottom-8 left-1/2 -translate-x-1/2 gap-4 bg-[#18181c]/80 p-2 pr-2 pl-4 rounded-full border border-white/10 shadow-[0_20px_40px_rgba(0,0,0,0.5)] backdrop-blur-xl z-50 hover:bg-[#18181c]/90 transition-all">
+                        <button
+                            onClick={randomize}
+                            className="flex items-center gap-2 px-4 py-2 hover:bg-white/10 rounded-full text-cat-yellow transition-all hover:scale-105 active:scale-95 group"
+                            title="Randomize Attributes"
+                        >
+                            <Shuffle size={20} className="group-hover:rotate-180 transition-transform duration-500" />
+                            <span className="font-bold text-sm tracking-wide">SHUFFLE</span>
+                        </button>
+
+                        {/* Shape Toggle */}
+                        <button
+                            onClick={() => setPfpShape(prev => prev === 'circle' ? 'square' : 'circle')}
+                            className="flex items-center gap-2 px-3 py-2 hover:bg-white/10 rounded-full text-white transition-all hover:scale-105 active:scale-95 group"
+                            title="Toggle Shape"
+                        >
+                            <div className={`w-5 h-5 border-2 border-current transition-all duration-300 ${pfpShape === 'circle' ? 'rounded-full' : 'rounded-md'}`}></div>
+                        </button>
+
+                        <div className="w-px bg-white/10 my-2 self-stretch"></div>
+
+                        <button
+                            onClick={handleCopy}
+                            className="flex items-center gap-2 px-4 py-2 hover:bg-white/10 rounded-full text-white transition-all hover:scale-105 active:scale-95 group"
+                            title="Copy Image to Clipboard"
+                        >
+                            <Copy size={20} className="group-hover:-rotate-12 transition-transform" />
+                            <span className="font-bold text-sm tracking-wide">COPY</span>
+                        </button>
+
+                        <button
+                            onClick={handleDownload}
+                            className="flex items-center gap-2 px-6 py-2 bg-cat-yellow text-black rounded-full hover:bg-[#fff04b] transition-all hover:scale-105 active:scale-95 shadow-[0_0_20px_rgba(250,210,5,0.2)] ml-2"
+                            title="Download Transparent PNG"
+                        >
+                            <Download size={20} />
+                            <span className="font-black text-sm tracking-wide">SAVE PNG</span>
+                        </button>
+                    </div>
                 </div>
 
-                {/* Desktop Action Bar (Fixed Bottom Pill) */}
-                <div className="hidden lg:flex fixed bottom-8 left-1/2 -translate-x-1/2 gap-4 bg-[#18181c]/80 p-2 pr-2 pl-4 rounded-full border border-white/10 shadow-[0_20px_40px_rgba(0,0,0,0.5)] backdrop-blur-xl z-50 hover:bg-[#18181c]/90 transition-all">
+                {/* RIGHT WING (Desktop) */}
+                <div className="hidden lg:block w-1/4 border-l border-white/10 bg-[#18181c]/50 backdrop-blur-sm z-10 order-3 h-full overflow-hidden">
+                    {renderControls(rightCategories)}
+                </div>
+
+                {/* Mobile Controls Container (Scrollable) */}
+                <div className="lg:hidden w-full order-3 flex-1 overflow-y-auto bg-[#18181c] px-4 pt-2 pb-24 border-t border-white/10">
+                    {renderControls(attributesConfig)}
+                </div>
+
+                {/* Mobile Sticky Action Bar */}
+                <div className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-[#18181c]/95 backdrop-blur-xl border-t border-white/10 p-3 flex justify-between gap-3 safe-bottom pb-6">
                     <button
                         onClick={randomize}
-                        className="flex items-center gap-2 px-4 py-2 hover:bg-white/10 rounded-full text-cat-yellow transition-all hover:scale-105 active:scale-95 group"
-                        title="Randomize Attributes"
+                        className="flex flex-col items-center justify-center p-2 flex-1 bg-white/5 border border-white/10 rounded-lg active:scale-95 transition-transform"
                     >
-                        <Shuffle size={20} className="group-hover:rotate-180 transition-transform duration-500" />
-                        <span className="font-bold text-sm tracking-wide">SHUFFLE</span>
+                        <Shuffle size={20} className="text-cat-yellow mb-1" />
+                        <span className="text-[10px] font-bold text-white/80">SHUFFLE</span>
                     </button>
 
-                    {/* Shape Toggle */}
                     <button
                         onClick={() => setPfpShape(prev => prev === 'circle' ? 'square' : 'circle')}
-                        className="flex items-center gap-2 px-3 py-2 hover:bg-white/10 rounded-full text-white transition-all hover:scale-105 active:scale-95 group"
-                        title="Toggle Shape"
+                        className="flex flex-col items-center justify-center p-2 flex-1 bg-white/5 border border-white/10 rounded-lg active:scale-95 transition-transform"
                     >
-                        <div className={`w-5 h-5 border-2 border-current transition-all duration-300 ${pfpShape === 'circle' ? 'rounded-full' : 'rounded-md'}`}></div>
+                        <div className={`w-5 h-5 border-2 border-white mb-1 transition-all duration-300 ${pfpShape === 'circle' ? 'rounded-full' : 'rounded-md'}`}></div>
+                        <span className="text-[10px] font-bold text-white/80">SHAPE</span>
                     </button>
-
-                    <div className="w-px bg-white/10 my-2 self-stretch"></div>
 
                     <button
                         onClick={handleCopy}
-                        className="flex items-center gap-2 px-4 py-2 hover:bg-white/10 rounded-full text-white transition-all hover:scale-105 active:scale-95 group"
-                        title="Copy Image to Clipboard"
+                        className="flex flex-col items-center justify-center p-2 flex-1 bg-white/5 border border-white/10 rounded-lg active:scale-95 transition-transform"
                     >
-                        <Copy size={20} className="group-hover:-rotate-12 transition-transform" />
-                        <span className="font-bold text-sm tracking-wide">COPY</span>
+                        <Copy size={20} className="text-cat-yellow mb-1" />
+                        <span className="text-[10px] font-bold text-white/80">COPY</span>
                     </button>
 
                     <button
                         onClick={handleDownload}
-                        className="flex items-center gap-2 px-6 py-2 bg-cat-yellow text-black rounded-full hover:bg-[#fff04b] transition-all hover:scale-105 active:scale-95 shadow-[0_0_20px_rgba(250,210,5,0.2)] ml-2"
-                        title="Download Transparent PNG"
+                        className="flex flex-col items-center justify-center p-2 flex-[1.5] bg-cat-yellow text-black rounded-lg active:scale-95 shadow-[0_0_15px_rgba(250,210,5,0.3)] transition-transform"
                     >
-                        <Download size={20} />
-                        <span className="font-black text-sm tracking-wide">SAVE PNG</span>
+                        <Download size={22} className="mb-1" />
+                        <span className="text-[10px] font-black">SAVE PNG</span>
                     </button>
                 </div>
             </div>
-
-            {/* RIGHT WING (Desktop) */}
-            <div className="hidden lg:block w-1/4 border-l border-white/10 bg-[#18181c]/50 backdrop-blur-sm z-10 order-3 h-full overflow-hidden">
-                {renderControls(rightCategories)}
-            </div>
-
-            {/* Mobile Controls Container (Scrollable) */}
-            <div className="lg:hidden w-full order-3 flex-1 overflow-y-auto bg-[#18181c] px-4 pt-2 pb-24 border-t border-white/10">
-                {renderControls(attributesConfig)}
-            </div>
-
-            {/* Mobile Sticky Action Bar */}
-            <div className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-[#18181c]/95 backdrop-blur-xl border-t border-white/10 p-3 flex justify-between gap-3 safe-bottom pb-6">
-                <button
-                    onClick={randomize}
-                    className="flex flex-col items-center justify-center p-2 flex-1 bg-white/5 border border-white/10 rounded-lg active:scale-95 transition-transform"
-                >
-                    <Shuffle size={20} className="text-cat-yellow mb-1" />
-                    <span className="text-[10px] font-bold text-white/80">SHUFFLE</span>
-                </button>
-
-                <button
-                    onClick={() => setPfpShape(prev => prev === 'circle' ? 'square' : 'circle')}
-                    className="flex flex-col items-center justify-center p-2 flex-1 bg-white/5 border border-white/10 rounded-lg active:scale-95 transition-transform"
-                >
-                    <div className={`w-5 h-5 border-2 border-white mb-1 transition-all duration-300 ${pfpShape === 'circle' ? 'rounded-full' : 'rounded-md'}`}></div>
-                    <span className="text-[10px] font-bold text-white/80">SHAPE</span>
-                </button>
-
-                <button
-                    onClick={handleCopy}
-                    className="flex flex-col items-center justify-center p-2 flex-1 bg-white/5 border border-white/10 rounded-lg active:scale-95 transition-transform"
-                >
-                    <Copy size={20} className="text-cat-yellow mb-1" />
-                    <span className="text-[10px] font-bold text-white/80">COPY</span>
-                </button>
-
-                <button
-                    onClick={handleDownload}
-                    className="flex flex-col items-center justify-center p-2 flex-[1.5] bg-cat-yellow text-black rounded-lg active:scale-95 shadow-[0_0_15px_rgba(250,210,5,0.3)] transition-transform"
-                >
-                    <Download size={22} className="mb-1" />
-                    <span className="text-[10px] font-black">SAVE PNG</span>
-                </button>
-            </div >
-
-        </div >
+        </div>
     );
 }
