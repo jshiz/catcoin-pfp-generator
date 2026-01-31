@@ -246,10 +246,10 @@ export const attributesConfig = [
     label: 'Border Size',
     zIndex: 92, // Virtual z-index
     items: [
-      { id: 'border_w_sm', label: 'Small', value: 10 },
-      { id: 'border_w_md', label: 'Medium', value: 20 },
-      { id: 'border_w_lg', label: 'Large', value: 35 },
-      { id: 'border_w_xl', label: 'Chonky', value: 50 },
+      { id: 'border_w_sm', label: 'Small', value: 5 },
+      { id: 'border_w_md', label: 'Medium', value: 10 },
+      { id: 'border_w_lg', label: 'Large', value: 18 },
+      { id: 'border_w_xl', label: 'Chonky', value: 30 },
     ]
   }
 ];
