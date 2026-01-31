@@ -789,7 +789,7 @@ export default function PfpGenerator() {
                 </div>
 
                 {/* CENTER STAGE */}
-                <div className="relative flex flex-col items-center justify-center p-2 lg:p-10 order-1 lg:order-2 shrink-0 lg:flex-1 h-[35dvh] lg:h-auto overflow-hidden">
+                <div className="relative flex flex-col items-center justify-center p-2 lg:pt-10 lg:pb-32 lg:px-10 order-1 lg:order-2 shrink-0 lg:flex-1 h-[35dvh] lg:h-auto overflow-hidden">
                     <ScrollingBackground />
 
                     {/* Main Composition Area */}
