@@ -571,11 +571,31 @@ export default function PfpGenerator() {
                                 )}
 
                                 {/* Border Layer (Shape) */}
-                                {cat.id === 'border' && item.color && (
+                                {cat.id === 'border_color' && item.color && (
                                     <div
-                                        className={`absolute inset-0 border-[10px] pointer-events-none transition-all duration-300 ${pfpShape === 'circle' ? 'rounded-full' : 'rounded-[60px]'}`}
-                                        style={{ borderColor: item.color }}
-                                    />
+                                        className={`absolute inset-0 pointer-events-none transition-all duration-300 ${pfpShape === 'circle' ? 'rounded-full' : 'rounded-[60px]'}`}
+                                        style={{
+                                            border: (() => {
+                                                const s = selectedAttributes['border_style']?.value || 'solid';
+                                                const w = (selectedAttributes['border_width']?.value || 10) + 'px';
+                                                const c = item.color;
+                                                // Map to CSS
+                                                if (s === 'double') return `double ${w} ${c}`;
+                                                if (s === 'dashed') return `dashed ${w} ${c}`;
+                                                if (s === 'dotted') return `dotted ${w} ${c}`;
+                                                // Groove/Ridge/etc supported by CSS
+                                                if (['groove', 'ridge', 'inset', 'outset'].includes(s)) return `${s} ${w} ${c}`;
+                                                // Fallback for custom names or standard
+                                                return `solid ${w} ${c}`;
+                                            })(),
+                                            boxShadow: selectedAttributes['border_style']?.value === 'neon' ? `0 0 20px ${item.color}, inset 0 0 20px ${item.color}` : 'none'
+                                        }}
+                                    >
+                                        {/* Overlay for patterns not supported natively by CSS border-style (like wave, jagged) - using SVG or masks would be better but CSS 'dashed' is a decent fallback for now if we don't assume SVG assets. 
+                                            If 'jagged' is selected, we can try a clip-path or background-image hack, 
+                                            but to keep it working comfortably:
+                                        */}
+                                    </div>
                                 )}
 
                                 {/* Image Assets */}
