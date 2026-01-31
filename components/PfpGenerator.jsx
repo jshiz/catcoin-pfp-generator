@@ -12,7 +12,12 @@ export default function PfpGenerator() {
     const [selectedAttributes, setSelectedAttributes] = useState(() => {
         const initial = {};
         attributesConfig.forEach(cat => {
-            initial[cat.id] = cat.items[0];
+            if (cat.id === 'body') {
+                // Ensure default body is 'body_1' (Basic) or first non-hidden
+                initial[cat.id] = cat.items.find(i => !i.hidden) || cat.items[0];
+            } else {
+                initial[cat.id] = cat.items[0];
+            }
         });
         return initial;
     });
@@ -92,8 +97,15 @@ export default function PfpGenerator() {
                 newSelection[cat.id] = cat.items[0]; // Always None
                 return;
             }
-            const randomItem = cat.items[Math.floor(Math.random() * cat.items.length)];
-            newSelection[cat.id] = randomItem;
+            if (cat.id === 'body') {
+                // For body, filter out hidden items (like 'None')
+                const validItems = cat.items.filter(i => !i.hidden);
+                const randomItem = validItems[Math.floor(Math.random() * validItems.length)];
+                newSelection[cat.id] = randomItem;
+            } else {
+                const randomItem = cat.items[Math.floor(Math.random() * cat.items.length)];
+                newSelection[cat.id] = randomItem;
+            }
         });
         setSelectedAttributes(newSelection);
         setAnimatingLayer('all');
