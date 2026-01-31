@@ -209,7 +209,7 @@ export default function PfpGenerator() {
             }
 
             // Draw Placeholder shapes (Legacy Colors only if NO src)
-            if (item.color && !item.src && !['background', 'border'].includes(cat.id)) {
+            if (item.color && !item.src && !['background', 'border', 'border_color'].includes(cat.id)) {
                 ctx.fillStyle = item.color;
                 // Simple shape logic
                 const size = 300 - (cat.zIndex > 20 ? (cat.zIndex - 20) : 0) * 2;
