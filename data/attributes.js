@@ -115,6 +115,22 @@ export const attributesConfig = [
       { id: 'body_6', label: 'Gold', src: '/assets/body/gold.png', type: 'image' },
       { id: 'body_7', label: 'Rainbow', src: '/assets/body/rainbow.png', type: 'image' },
       { id: 'body_8', label: 'Tiger', src: '/assets/body/tiger.png', type: 'image' },
+      { id: 'body_10', label: 'Alien', src: '/assets/body/alien.png', type: 'image' },
+      { id: 'body_11', label: 'Robot', src: '/assets/body/robot.png', type: 'image' },
+      { id: 'body_12', label: 'Zombie', src: '/assets/body/zombie.png', type: 'image' },
+    ]
+  },
+  {
+    id: 'vibe',
+    label: 'Vibe',
+    zIndex: 100, // Top level overlay effect
+    items: [
+      { id: 'vibe_none', label: 'None', type: 'none', value: 'none' },
+      { id: 'vibe_noir', label: 'Noir', value: 'grayscale(1) contrast(1.2)' },
+      { id: 'vibe_retro', label: 'Retro', value: 'sepia(0.8) contrast(1.1) brightness(0.9)' },
+      { id: 'vibe_matrix', label: 'Matrix', value: 'hue-rotate(90deg) saturate(2) brightness(0.8)' },
+      { id: 'vibe_neon', label: 'Vibrant', value: 'saturate(2.5) contrast(1.2)' },
+      { id: 'vibe_dreamy', label: 'Dreamy', value: 'brightness(1.1) saturate(1.2) blur(0.5px)' },
     ]
   },
   {
@@ -250,6 +266,20 @@ export const attributesConfig = [
       { id: 'border_w_md', label: 'Medium', value: 10 },
       { id: 'border_w_lg', label: 'Large', value: 18 },
       { id: 'border_w_xl', label: 'Chonky', value: 30 },
+    ]
+  },
+  {
+    id: 'speech',
+    label: 'Speech',
+    zIndex: 95, // Above everything, balanced with border
+    items: [
+      { id: 'speech_none', label: 'None', type: 'none' },
+      { id: 'speech_gm', label: 'GM', text: 'GM ☀️' },
+      { id: 'speech_wagmi', label: 'WAGMI', text: 'WAGMI! 🚀' },
+      { id: 'speech_catcoin', label: 'Catcoin', text: '$catcoin to the moon!' },
+      { id: 'speech_meow', label: 'Meow', text: 'Meow! 🐱' },
+      { id: 'speech_hodl', label: 'HODL', text: 'HODL 💎' },
+      { id: 'speech_moon', label: 'Moon', text: 'Soon Moon 🌑' },
     ]
   }
 ];

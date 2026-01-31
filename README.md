@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="https://catcoin.io/assets/images/logo.png" alt="Catcoin Logo" width="200"/>
+  <img src="./public/assets/catcoin-logo.png" alt="Catcoin Logo" width="200"/>
 
   # Catcoin PFP Generator
 
@@ -15,7 +15,7 @@
 
 ## 🐱 About The Project
 
-This **Catcoin PFP Generator** was built to empower the Catcoin community (`$CAT`) to create unique, personalized avatars. Whether you want to rock a gold chain, sport some laser eyes, or vibe with a neon border, this tool puts the creativity in your hands.
+This **Catcoin PFP Generator** was built to empower the Catcoin community (`$catcoin`) to create unique, personalized avatars. Whether you want to rock a gold chain, sport some laser eyes, or vibe with a neon border, this tool puts the creativity in your hands.
 
 It serves as a fun way to spread brand awareness, show solidarity on social media, and just have a good time with the meme.
 

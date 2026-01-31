@@ -92,25 +92,57 @@ export default function PfpGenerator() {
     const randomize = () => {
         const newSelection = {};
         attributesConfig.forEach(cat => {
-            // Exclude costume from randomization
+            // Exclude costume and vibes from standard randomization if preferred, or include them?
+            // Let's include Vibes but maybe not costume.
             if (cat.id === 'costume') {
                 newSelection[cat.id] = cat.items[0]; // Always None
                 return;
             }
             if (cat.id === 'body') {
-                // For body, filter out hidden items (like 'None')
                 const validItems = cat.items.filter(i => !i.hidden);
-                const randomItem = validItems[Math.floor(Math.random() * validItems.length)];
-                newSelection[cat.id] = randomItem;
+                newSelection[cat.id] = validItems[Math.floor(Math.random() * validItems.length)];
             } else {
-                const randomItem = cat.items[Math.floor(Math.random() * cat.items.length)];
-                newSelection[cat.id] = randomItem;
+                newSelection[cat.id] = cat.items[Math.floor(Math.random() * cat.items.length)];
             }
         });
         setSelectedAttributes(newSelection);
         setAnimatingLayer('all');
         setShirtDirection(Math.random() > 0.5 ? 'left' : 'right');
         setBodyDirection(Math.random() > 0.5 ? 'left' : 'right');
+        setTimeout(() => setAnimatingLayer(null), 500);
+    };
+
+    // Themed Randomizer
+    const shuffleThemed = (theme) => {
+        const newSelection = { ...selectedAttributes };
+        attributesConfig.forEach(cat => {
+            let pool = cat.items;
+            if (theme === 'cosmic') {
+                if (cat.id === 'background') pool = cat.items.filter(i => ['Midnight', 'Sunset Drive', 'Neon Cyber', 'Midnight City', 'Lava Flow'].includes(i.label));
+                if (cat.id === 'body') pool = cat.items.filter(i => ['Chrome', 'Ghost', 'Alien', 'Robot'].includes(i.label));
+                if (cat.id === 'vibe') pool = cat.items.filter(i => ['Matrix', 'Dreamy'].includes(i.label));
+                if (cat.id === 'eyes') pool = cat.items.filter(i => ['White', 'Teal', 'Yellow'].includes(i.label));
+            } else if (theme === 'tough') {
+                if (cat.id === 'background') pool = cat.items.filter(i => ['Midnight', 'Charcoal', 'Crimson', 'Lava Flow'].includes(i.label));
+                if (cat.id === 'body') pool = cat.items.filter(i => ['Black', 'Tiger', 'Camo', 'Zombie'].includes(i.label));
+                if (cat.id === 'shirt') pool = cat.items.filter(i => ['Biker', 'SWAT', 'Hilfiger'].includes(i.label));
+                if (cat.id === 'hat') pool = cat.items.filter(i => ['Army', 'Police', 'Viking'].includes(i.label));
+                if (cat.id === 'vibe') pool = cat.items.filter(i => ['Noir'].includes(i.label));
+            } else if (theme === 'party') {
+                if (cat.id === 'background') pool = cat.items.filter(i => ['Cat Yellow', 'Emerald', 'Hot Pink', 'Cotton Candy'].includes(i.label));
+                if (cat.id === 'body') pool = cat.items.filter(i => ['Rainbow', 'Gold'].includes(i.label));
+                if (cat.id === 'vibe') pool = cat.items.filter(i => ['Vibrant'].includes(i.label));
+                if (cat.id === 'speech') pool = cat.items.filter(i => ['GM', 'WAGMI', 'Meow'].includes(i.label));
+            }
+
+            if (pool.length > 0) {
+                newSelection[cat.id] = pool[Math.floor(Math.random() * pool.length)];
+            }
+        });
+        setSelectedAttributes(newSelection);
+        setAnimatingLayer('all');
+        setIsExploding(true);
+        setTimeout(() => setIsExploding(false), 600);
         setTimeout(() => setAnimatingLayer(null), 500);
     };
 
@@ -134,6 +166,12 @@ export default function PfpGenerator() {
 
         ctx.save();
         ctx.scale(4, 4); // Scale everything up 4x (512 -> 2048)
+
+        // Apply Vibe Filter if any
+        const vibe = selectedAttributes['vibe'];
+        if (vibe && vibe.value && vibe.value !== 'none') {
+            ctx.filter = vibe.value;
+        }
 
         // Create clipping path based on shape
         ctx.beginPath();
@@ -313,13 +351,39 @@ export default function PfpGenerator() {
                 }
             }
 
-            if (item.text) {
+            // Draw Speech Bubbles
+            if (cat.id === 'speech' && item.text) {
+                ctx.save();
+                ctx.font = 'bold 32px Arial';
+                const textWidth = ctx.measureText(item.text).width;
+                const bubbleW = textWidth + 40;
+                const bubbleH = 60;
+                const bx = 460 - bubbleW;
+                const by = 50;
+
                 ctx.fillStyle = 'white';
-                ctx.font = 'bold 40px Arial';
-                ctx.fillText(item.text, 50 + cat.zIndex * 2, 50 + cat.zIndex * 5);
+                ctx.strokeStyle = 'black';
+                ctx.lineWidth = 3;
+
+                ctx.beginPath();
+                ctx.roundRect(bx, by, bubbleW, bubbleH, 20);
+                ctx.fill();
+                ctx.stroke();
+
+                ctx.beginPath();
+                ctx.moveTo(bx + bubbleW * 0.3, by + bubbleH);
+                ctx.lineTo(bx + bubbleW * 0.25, by + bubbleH + 15);
+                ctx.lineTo(bx + bubbleW * 0.4, by + bubbleH);
+                ctx.fill();
+                ctx.stroke();
+
+                ctx.fillStyle = 'black';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(item.text, bx + bubbleW / 2, by + bubbleH / 2 + 2);
+                ctx.restore();
             }
         }
-
         ctx.restore(); // Restore scale
     };
 
@@ -506,8 +570,8 @@ export default function PfpGenerator() {
     );
 
     // Split categories for desktop wings with specific order
-    const leftIds = ['background', 'border_color', 'border_style', 'border_width', 'body', 'shirt'];
-    const rightIds = ['chain', 'eyes', 'mouth', 'glasses', 'hat', 'costume'];
+    const leftIds = ['background', 'body', 'shirt', 'costume', 'vibe'];
+    const rightIds = ['chain', 'eyes', 'mouth', 'glasses', 'hat', 'border_color', 'border_style', 'border_width', 'speech'];
 
     const leftCategories = leftIds.map(id => attributesConfig.find(c => c.id === id)).filter(Boolean);
     const rightCategories = rightIds.map(id => attributesConfig.find(c => c.id === id)).filter(Boolean);
@@ -533,6 +597,9 @@ export default function PfpGenerator() {
                 {/* Main Composition Area */}
                 <div
                     className={`relative w-auto h-[85%] aspect-square bg-black shadow-2xl overflow-hidden border-4 border-white/10 group z-10 transition-all duration-300 ease-spring ${pfpShape === 'circle' ? 'rounded-full' : 'rounded-[60px]'}`}
+                    style={{
+                        filter: selectedAttributes['vibe']?.value || 'none'
+                    }}
                 >
 
 
@@ -605,7 +672,16 @@ export default function PfpGenerator() {
                                     </div>
                                 )}
 
-                                {/* Image Assets */}
+                                {item.text && cat.id === 'speech' && (
+                                    <div className="absolute top-[10%] right-[10%] z-[95] animate-pop-in pointer-events-none">
+                                        <div className="relative bg-white text-black px-4 py-2 rounded-2xl shadow-xl border-2 border-black font-bold text-lg whitespace-nowrap min-w-[80px] text-center">
+                                            {item.text}
+                                            {/* Pointer */}
+                                            <div className="absolute bottom-[-10px] left-[20%] w-0 h-0 border-l-[10px] border-l-transparent border-r-[10px] border-r-transparent border-t-[10px] border-t-white"></div>
+                                            <div className="absolute bottom-[-13px] left-[20%] w-0 h-0 border-l-[11px] border-l-transparent border-r-[11px] border-r-transparent border-t-[11px] border-t-black -z-10"></div>
+                                        </div>
+                                    </div>
+                                )}
                                 {item.src && (
                                     <div className="w-full h-full relative pointer-events-none">
                                         <Image
