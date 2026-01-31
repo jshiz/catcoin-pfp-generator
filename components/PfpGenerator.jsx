@@ -449,10 +449,9 @@ export default function PfpGenerator() {
                                             />
                                         )}
                                         {cat.id === 'border_width' && (
-                                            <div className="bg-white rounded-full"
+                                            <div className="w-[60%] h-[60%] border-white border"
                                                 style={{
-                                                    width: item.value / 2 + 'px',
-                                                    height: item.value / 2 + 'px'
+                                                    borderWidth: Math.max(2, item.value / 4) + 'px'
                                                 }}
                                             />
                                         )}
@@ -614,7 +613,7 @@ export default function PfpGenerator() {
                                 )}
 
                                 {/* Placeholder Shapes (Legacy Colors) */}
-                                {item.color && !['background', 'border'].includes(cat.id) && !item.src && (
+                                {item.color && !['background', 'border', 'border_color'].includes(cat.id) && !item.src && (
                                     // Centered layered rects for accessories
                                     <div
                                         className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
