@@ -831,13 +831,13 @@ export default function PfpGenerator() {
                             </button>
                         </div>
 
-                        <div className="flex flex-col min-w-0 sm:min-w-[100px] lg:min-w-[150px] max-w-[100px] lg:max-w-[200px] border-l border-white/10 pl-1.5 lg:pl-3 overflow-hidden">
-                            <div className="flex items-center gap-1 text-[7px] lg:text-[8px] font-bold text-cat-yellow tracking-widest opacity-60 uppercase">
+                        <div className="flex flex-col justify-center min-w-0 sm:min-w-[100px] lg:min-w-[150px] max-w-[100px] lg:max-w-[200px] border-l border-white/10 pl-1.5 lg:pl-3 overflow-hidden h-7 lg:h-9">
+                            <div className="flex items-center gap-1 text-[7px] lg:text-[8px] font-bold text-cat-yellow tracking-widest opacity-60 uppercase leading-none">
                                 <Music size={7} className="lg:w-2 lg:h-2" />
                                 Radio
                             </div>
-                            <div className="relative w-full overflow-hidden h-3 lg:h-auto">
-                                <div className="text-[9px] lg:text-[11px] font-bold text-white whitespace-nowrap animate-radio-marquee inline-block">
+                            <div className="relative w-full overflow-hidden h-4 lg:h-auto mt-0.5">
+                                <div className="text-[9px] lg:text-[11px] font-bold text-white whitespace-nowrap animate-radio-marquee inline-block leading-none">
                                     {songs[currentSongIndex].title}
                                 </div>
                             </div>
