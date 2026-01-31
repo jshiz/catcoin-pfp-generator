@@ -12,9 +12,12 @@ export default function PfpGenerator() {
     const [selectedAttributes, setSelectedAttributes] = useState(() => {
         const initial = {};
         attributesConfig.forEach(cat => {
-            if (cat.id === 'body') {
-                // Ensure default body is 'body_1' (Basic) or first non-hidden
-                initial[cat.id] = cat.items.find(i => !i.hidden) || cat.items[0];
+            if (cat.id === 'background') {
+                initial[cat.id] = cat.items.find(i => i.id === 'bg_1') || cat.items[0];
+            } else if (cat.id === 'body') {
+                initial[cat.id] = cat.items.find(i => i.id === 'body_1') || cat.items[0];
+            } else if (cat.id === 'hat') {
+                initial[cat.id] = cat.items.find(i => i.id === 'hat_13') || cat.items[0];
             } else {
                 initial[cat.id] = cat.items[0];
             }
@@ -76,9 +79,9 @@ export default function PfpGenerator() {
         }
     };
 
-    // Randomize on mount (Client-side only)
+    // Initial setup on mount (Client-side only)
     useEffect(() => {
-        randomize();
+        // No longer randomizing on load as per request
         setAnimatingLayer('all');
         const timer = setTimeout(() => setAnimatingLayer(null), 800);
         return () => clearTimeout(timer);
