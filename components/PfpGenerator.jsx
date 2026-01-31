@@ -843,14 +843,16 @@ export default function PfpGenerator() {
                     <div className="relative flex flex-col items-center justify-center p-4 lg:p-8 h-[45dvh] lg:h-full lg:flex-1 lg:pb-32 shrink-0 overflow-hidden">
                         <ScrollingBackground />
 
-                        <div className={`relative w-full h-[85%] lg:h-[95%] aspect-square shadow-2xl transition-all duration-300 ease-spring ${pfpShape === 'circle' ? 'rounded-full' : 'rounded-none'}`}>
+                        <div
+                            className={`relative w-auto h-[85%] lg:h-[95%] aspect-square shadow-2xl transition-all duration-300 ease-spring ${pfpShape === 'circle' ? 'rounded-full' : 'rounded-none'}`}
+                            style={{ backgroundColor: '#000' }}
+                        >
                             {/* Inner Composition (Clipped Content) */}
                             <div
                                 className={`absolute inset-0 overflow-hidden z-10 ${pfpShape === 'circle' ? 'rounded-full' : 'rounded-none'}`}
                                 style={{
                                     filter: selectedAttributes['vibe']?.value || 'none',
-                                    transform: 'translateZ(0)', // Force GPU
-                                    backgroundColor: '#000'
+                                    transform: 'translateZ(0)' // Force GPU
                                 }}
                             >
                                 {/* Explosion Effect */}
