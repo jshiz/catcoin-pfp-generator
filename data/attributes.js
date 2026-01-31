@@ -177,6 +177,7 @@ export const attributesConfig = [
       { id: 'hat_1', label: 'None', type: 'none' },
       { id: 'hat_2', label: 'Army', src: '/assets/hat/army.png', type: 'image' },
       { id: 'hat_13', label: 'Catcoin', src: '/assets/hat/catcoin.png', type: 'image' },
+      { id: 'hat_14', label: 'Claw', src: '/assets/hat/claw.png', type: 'image' },
       { id: 'hat_6', label: 'Beer', src: '/assets/hat/beer.png', type: 'image' },
       { id: 'hat_3', label: 'Cowboy', src: '/assets/hat/cowboy.png', type: 'image' },
       { id: 'hat_4', label: 'Crown', src: '/assets/hat/crown.png', type: 'image' },
