@@ -567,6 +567,7 @@ export default function PfpGenerator() {
                                             fill
                                             className="object-contain opacity-40 grayscale group-hover/category:opacity-60 transition-opacity"
                                             sizes="120px"
+                                            unoptimized
                                         />
                                     </div>
                                 )}
@@ -578,18 +579,19 @@ export default function PfpGenerator() {
                                             🎨
                                         </div>
                                     ) : (
-                                        <div className="absolute inset-0 pointer-events-none p-2">
+                                        <div className="absolute inset-0 pointer-events-none">
                                             <Image
                                                 src="/assets/body/basic.png"
                                                 alt="Cat Preview"
                                                 fill
                                                 className="object-contain"
                                                 sizes="120px"
+                                                unoptimized
                                             />
                                         </div>
                                     )
                                 ) : (cat.id.startsWith('border') || cat.id === 'vibe' || cat.id === 'speech') ? (
-                                    <div className="absolute inset-0 p-2">
+                                    <div className="absolute inset-0">
                                         {cat.id === 'border_color' && item.color && (
                                             <div className="w-full h-full rounded border-[6px]" style={{ borderColor: item.color }} />
                                         )}
@@ -624,6 +626,7 @@ export default function PfpGenerator() {
                                                     style={{ filter: item.value }}
                                                     className="object-contain"
                                                     sizes="120px"
+                                                    unoptimized
                                                 />
                                                 <div className="absolute bottom-1 inset-x-1 bg-black/80 text-[7px] font-black py-0.5 rounded tracking-tighter uppercase whitespace-nowrap overflow-hidden">
                                                     {item.label}
@@ -636,7 +639,7 @@ export default function PfpGenerator() {
                                             </div>
                                         )}
                                         {item.type === 'none' && (
-                                            <div className="absolute inset-0 z-20 p-2">
+                                            <div className="absolute inset-0 z-20">
                                                 <div className="w-full h-full border-2 border-red-500/40 rounded-full relative overflow-hidden">
                                                     <div className="absolute top-1/2 left-0 w-full h-0.5 bg-red-500/40 rotate-45"></div>
                                                 </div>
@@ -646,19 +649,20 @@ export default function PfpGenerator() {
                                 ) : (
                                     <>
                                         {item.type === 'none' ? (
-                                            <div className="absolute inset-0 z-20 p-2">
+                                            <div className="absolute inset-0 z-20">
                                                 <div className="w-full h-full border-2 border-red-500/40 rounded-full relative overflow-hidden">
                                                     <div className="absolute top-1/2 left-0 w-full h-0.5 bg-red-500/40 rotate-45"></div>
                                                 </div>
                                             </div>
                                         ) : item.src ? (
-                                            <div className="absolute inset-0 z-20 p-1">
+                                            <div className="absolute inset-0 z-20">
                                                 <Image
                                                     src={item.src}
                                                     alt={item.label}
                                                     fill
                                                     className="object-contain"
                                                     sizes="120px"
+                                                    unoptimized
                                                 />
                                             </div>
                                         ) : item.color ? (

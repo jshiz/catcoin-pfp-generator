@@ -5,6 +5,7 @@ export const attributesConfig = [
     zIndex: 10,
     items: [
       { id: 'bg_1', label: 'Midnight', color: '#18181c' },
+      { id: 'bg_custom', label: 'Custom', type: 'custom' },
       { id: 'bg_2', label: 'Cat Yellow', color: '#fad205' },
       { id: 'bg_3', label: 'Deep Blue', color: '#1e3a8a' },
       { id: 'bg_4', label: 'Emerald', color: '#065f46' },
@@ -79,7 +80,6 @@ export const attributesConfig = [
           stops: [[0, '#ef4444'], [0.4, '#991b1b'], [1, '#450a0a']]
         }
       },
-      { id: 'bg_custom', label: 'Custom', type: 'custom' },
     ]
   },
   {
