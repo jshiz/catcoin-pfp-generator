@@ -4,7 +4,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
 import { attributesConfig } from '@/data/attributes';
 import ScrollingBackground from './ScrollingBackground';
-import { Download, Share2, Copy, Shuffle, Camera, Play, Pause, SkipForward, SkipBack, Music, Trash2 } from 'lucide-react';
+import { Download, Share2, Copy, Check, Shuffle, Camera, Play, Pause, SkipForward, SkipBack, Music, Trash2 } from 'lucide-react';
 
 export default function PfpGenerator() {
     // Initialize state with random items
@@ -29,6 +29,7 @@ export default function PfpGenerator() {
     const [costumeDirection, setCostumeDirection] = useState('left');
     const [animatingLayer, setAnimatingLayer] = useState(null);
     const [isExploding, setIsExploding] = useState(false);
+    const [showCopyCheck, setShowCopyCheck] = useState(false);
     const [customBackground, setCustomBackground] = useState({
         color1: '#7c3aed',
         color2: '#1e3a8a',
@@ -514,7 +515,10 @@ export default function PfpGenerator() {
         canvas.toBlob(blob => {
             if (blob) {
                 navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })])
-                    .then(() => alert('Copied to clipboard!'))
+                    .then(() => {
+                        setShowCopyCheck(true);
+                        setTimeout(() => setShowCopyCheck(false), 2000);
+                    })
                     .catch(err => console.error('Copy failed', err));
                 // Restore size
                 canvas.width = 512;
@@ -901,8 +905,14 @@ export default function PfpGenerator() {
                             </button>
                             <div className="w-px bg-white/10 my-2 self-stretch"></div>
                             <button onClick={handleCopy} className="flex items-center gap-2 px-4 py-2 hover:bg-white/10 rounded-full text-white transition-all hover:scale-105 active:scale-95 group" title="Copy">
-                                <Copy size={20} className="group-hover:-rotate-12 transition-transform" />
-                                <span className="font-bold text-sm tracking-wide">COPY</span>
+                                {showCopyCheck ? (
+                                    <Check size={20} className="text-green-500 animate-in zoom-in duration-300" />
+                                ) : (
+                                    <Copy size={20} className="group-hover:-rotate-12 transition-transform" />
+                                )}
+                                <span className={`font-bold text-sm tracking-wide ${showCopyCheck ? 'text-green-500' : ''}`}>
+                                    {showCopyCheck ? 'COPIED' : 'COPY'}
+                                </span>
                             </button>
                             <button onClick={handleDownload} className="flex items-center gap-2 px-6 py-2 bg-cat-yellow text-black rounded-full hover:bg-[#fff04b] transition-all hover:scale-105 active:scale-95 shadow-[0_0_20px_rgba(250,210,5,0.2)] ml-2" title="Save">
                                 <Download size={20} />
@@ -933,8 +943,14 @@ export default function PfpGenerator() {
                         <span className="text-[9px] font-bold text-white/80 uppercase tracking-tighter">Shape</span>
                     </button>
                     <button onClick={handleCopy} className="flex flex-col items-center justify-center p-2 flex-1 bg-white/5 border border-white/10 rounded-xl active:scale-95 transition-transform">
-                        <Copy size={16} className="text-white/60 mb-1" />
-                        <span className="text-[9px] font-bold text-white/80 uppercase tracking-tighter">Copy</span>
+                        {showCopyCheck ? (
+                            <Check size={16} className="text-green-500 animate-in zoom-in duration-300 mb-1" />
+                        ) : (
+                            <Copy size={16} className="text-white/60 mb-1" />
+                        )}
+                        <span className={`text-[9px] font-bold uppercase tracking-tighter ${showCopyCheck ? 'text-green-500' : 'text-white/80'}`}>
+                            {showCopyCheck ? 'Copied' : 'Copy'}
+                        </span>
                     </button>
                     <button onClick={handleClear} className="flex flex-col items-center justify-center p-2 flex-1 bg-white/5 border border-white/10 rounded-xl active:scale-95 transition-transform">
                         <Trash2 size={16} className="text-white/40 mb-1" />
