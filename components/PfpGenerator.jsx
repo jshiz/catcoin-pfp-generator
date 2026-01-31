@@ -507,12 +507,12 @@ export default function PfpGenerator() {
 
     // Render Control Wing
     const renderControls = (categories) => (
-        <div className="flex flex-col gap-1 p-2 h-full overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none']">
+        <div className="flex flex-col gap-0.5 p-2 h-full overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none']">
             {categories.map(cat => (
                 <div key={cat.id} className="space-y-1">
                     <h3 className="text-cat-yellow font-bold uppercase tracking-wider text-[10px] md:text-xs">{cat.label}</h3>
                     {/* Updated density: 8 columns per row for smaller buttons */}
-                    <div className="grid grid-cols-8 gap-1">
+                    <div className="grid grid-cols-8 lg:grid-cols-10 gap-0.5">
 
                         {/* Render actual items, filtering out hidden ones */}
                         {cat.items.filter(i => !i.hidden).map(item => (
@@ -658,7 +658,7 @@ export default function PfpGenerator() {
 
                         {/* Redesigned Mixer UI */}
                         {cat.id === 'background' && selectedAttributes['background']?.id === 'bg_custom' && (
-                            <div className="col-span-8 md:col-span-4 flex flex-col gap-1 p-1.5 bg-white/5 rounded-md border border-white/10 animate-fade-in">
+                            <div className="col-span-8 lg:col-span-10 flex flex-col gap-1 p-1.5 bg-white/5 rounded-md border border-white/10 animate-fade-in">
                                 <div className="flex bg-black/40 rounded-sm p-0.5 gap-0.5">
                                     <button
                                         onClick={() => setCustomBackground(prev => ({ ...prev, type: 'solid' }))}
