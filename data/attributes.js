@@ -132,7 +132,7 @@ export const attributesConfig = [
       { id: 'vibe_matrix', label: 'Matrix', value: 'hue-rotate(90deg) saturate(2) brightness(0.8)' },
       { id: 'vibe_neon', label: 'Vibrant', value: 'saturate(2.5) contrast(1.2)' },
       { id: 'vibe_dreamy', label: 'Dreamy', value: 'brightness(1.1) saturate(1.2) blur(0.5px)' },
-      { id: 'vibe_pixel', label: '8-Bit', value: 'url(#pixelate)' }, // We'll need SVG filter for this or simulated
+      { id: 'vibe_8bit', label: '8-Bit', value: 'url(#pixelate)' }, // We'll need SVG filter for this or simulated
       { id: 'vibe_ghostly', label: 'Ghostly', value: 'opacity(0.8) brightness(1.5) saturate(0.5)' },
       { id: 'vibe_rainbow', label: 'Rainbow', value: 'hue-rotate(360deg)' }, // Animate? No static hue shift 
       { id: 'vibe_glitch', label: 'Glitch', value: 'contrast(1.5) hue-rotate(200deg)' },

@@ -167,24 +167,29 @@ export default function PfpGenerator() {
         // Clear canvas (assuming 2048x2048 size, logic scale 4x)
         // We will scale the context so 512 units = 2048 pixels
         // But first clear in pixel space
-        ctx.clearRect(0, 0, 2048, 2048);
+        const canvas = ctx.canvas;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
 
         ctx.save();
         ctx.scale(4, 4); // Scale everything up 4x (512 -> 2048)
 
-        // Apply Vibe Filter if any
+        // Apply Vibe filter if selected
         const vibe = selectedAttributes['vibe'];
-        if (vibe && vibe.value && vibe.value !== 'none') {
-            ctx.filter = vibe.value;
+        if (vibe && vibe.type !== 'none') {
+            if (vibe.id === 'vibe_8bit' && ctx.canvas.width > 1000) {
+                ctx.filter = 'url(#pixelate-highres)';
+            } else {
+                ctx.filter = vibe.value;
+            }
         }
 
-        // Create clipping path based on shape
+        // Create clipping path based on shape (Scaled Space)
         ctx.beginPath();
         if (pfpShape === 'circle') {
             ctx.arc(256, 256, 256, 0, Math.PI * 2);
         } else {
-            // Square with rounded corners (matches rounded-[60px] roughly)
-            ctx.roundRect(0, 0, 512, 512, 60);
+            // Perfect Square (no rounding)
+            ctx.rect(0, 0, 512, 512);
         }
         ctx.clip();
 
@@ -545,12 +550,23 @@ export default function PfpGenerator() {
                                             />
                                         )}
                                         {cat.id === 'vibe' && item.type !== 'none' && (
-                                            <div className="absolute inset-0 flex flex-col items-center justify-center p-1 text-[8px] leading-tight font-bold text-center bg-black/40">
-                                                <span className="truncate w-full">{item.label}</span>
+                                            <div className="absolute inset-0 z-20">
+                                                <div className="absolute inset-0 bg-black/20 z-10" />
+                                                <Image
+                                                    src="/assets/body/basic.png"
+                                                    alt={item.label}
+                                                    fill
+                                                    style={{ filter: item.value }}
+                                                    className="object-contain"
+                                                    sizes="100px"
+                                                />
+                                                <div className="absolute bottom-0 inset-x-0 bg-black/60 text-[8px] font-bold py-0.5 z-20">
+                                                    {item.label}
+                                                </div>
                                             </div>
                                         )}
                                         {cat.id === 'speech' && item.type !== 'none' && (
-                                            <div className="absolute inset-0 flex items-center justify-center text-xl">
+                                            <div className="absolute inset-0 flex items-center justify-center text-xl z-20">
                                                 {item.emoji || '💬'}
                                             </div>
                                         )}
@@ -661,7 +677,7 @@ export default function PfpGenerator() {
                 {/* Main Composition Area */}
                 {/* Main Composition Area */}
                 <div
-                    className={`relative w-auto h-[85%] aspect-square bg-black shadow-2xl overflow-hidden border-4 border-white/10 group z-10 transition-all duration-300 ease-spring ${pfpShape === 'circle' ? 'rounded-full' : 'rounded-[60px]'}`}
+                    className={`relative w-auto h-[85%] aspect-square bg-black shadow-2xl overflow-hidden border-4 border-white/10 group z-10 transition-all duration-300 ease-spring ${pfpShape === 'circle' ? 'rounded-full' : 'rounded-none'}`}
                     style={{
                         filter: selectedAttributes['vibe']?.value || 'none'
                     }}
@@ -803,6 +819,13 @@ export default function PfpGenerator() {
                             <feTile result="a" />
                             <feComposite in="SourceGraphic" in2="a" operator="in" />
                             <feMorphology operator="dilate" radius="3" />
+                        </filter>
+                        <filter id="pixelate-highres" x="0" y="0" width="100%" height="100%">
+                            <feFlood x="12" y="12" height="6" width="6" />
+                            <feComposite width="24" height="24" />
+                            <feTile result="a" />
+                            <feComposite in="SourceGraphic" in2="a" operator="in" />
+                            <feMorphology operator="dilate" radius="10" />
                         </filter>
                     </svg>
                 </div>
