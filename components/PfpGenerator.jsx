@@ -774,12 +774,12 @@ export default function PfpGenerator() {
                 {/* CENTER COLUMN (Preview + Mobile Controls) */}
                 <div className="flex flex-col flex-1 overflow-hidden order-1 lg:order-2">
                     {/* Preview Stage */}
-                    <div className="relative flex flex-col items-center justify-center p-4 lg:p-8 h-[45dvh] lg:h-full lg:flex-1 lg:pb-56 shrink-0 overflow-hidden">
+                    <div className="relative flex flex-col items-center justify-center p-4 lg:p-8 h-[45dvh] lg:h-full lg:flex-1 lg:pb-32 shrink-0 overflow-hidden">
                         <ScrollingBackground />
 
                         {/* Main Composition Area */}
                         <div
-                            className={`relative w-auto h-[85%] aspect-square bg-black shadow-2xl overflow-hidden border-4 border-white/10 group z-10 transition-all duration-300 ease-spring ${pfpShape === 'circle' ? 'rounded-full' : 'rounded-none'}`}
+                            className={`relative w-auto h-[85%] lg:h-[95%] aspect-square bg-black shadow-2xl overflow-hidden border-4 border-white/10 group z-10 transition-all duration-300 ease-spring ${pfpShape === 'circle' ? 'rounded-full' : 'rounded-none'}`}
                             style={{
                                 filter: selectedAttributes['vibe']?.value || 'none'
                             }}
