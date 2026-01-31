@@ -419,26 +419,27 @@ export default function PfpGenerator() {
             // Draw Speech Bubbles
             if (cat.id === 'speech' && item.text) {
                 ctx.save();
-                ctx.font = 'bold 32px Arial';
+                ctx.font = 'bold 28px Arial';
                 const textWidth = ctx.measureText(item.text).width;
-                const bubbleW = textWidth + 40;
-                const bubbleH = 60;
-                const bx = 460 - bubbleW;
-                const by = 50;
+                const bubbleW = Math.min(textWidth + 40, 400);
+                const bubbleH = 54;
+                const bx = 480 - bubbleW;
+                const by = 260; // Lowered to near mouth
 
                 ctx.fillStyle = 'white';
                 ctx.strokeStyle = 'black';
                 ctx.lineWidth = 3;
 
                 ctx.beginPath();
-                ctx.roundRect(bx, by, bubbleW, bubbleH, 20);
+                ctx.roundRect(bx, by, bubbleW, bubbleH, 18);
                 ctx.fill();
                 ctx.stroke();
 
+                // Pointer
                 ctx.beginPath();
-                ctx.moveTo(bx + bubbleW * 0.3, by + bubbleH);
-                ctx.lineTo(bx + bubbleW * 0.25, by + bubbleH + 15);
-                ctx.lineTo(bx + bubbleW * 0.4, by + bubbleH);
+                ctx.moveTo(bx + 20, by + bubbleH);
+                ctx.lineTo(bx + 5, by + bubbleH + 15);
+                ctx.lineTo(bx + 40, by + bubbleH);
                 ctx.fill();
                 ctx.stroke();
 
@@ -505,44 +506,45 @@ export default function PfpGenerator() {
         });
     };
 
-    // Render Control Wing
+    // Render Control Wing (Now a horizontal category stack)
     const renderControls = (categories) => (
-        <div className="flex flex-col gap-0.5 p-2 h-full overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none']">
+        <div className="flex flex-col gap-6 py-4 px-2 lg:px-6 h-full overflow-y-auto w-full">
             {categories.map(cat => (
-                <div key={cat.id} className="space-y-1">
-                    <h3 className="text-cat-yellow font-bold uppercase tracking-wider text-[10px] md:text-xs">{cat.label}</h3>
-                    {/* Updated density: 8 columns per row for smaller buttons */}
-                    <div className="grid grid-cols-8 lg:grid-cols-10 gap-0.5">
+                <div key={cat.id} className="space-y-2 group/category">
+                    <div className="flex items-center gap-2 px-1">
+                        <div className="w-1 h-3 bg-cat-yellow rounded-full"></div>
+                        <h3 className="text-white font-black uppercase tracking-tight text-xs lg:text-sm">{cat.label}</h3>
+                    </div>
 
+                    {/* Horizontal Scrollable Row */}
+                    <div className="flex gap-2 overflow-x-auto pb-3 pt-1 scroll-smooth snap-x snap-mandatory [&::-webkit-scrollbar]:h-1 [&::-webkit-scrollbar-thumb]:bg-white/10 [&::-webkit-scrollbar-thumb]:rounded-full hover:[&::-webkit-scrollbar-thumb]:bg-white/20">
                         {/* Render actual items, filtering out hidden ones */}
                         {cat.items.filter(i => !i.hidden).map(item => (
                             <button
                                 key={item.id}
                                 onClick={() => handleAttributeSelect(cat.id, item)}
                                 className={`
-                  aspect-square border transition-all hover:scale-110 active:scale-95 relative overflow-hidden rounded-md group
-                  ${selectedAttributes[cat.id]?.id === item.id
-                                        ? 'border-cat-yellow shadow-[0_0_8px_#fad205] z-10'
-                                        : 'border-white/10 hover:border-white/30'}
-                `}
+                                    flex-shrink-0 w-[23%] lg:w-[120px] aspect-square border transition-all hover:scale-105 active:scale-95 relative overflow-hidden rounded-xl snap-start
+                                    ${selectedAttributes[cat.id]?.id === item.id
+                                        ? 'border-cat-yellow ring-2 ring-cat-yellow/20 shadow-[0_0_15px_rgba(250,210,5,0.2)] bg-white/5'
+                                        : 'border-white/10 bg-[#1e1e24] hover:border-white/30'}
+                                `}
                                 title={item.label}
                             >
                                 {/* BASE LAYER */}
                                 {cat.id === 'background' || cat.id === 'speech' ? (
-                                    // For background/speech: No cat base
                                     <div
                                         className="absolute inset-0"
                                         style={{ background: item.color || '#2a2a2e' }}
                                     />
                                 ) : (
-                                    // For others (and costume now): Basic Cat is Base
-                                    <div className="absolute inset-0 bg-[#2a2a2e]">
+                                    <div className="absolute inset-0 bg-black/20">
                                         <Image
                                             src="/assets/body/basic.png"
                                             alt="Base"
                                             fill
-                                            className="object-contain opacity-50 grayscale transition-all group-hover:opacity-100 group-hover:grayscale-0"
-                                            sizes="100px"
+                                            className="object-contain opacity-40 grayscale group-hover/category:opacity-60 transition-opacity"
+                                            sizes="120px"
                                         />
                                     </div>
                                 )}
@@ -550,26 +552,24 @@ export default function PfpGenerator() {
                                 {/* OVERLAY LAYER (The Item) */}
                                 {cat.id === 'background' ? (
                                     item.type === 'custom' ? (
-                                        <div className="absolute inset-0 flex items-center justify-center text-xl z-20">
+                                        <div className="absolute inset-0 flex items-center justify-center text-2xl z-20">
                                             🎨
                                         </div>
                                     ) : (
-                                        // For background: Basic Cat is Top (to show contrast)
-                                        <div className="absolute inset-0 pointer-events-none">
+                                        <div className="absolute inset-0 pointer-events-none p-2">
                                             <Image
                                                 src="/assets/body/basic.png"
                                                 alt="Cat Preview"
                                                 fill
                                                 className="object-contain"
-                                                sizes="100px"
+                                                sizes="120px"
                                             />
                                         </div>
                                     )
                                 ) : (cat.id.startsWith('border') || cat.id === 'vibe' || cat.id === 'speech') ? (
-                                    // Border Control Previews
-                                    <div className="absolute inset-0">
+                                    <div className="absolute inset-0 p-2">
                                         {cat.id === 'border_color' && item.color && (
-                                            <div className="w-full h-full rounded border-4" style={{ borderColor: item.color }} />
+                                            <div className="w-full h-full rounded border-[6px]" style={{ borderColor: item.color }} />
                                         )}
                                         {cat.id === 'border_style' && (
                                             <div className="w-full h-full rounded border-white"
@@ -577,78 +577,74 @@ export default function PfpGenerator() {
                                                     border: (() => {
                                                         const s = item.value;
                                                         if (['double', 'dashed', 'dotted', 'groove', 'ridge', 'inset', 'outset'].includes(s)) {
-                                                            return `3px ${s} #fff`;
+                                                            return `4px ${s} #fff`;
                                                         }
-                                                        return '3px solid #fff';
+                                                        return '4px solid #fff';
                                                     })(),
-                                                    boxShadow: item.value === 'neon' ? '0 0 5px #fff, inset 0 0 3px #fff' : 'none',
-                                                    backgroundColor: 'transparent',
+                                                    boxShadow: item.value === 'neon' ? '0 0 10px #fff' : 'none',
                                                 }}
-                                            >
-                                            </div>
+                                            />
                                         )}
                                         {cat.id === 'border_width' && (
                                             <div className="w-full h-full border-white/80"
                                                 style={{
-                                                    borderWidth: Math.max(1, item.value / 3) + 'px',
+                                                    borderWidth: Math.max(2, item.value / 3) + 'px',
                                                     borderStyle: 'solid'
                                                 }}
                                             />
                                         )}
                                         {cat.id === 'vibe' && item.type !== 'none' && (
                                             <div className="absolute inset-0 z-20">
-                                                <div className="absolute inset-0 bg-black/20 z-10" />
                                                 <Image
                                                     src="/assets/body/basic.png"
                                                     alt={item.label}
                                                     fill
                                                     style={{ filter: item.value }}
                                                     className="object-contain"
-                                                    sizes="100px"
+                                                    sizes="120px"
                                                 />
-                                                <div className="absolute bottom-0 inset-x-0 bg-black/60 text-[8px] font-bold py-0.5 z-20">
+                                                <div className="absolute bottom-1 inset-x-1 bg-black/80 text-[7px] font-black py-0.5 rounded tracking-tighter uppercase whitespace-nowrap overflow-hidden">
                                                     {item.label}
                                                 </div>
                                             </div>
                                         )}
                                         {cat.id === 'speech' && item.type !== 'none' && (
-                                            <div className="absolute inset-0 flex items-center justify-center text-xl z-20">
+                                            <div className="absolute inset-0 flex items-center justify-center text-3xl z-20">
                                                 {item.emoji || '💬'}
                                             </div>
                                         )}
                                         {item.type === 'none' && (
-                                            <div className="absolute inset-0 z-20 opacity-70">
-                                                <div className="absolute inset-0 border-[2px] border-red-500/50"></div>
-                                                <div className="absolute top-0 left-0 w-full h-full border-t-[2px] border-red-500/50 origin-top-left rotate-45 scale-[1.45]"></div>
+                                            <div className="absolute inset-0 z-20 p-2">
+                                                <div className="w-full h-full border-2 border-red-500/40 rounded-full relative overflow-hidden">
+                                                    <div className="absolute top-1/2 left-0 w-full h-0.5 bg-red-500/40 rotate-45"></div>
+                                                </div>
                                             </div>
                                         )}
                                     </div>
                                 ) : (
-                                    // For others: Item is Top
                                     <>
                                         {item.type === 'none' ? (
-                                            <div className="absolute inset-0 z-20 opacity-70">
-                                                <div className="absolute inset-0 border-[2px] border-red-500/50"></div>
-                                                <div className="absolute top-0 left-0 w-full h-full border-t-[2px] border-red-500/50 origin-top-left rotate-45 scale-[1.45]"></div>
+                                            <div className="absolute inset-0 z-20 p-2">
+                                                <div className="w-full h-full border-2 border-red-500/40 rounded-full relative overflow-hidden">
+                                                    <div className="absolute top-1/2 left-0 w-full h-0.5 bg-red-500/40 rotate-45"></div>
+                                                </div>
                                             </div>
                                         ) : item.src ? (
-                                            <div className="absolute inset-0 z-20">
+                                            <div className="absolute inset-0 z-20 p-1">
                                                 <Image
                                                     src={item.src}
                                                     alt={item.label}
                                                     fill
                                                     className="object-contain"
-                                                    sizes="100px"
+                                                    sizes="120px"
                                                 />
                                             </div>
                                         ) : item.color ? (
-                                            // Color shapes layer
                                             <div className="absolute inset-0 z-20 flex items-center justify-center">
                                                 <div
                                                     style={{ backgroundColor: item.color }}
-                                                    className={`w-3/4 h-3/4 shadow-sm ${cat.id === 'glasses' ? '' : 'rounded-full'}`}
+                                                    className={`w-2/3 h-2/3 shadow-lg ${cat.id === 'glasses' ? '' : 'rounded-full'}`}
                                                 />
-                                                {item.text && <span className="absolute text-white text-[8px] bottom-1 right-1 font-bold">{item.text}</span>}
                                             </div>
                                         ) : null}
                                     </>
@@ -656,50 +652,40 @@ export default function PfpGenerator() {
                             </button>
                         ))}
 
-                        {/* Redesigned Mixer UI */}
+                        {/* Redesigned Wide Mixer for Horizontal Flow */}
                         {cat.id === 'background' && selectedAttributes['background']?.id === 'bg_custom' && (
-                            <div className="col-span-8 lg:col-span-10 flex flex-col gap-1 p-1.5 bg-white/5 rounded-md border border-white/10 animate-fade-in">
-                                <div className="flex bg-black/40 rounded-sm p-0.5 gap-0.5">
-                                    <button
-                                        onClick={() => setCustomBackground(prev => ({ ...prev, type: 'solid' }))}
-                                        className={`flex-1 text-[8px] font-bold py-1 rounded-sm transition-colors ${customBackground.type === 'solid' ? 'bg-cat-yellow text-black' : 'hover:bg-white/5 text-white/50'}`}
-                                    >
-                                        SOLID
-                                    </button>
-                                    <button
-                                        onClick={() => setCustomBackground(prev => ({ ...prev, type: 'linear' }))}
-                                        className={`flex-1 text-[8px] font-bold py-1 rounded-sm transition-colors ${customBackground.type === 'linear' ? 'bg-cat-yellow text-black' : 'hover:bg-white/5 text-white/50'}`}
-                                    >
-                                        LIN
-                                    </button>
-                                    <button
-                                        onClick={() => setCustomBackground(prev => ({ ...prev, type: 'radial' }))}
-                                        className={`flex-1 text-[8px] font-bold py-1 rounded-sm transition-colors ${customBackground.type === 'radial' ? 'bg-cat-yellow text-black' : 'hover:bg-white/5 text-white/50'}`}
-                                    >
-                                        RAD
-                                    </button>
+                            <div className="flex-shrink-0 w-[280px] flex items-center gap-3 p-3 bg-white/5 rounded-xl border border-white/10 animate-fade-in snap-start">
+                                <div className="flex flex-col gap-1 w-[80px]">
+                                    {['solid', 'linear', 'radial'].map(type => (
+                                        <button
+                                            key={type}
+                                            onClick={() => setCustomBackground(prev => ({ ...prev, type }))}
+                                            className={`text-[8px] font-black py-1 rounded transition-colors uppercase ${customBackground.type === type ? 'bg-cat-yellow text-black shadow-lg shadow-cat-yellow/20' : 'bg-white/5 hover:bg-white/10 text-white/50'}`}
+                                        >
+                                            {type.slice(0, 3)}
+                                        </button>
+                                    ))}
                                 </div>
-                                <div className="flex justify-center items-center gap-3 py-1">
+                                <div className="w-px h-full bg-white/10"></div>
+                                <div className="flex-1 flex gap-3 justify-center">
                                     <div className="relative group/swatch">
                                         <input
                                             type="color"
                                             value={customBackground.color1}
                                             onChange={(e) => setCustomBackground(prev => ({ ...prev, color1: e.target.value }))}
-                                            className="w-7 h-7 rounded-full bg-transparent border-2 border-white/20 cursor-pointer overflow-hidden p-0"
-                                            style={{ color: 'transparent' }}
+                                            className="w-10 h-10 rounded-full bg-transparent border-2 border-white/20 cursor-pointer overflow-hidden p-0"
                                         />
-                                        <div className="absolute -top-4 left-1/2 -translate-x-1/2 text-[6px] font-bold text-white/40 opacity-0 group-hover/swatch:opacity-100 uppercase">A</div>
+                                        <span className="absolute -bottom-4 left-1/2 -translate-x-1/2 text-[8px] font-bold text-white/40">A</span>
                                     </div>
-
                                     {customBackground.type !== 'solid' && (
                                         <div className="relative group/swatch">
                                             <input
                                                 type="color"
                                                 value={customBackground.color2}
                                                 onChange={(e) => setCustomBackground(prev => ({ ...prev, color2: e.target.value }))}
-                                                className="w-7 h-7 rounded-full bg-transparent border-2 border-white/20 cursor-pointer overflow-hidden p-0"
+                                                className="w-10 h-10 rounded-full bg-transparent border-2 border-white/20 cursor-pointer overflow-hidden p-0"
                                             />
-                                            <div className="absolute -top-4 left-1/2 -translate-x-1/2 text-[6px] font-bold text-white/40 opacity-0 group-hover/swatch:opacity-100 uppercase">B</div>
+                                            <span className="absolute -bottom-4 left-1/2 -translate-x-1/2 text-[8px] font-bold text-white/40">B</span>
                                         </div>
                                     )}
                                 </div>
@@ -782,14 +768,9 @@ export default function PfpGenerator() {
                 </div>
             </header>
 
-            <div className="flex flex-col lg:flex-row flex-1 overflow-hidden">
-                {/* LEFT WING (Desktop) */}
-                <div className="hidden lg:block w-1/4 border-r border-white/10 bg-[#18181c]/50 backdrop-blur-sm z-10 order-1 h-full overflow-hidden">
-                    {renderControls(leftCategories)}
-                </div>
-
-                {/* CENTER STAGE */}
-                <div className="relative flex flex-col items-center justify-center p-2 lg:pt-10 lg:pb-32 lg:px-10 order-1 lg:order-2 shrink-0 lg:flex-1 h-[35dvh] lg:h-auto overflow-hidden">
+            <div className="flex flex-col flex-1 overflow-hidden">
+                {/* CENTER STAGE (Top half, centered) */}
+                <div className="relative flex flex-col items-center justify-center p-4 lg:p-8 shrink-0 h-[45dvh] lg:h-[60dvh] w-full overflow-hidden">
                     <ScrollingBackground />
 
                     {/* Main Composition Area */}
@@ -880,15 +861,15 @@ export default function PfpGenerator() {
                                         <div
                                             className={`absolute z-[95] animate-pop-in pointer-events-none transition-all duration-500`}
                                             style={{
-                                                top: pfpShape === 'circle' ? '35%' : '10%',
-                                                right: pfpShape === 'circle' ? '15%' : '10%',
+                                                top: pfpShape === 'circle' ? '52%' : '54%',
+                                                right: pfpShape === 'circle' ? '6%' : '4%',
                                             }}
                                         >
-                                            <div className="relative bg-white text-black px-4 py-2 rounded-2xl shadow-xl border-2 border-black font-bold text-lg whitespace-nowrap min-w-[80px] text-center">
+                                            <div className="relative bg-white text-black px-4 py-2 rounded-2xl shadow-2xl border-2 border-black font-black text-sm lg:text-base max-w-[200px] text-center leading-tight">
                                                 {item.text}
                                                 {/* Pointer */}
-                                                <div className="absolute bottom-[-10px] left-[20%] w-0 h-0 border-l-[10px] border-l-transparent border-r-[10px] border-r-transparent border-t-[10px] border-t-white"></div>
-                                                <div className="absolute bottom-[-13px] left-[20%] w-0 h-0 border-l-[11px] border-l-transparent border-r-[11px] border-r-transparent border-t-[11px] border-t-black -z-10"></div>
+                                                <div className="absolute bottom-[-10px] left-[15%] w-0 h-0 border-l-[10px] border-l-transparent border-r-[10px] border-r-transparent border-t-[10px] border-t-white"></div>
+                                                <div className="absolute bottom-[-13px] left-[15%] w-0 h-0 border-l-[11px] border-l-transparent border-r-[11px] border-r-transparent border-t-[11px] border-t-black -z-10"></div>
                                             </div>
                                         </div>
                                     )}
@@ -989,51 +970,49 @@ export default function PfpGenerator() {
                     </div>
                 </div>
 
-                {/* RIGHT WING (Desktop) */}
-                <div className="hidden lg:block w-1/4 border-l border-white/10 bg-[#18181c]/50 backdrop-blur-sm z-10 order-3 h-full overflow-hidden">
-                    {renderControls(rightCategories)}
-                </div>
-
-                {/* Mobile Controls Container (Scrollable) */}
-                <div className="lg:hidden w-full order-3 flex-1 overflow-y-auto bg-[#18181c] px-4 pt-2 pb-24 border-t border-white/10">
+                {/* CONTROLS AREA (Scrollable Categories) */}
+                <div className="flex-1 overflow-hidden bg-[#18181c] border-t border-white/10 flex flex-col pt-2 pb-20 lg:pb-0">
                     {renderControls(attributesConfig)}
                 </div>
 
                 {/* Mobile Sticky Action Bar */}
-                <div className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-[#18181c]/95 backdrop-blur-xl border-t border-white/10 p-3 flex justify-between gap-3 safe-bottom pb-6">
+                <div className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-[#18181c]/95 backdrop-blur-xl border-t border-white/10 p-3 flex justify-between gap-3 safe-bottom pb-8 shadow-[0_-10px_30px_rgba(0,0,0,0.5)]">
                     <button
                         onClick={randomize}
-                        className="flex flex-col items-center justify-center p-2 flex-1 bg-white/5 border border-white/10 rounded-lg active:scale-95 transition-transform"
+                        className="flex flex-col items-center justify-center p-2 flex-1 bg-white/5 border border-white/10 rounded-xl active:scale-95 transition-transform"
                     >
-                        <Shuffle size={20} className="text-cat-yellow mb-1" />
-                        <span className="text-[10px] font-bold text-white/80">SHUFFLE</span>
+                        <Shuffle size={18} className="text-cat-yellow mb-1" />
+                        <span className="text-[10px] font-bold text-white/80 uppercase tracking-tighter">Shuffle</span>
                     </button>
 
                     <button
                         onClick={() => setPfpShape(prev => prev === 'circle' ? 'square' : 'circle')}
-                        className="flex flex-col items-center justify-center p-2 flex-1 bg-white/5 border border-white/10 rounded-lg active:scale-95 transition-transform"
+                        className="flex flex-col items-center justify-center p-2 flex-1 bg-white/5 border border-white/10 rounded-xl active:scale-95 transition-transform"
                     >
-                        <div className={`w-5 h-5 border-2 border-white mb-1 transition-all duration-300 ${pfpShape === 'circle' ? 'rounded-full' : 'rounded-md'}`}></div>
-                        <span className="text-[10px] font-bold text-white/80">SHAPE</span>
-                    </button>
-
-                    <button
-                        onClick={handleCopy}
-                        className="flex flex-col items-center justify-center p-2 flex-1 bg-white/5 border border-white/10 rounded-lg active:scale-95 transition-transform"
-                    >
-                        <Copy size={20} className="text-cat-yellow mb-1" />
-                        <span className="text-[10px] font-bold text-white/80">COPY</span>
+                        <div className={`w-4 h-4 border-2 border-white mb-1.5 transition-all duration-300 ${pfpShape === 'circle' ? 'rounded-full' : 'rounded-sm'}`}></div>
+                        <span className="text-[10px] font-bold text-white/80 uppercase tracking-tighter">Shape</span>
                     </button>
 
                     <button
                         onClick={handleDownload}
-                        className="flex flex-col items-center justify-center p-2 flex-[1.5] bg-cat-yellow text-black rounded-lg active:scale-95 shadow-[0_0_15px_rgba(250,210,5,0.3)] transition-transform"
+                        className="flex flex-col items-center justify-center p-2 flex-[1.5] bg-cat-yellow text-black rounded-xl active:scale-95 shadow-lg shadow-cat-yellow/20 transition-transform font-black text-[10px] uppercase"
                     >
                         <Download size={22} className="mb-1" />
-                        <span className="text-[10px] font-black">SAVE PNG</span>
+                        SAVE
                     </button>
                 </div>
             </div>
+
+            {/* SVG Filters for Vibes */}
+            <svg style={{ position: 'absolute', width: 0, height: 0, overflow: 'hidden' }} aria-hidden="true">
+                <filter id="pixelate" x="0" y="0" width="100%" height="100%">
+                    <feFlood x="4" y="4" height="2" width="2" />
+                    <feComposite width="8" height="8" />
+                    <feTile result="a" />
+                    <feComposite in="SourceGraphic" in2="a" operator="in" />
+                    <feMorphology operator="dilate" radius="3" />
+                </filter>
+            </svg>
         </div>
     );
 }
