@@ -19,7 +19,7 @@ export const attributesConfig = [
   {
     id: 'costume',
     label: 'Costume',
-    zIndex: 75, // Covers accessories (70) but under Border (80)
+    zIndex: 75, // Covers accessories (70) but under Border (90)
     items: [
       { id: 'costume_1', label: 'None', type: 'none' },
       { id: 'costume_2', label: 'Batcat', src: '/assets/costumes/batcat.png', type: 'image' },
@@ -67,7 +67,7 @@ export const attributesConfig = [
   {
     id: 'shirt',
     label: 'Shirt',
-    zIndex: 30,
+    zIndex: 60,
     items: [
       { id: 'shirt_1', label: 'None', type: 'none' },
       { id: 'shirt_2', label: 'Trucker', src: '/assets/shirt/trucker.png', type: 'image' },
@@ -78,7 +78,7 @@ export const attributesConfig = [
   {
     id: 'chain',
     label: 'Chain',
-    zIndex: 40,
+    zIndex: 70,
     items: [
       { id: 'chain_1', label: 'None', type: 'none' },
       { id: 'chain_2', label: 'Gold', src: '/assets/chain/gold.png', type: 'image' },
@@ -87,7 +87,7 @@ export const attributesConfig = [
   {
     id: 'glasses',
     label: 'Glasses',
-    zIndex: 50,
+    zIndex: 40,
     items: [
       { id: 'glasses_1', label: 'None', type: 'none' },
       { id: 'glasses_2', label: 'Old Skool', src: '/assets/glasses/old-skool.png', type: 'image' },
@@ -100,7 +100,7 @@ export const attributesConfig = [
   {
     id: 'hat',
     label: 'Hat',
-    zIndex: 60,
+    zIndex: 50,
     items: [
       { id: 'hat_1', label: 'None', type: 'none' },
       { id: 'hat_2', label: 'Army', src: '/assets/hat/army.png', type: 'image' },
@@ -116,7 +116,7 @@ export const attributesConfig = [
   {
     id: 'mouth',
     label: 'Mouth',
-    zIndex: 70,
+    zIndex: 30,
     items: [
       { id: 'mouth_1', label: 'None', type: 'none' },
     ]
@@ -124,7 +124,7 @@ export const attributesConfig = [
   {
     id: 'border',
     label: 'Border',
-    zIndex: 80,
+    zIndex: 90,
     items: [
       { id: 'border_1', label: 'None', type: 'none' },
       { id: 'border_2', label: 'White', color: '#ffffff' },
