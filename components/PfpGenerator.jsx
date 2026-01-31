@@ -4,7 +4,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
 import { attributesConfig } from '@/data/attributes';
 import ScrollingBackground from './ScrollingBackground';
-import { Download, Share2, Copy, Check, Shuffle, Camera, Play, Pause, SkipForward, SkipBack, Music, Trash2, Globe } from 'lucide-react';
+import { Download, Share2, Copy, Check, Shuffle, Camera, Play, Pause, SkipForward, SkipBack, Music, Trash2, Globe, AlertTriangle } from 'lucide-react';
 
 export default function PfpGenerator() {
     // Initialize state with random items
@@ -561,7 +561,15 @@ export default function PfpGenerator() {
                 <div key={cat.id} className="space-y-2 lg:space-y-1 group/category">
                     <div className="flex items-center gap-2 px-1">
                         <div className="w-1 h-3 bg-cat-yellow rounded-full"></div>
-                        <h3 className="text-white font-black uppercase tracking-tight text-xs lg:text-[10px]">{cat.label}</h3>
+                        <h3 className="text-white font-black uppercase tracking-tight text-xs lg:text-[10px] flex items-center gap-2">
+                            {cat.label}
+                            {cat.id === 'costume' && (
+                                <span className="text-[8px] lg:text-[7px] text-cat-yellow/60 font-medium flex items-center gap-1 normal-case tracking-normal">
+                                    <AlertTriangle size={10} className="text-cat-yellow" />
+                                    (Costumes will remove all other layers!)
+                                </span>
+                            )}
+                        </h3>
                     </div>
 
                     {/* Horizontal Scrollable Row */}
