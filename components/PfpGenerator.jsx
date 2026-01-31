@@ -307,8 +307,8 @@ export default function PfpGenerator() {
                     ctx.save();
                     ctx.strokeStyle = bColor.color;
                     ctx.lineWidth = bWidth;
-                    ctx.lineCap = 'round';
-                    ctx.lineJoin = 'round';
+                    ctx.lineCap = pfpShape === 'circle' ? 'round' : 'square';
+                    ctx.lineJoin = pfpShape === 'circle' ? 'round' : 'miter';
 
                     if (bStyle === 'neon') {
                         ctx.shadowBlur = bWidth + 10;
