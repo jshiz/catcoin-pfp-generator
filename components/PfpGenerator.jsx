@@ -609,42 +609,35 @@ export default function PfpGenerator() {
                                 )}
                             </button>
                         ))}
-                    </div>
-                    {/* Custom Picker UI if selected */}
-                    {cat.id === 'background' && selectedAttributes['background']?.id === 'bg_custom' && (
-                        <div className="mt-2 mb-2 p-3 bg-white/10 rounded-lg border border-white/10 flex flex-col gap-2 animate-fade-in">
-                            <div className="flex items-center justify-between text-[10px] font-bold text-white/50 mb-1">
-                                <span>MIXER</span>
-                                <div className="flex gap-1">
-                                    <button onClick={() => setCustomBackground(prev => ({ ...prev, type: 'solid' }))} className={`px-1.5 py-0.5 rounded ${customBackground.type === 'solid' ? 'bg-cat-yellow text-black' : 'bg-white/5'}`}>Solid</button>
-                                    <button onClick={() => setCustomBackground(prev => ({ ...prev, type: 'linear' }))} className={`px-1.5 py-0.5 rounded ${customBackground.type === 'linear' ? 'bg-cat-yellow text-black' : 'bg-white/5'}`}>Linear</button>
-                                    <button onClick={() => setCustomBackground(prev => ({ ...prev, type: 'radial' }))} className={`px-1.5 py-0.5 rounded ${customBackground.type === 'radial' ? 'bg-cat-yellow text-black' : 'bg-white/5'}`}>Radial</button>
+
+                        {/* Compact Mixer UI inside grid */}
+                        {cat.id === 'background' && selectedAttributes['background']?.id === 'bg_custom' && (
+                            <div className="col-span-8 md:col-span-5 flex items-center gap-1.5 p-1 bg-white/5 rounded-md border border-white/10 animate-fade-in group">
+                                <div className="flex flex-col gap-0.5 justify-center">
+                                    <button onClick={() => setCustomBackground(prev => ({ ...prev, type: 'solid' }))} className={`text-[7px] font-bold px-1 rounded-sm ${customBackground.type === 'solid' ? 'bg-cat-yellow text-black' : 'hover:bg-white/10 text-white/40'}`}>S</button>
+                                    <button onClick={() => setCustomBackground(prev => ({ ...prev, type: 'linear' }))} className={`text-[7px] font-bold px-1 rounded-sm ${customBackground.type === 'linear' ? 'bg-cat-yellow text-black' : 'hover:bg-white/10 text-white/40'}`}>L</button>
+                                    <button onClick={() => setCustomBackground(prev => ({ ...prev, type: 'radial' }))} className={`text-[7px] font-bold px-1 rounded-sm ${customBackground.type === 'radial' ? 'bg-cat-yellow text-black' : 'hover:bg-white/10 text-white/40'}`}>R</button>
                                 </div>
-                            </div>
-                            <div className="flex items-center gap-2">
-                                <div className="flex-1 flex flex-col gap-0.5">
-                                    <span className="text-[8px] text-white/40 uppercase">A</span>
+                                <div className="h-6 w-px bg-white/10 mx-0.5"></div>
+                                <div className="flex flex-1 gap-1 h-full items-center">
                                     <input
                                         type="color"
                                         value={customBackground.color1}
                                         onChange={(e) => setCustomBackground(prev => ({ ...prev, color1: e.target.value }))}
-                                        className="w-full h-8 bg-transparent rounded cursor-pointer border-none p-0"
+                                        className="flex-1 h-6 w-full bg-transparent border-none p-0 cursor-pointer rounded-sm overflow-hidden"
                                     />
-                                </div>
-                                {customBackground.type !== 'solid' && (
-                                    <div className="flex-1 flex flex-col gap-0.5 text-right">
-                                        <span className="text-[8px] text-white/40 uppercase">B</span>
+                                    {customBackground.type !== 'solid' && (
                                         <input
                                             type="color"
                                             value={customBackground.color2}
                                             onChange={(e) => setCustomBackground(prev => ({ ...prev, color2: e.target.value }))}
-                                            className="w-full h-8 bg-transparent rounded cursor-pointer border-none p-0 ml-auto"
+                                            className="flex-1 h-6 w-full bg-transparent border-none p-0 cursor-pointer rounded-sm overflow-hidden"
                                         />
-                                    </div>
-                                )}
+                                    )}
+                                </div>
                             </div>
-                        </div>
-                    )}
+                        )}
+                    </div>
                 </div>
             ))}
         </div>
