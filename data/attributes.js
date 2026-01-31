@@ -147,6 +147,7 @@ export const attributesConfig = [
       { id: 'shirt_10', label: 'JNCO', src: '/assets/shirt/jnco.png', type: 'image' },
       { id: 'shirt_11', label: 'Thrasher', src: '/assets/shirt/thrasher.png', type: 'image' },
       { id: 'shirt_12', label: 'Zodiac', src: '/assets/shirt/zodiac.png', type: 'image' },
+      { id: 'shirt_13', label: 'SWAT', src: '/assets/shirt/swat.png', type: 'image' },
     ]
   },
   {
