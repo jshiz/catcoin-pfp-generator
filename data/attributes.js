@@ -79,6 +79,7 @@ export const attributesConfig = [
           stops: [[0, '#ef4444'], [0.4, '#991b1b'], [1, '#450a0a']]
         }
       },
+      { id: 'bg_custom', label: 'Custom', type: 'custom' },
     ]
   },
   {
@@ -131,6 +132,11 @@ export const attributesConfig = [
       { id: 'vibe_matrix', label: 'Matrix', value: 'hue-rotate(90deg) saturate(2) brightness(0.8)' },
       { id: 'vibe_neon', label: 'Vibrant', value: 'saturate(2.5) contrast(1.2)' },
       { id: 'vibe_dreamy', label: 'Dreamy', value: 'brightness(1.1) saturate(1.2) blur(0.5px)' },
+      { id: 'vibe_pixel', label: '8-Bit', value: 'url(#pixelate)' }, // We'll need SVG filter for this or simulated
+      { id: 'vibe_ghostly', label: 'Ghostly', value: 'opacity(0.8) brightness(1.5) saturate(0.5)' },
+      { id: 'vibe_rainbow', label: 'Rainbow', value: 'hue-rotate(360deg)' }, // Animate? No static hue shift 
+      { id: 'vibe_glitch', label: 'Glitch', value: 'contrast(1.5) hue-rotate(200deg)' },
+      { id: 'vibe_faded', label: 'Faded', value: 'opacity(0.7) grayscale(0.2) brightness(1.1)' },
     ]
   },
   {
@@ -274,12 +280,16 @@ export const attributesConfig = [
     zIndex: 95, // Above everything, balanced with border
     items: [
       { id: 'speech_none', label: 'None', type: 'none' },
-      { id: 'speech_gm', label: 'GM', text: 'GM ☀️' },
-      { id: 'speech_wagmi', label: 'WAGMI', text: 'WAGMI! 🚀' },
-      { id: 'speech_catcoin', label: 'Catcoin', text: '$catcoin to the moon!' },
-      { id: 'speech_meow', label: 'Meow', text: 'Meow! 🐱' },
-      { id: 'speech_hodl', label: 'HODL', text: 'HODL 💎' },
-      { id: 'speech_moon', label: 'Moon', text: 'Soon Moon 🌑' },
+      { id: 'speech_gm', label: 'GM', text: 'GM ☀️', emoji: '☀️' },
+      { id: 'speech_wagmi', label: 'WAGMI', text: 'WAGMI! 🚀', emoji: '🚀' },
+      { id: 'speech_catcoin', label: 'Catcoin', text: '$catcoin to the moon!', emoji: '💎' },
+      { id: 'speech_meow', label: 'Meow', text: 'Meow! 🐱', emoji: '🐱' },
+      { id: 'speech_hodl', label: 'HODL', text: 'HODL 💎', emoji: '🏦' },
+      { id: 'speech_moon', label: 'Moon', text: 'Soon Moon 🌑', emoji: '🌑' },
+      { id: 'speech_yolo', label: 'YOLO', text: 'YOLO 🎰', emoji: '🎰' },
+      { id: 'speech_vibing', label: 'Vibing', text: 'Just Vibing 🌊', emoji: '🌊' },
+      { id: 'speech_rekt', label: 'REKT', text: 'Not REKT! ✅', emoji: '✅' },
+      { id: 'speech_alpha', label: 'Alpha', text: 'Pure Alpha 🧠', emoji: '🧠' },
     ]
   }
 ];

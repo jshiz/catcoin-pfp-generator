@@ -29,6 +29,11 @@ export default function PfpGenerator() {
     const [costumeDirection, setCostumeDirection] = useState('left');
     const [animatingLayer, setAnimatingLayer] = useState(null);
     const [isExploding, setIsExploding] = useState(false);
+    const [customBackground, setCustomBackground] = useState({
+        color1: '#7c3aed',
+        color2: '#1e3a8a',
+        type: 'linear', // 'solid', 'linear', 'radial'
+    });
 
     // Randomize on mount (Client-side only)
     useEffect(() => {
@@ -203,6 +208,21 @@ export default function PfpGenerator() {
                 }
             } else if (bgItem.color) {
                 ctx.fillStyle = bgItem.color;
+            } else if (bgItem.id === 'bg_custom') {
+                // Handle Custom Background
+                if (customBackground.type === 'solid') {
+                    ctx.fillStyle = customBackground.color1;
+                } else if (customBackground.type === 'linear') {
+                    const grad = ctx.createLinearGradient(0, 0, 0, 512);
+                    grad.addColorStop(0, customBackground.color1);
+                    grad.addColorStop(1, customBackground.color2);
+                    ctx.fillStyle = grad;
+                } else {
+                    const grad = ctx.createRadialGradient(256, 256, 0, 256, 256, 360);
+                    grad.addColorStop(0, customBackground.color1);
+                    grad.addColorStop(1, customBackground.color2);
+                    ctx.fillStyle = grad;
+                }
             }
             if (ctx.fillStyle) ctx.fillRect(0, 0, 512, 512);
         }
@@ -524,6 +544,16 @@ export default function PfpGenerator() {
                                                 }}
                                             />
                                         )}
+                                        {cat.id === 'vibe' && item.type !== 'none' && (
+                                            <div className="absolute inset-0 flex flex-col items-center justify-center p-1 text-[8px] leading-tight font-bold text-center bg-black/40">
+                                                <span className="truncate w-full">{item.label}</span>
+                                            </div>
+                                        )}
+                                        {cat.id === 'speech' && item.type !== 'none' && (
+                                            <div className="absolute inset-0 flex items-center justify-center text-xl">
+                                                {item.emoji || '💬'}
+                                            </div>
+                                        )}
                                         {item.type === 'none' && (
                                             <div className="absolute inset-0 z-20 opacity-70">
                                                 <div className="absolute inset-0 border-[2px] border-red-500/50"></div>
@@ -564,6 +594,41 @@ export default function PfpGenerator() {
                             </button>
                         ))}
                     </div>
+                    {/* Custom Picker UI if selected */}
+                    {cat.id === 'background' && selectedAttributes['background']?.id === 'bg_custom' && (
+                        <div className="mt-2 mb-2 p-3 bg-white/10 rounded-lg border border-white/10 flex flex-col gap-2 animate-fade-in">
+                            <div className="flex items-center justify-between text-[10px] font-bold text-white/50 mb-1">
+                                <span>MIXER</span>
+                                <div className="flex gap-1">
+                                    <button onClick={() => setCustomBackground(prev => ({ ...prev, type: 'solid' }))} className={`px-1.5 py-0.5 rounded ${customBackground.type === 'solid' ? 'bg-cat-yellow text-black' : 'bg-white/5'}`}>Solid</button>
+                                    <button onClick={() => setCustomBackground(prev => ({ ...prev, type: 'linear' }))} className={`px-1.5 py-0.5 rounded ${customBackground.type === 'linear' ? 'bg-cat-yellow text-black' : 'bg-white/5'}`}>Linear</button>
+                                    <button onClick={() => setCustomBackground(prev => ({ ...prev, type: 'radial' }))} className={`px-1.5 py-0.5 rounded ${customBackground.type === 'radial' ? 'bg-cat-yellow text-black' : 'bg-white/5'}`}>Radial</button>
+                                </div>
+                            </div>
+                            <div className="flex items-center gap-2">
+                                <div className="flex-1 flex flex-col gap-0.5">
+                                    <span className="text-[8px] text-white/40 uppercase">A</span>
+                                    <input
+                                        type="color"
+                                        value={customBackground.color1}
+                                        onChange={(e) => setCustomBackground(prev => ({ ...prev, color1: e.target.value }))}
+                                        className="w-full h-8 bg-transparent rounded cursor-pointer border-none p-0"
+                                    />
+                                </div>
+                                {customBackground.type !== 'solid' && (
+                                    <div className="flex-1 flex flex-col gap-0.5 text-right">
+                                        <span className="text-[8px] text-white/40 uppercase">B</span>
+                                        <input
+                                            type="color"
+                                            value={customBackground.color2}
+                                            onChange={(e) => setCustomBackground(prev => ({ ...prev, color2: e.target.value }))}
+                                            className="w-full h-8 bg-transparent rounded cursor-pointer border-none p-0 ml-auto"
+                                        />
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    )}
                 </div>
             ))}
         </div>
@@ -642,8 +707,14 @@ export default function PfpGenerator() {
                                 style={{ zIndex: cat.zIndex }}
                             >
                                 {/* Background Layer (Color) */}
-                                {item.color && cat.id === 'background' && (
-                                    <div className="w-full h-full" style={{ background: item.color }} />
+                                {cat.id === 'background' && (
+                                    <div className="w-full h-full" style={{
+                                        background: item.id === 'bg_custom' ? (
+                                            customBackground.type === 'solid' ? customBackground.color1 :
+                                                customBackground.type === 'linear' ? `linear-gradient(to bottom, ${customBackground.color1}, ${customBackground.color2})` :
+                                                    `radial-gradient(circle at center, ${customBackground.color1}, ${customBackground.color2})`
+                                        ) : (item.color || 'transparent')
+                                    }} />
                                 )}
 
                                 {/* Border Layer (Shape) */}
@@ -673,7 +744,13 @@ export default function PfpGenerator() {
                                 )}
 
                                 {item.text && cat.id === 'speech' && (
-                                    <div className="absolute top-[10%] right-[10%] z-[95] animate-pop-in pointer-events-none">
+                                    <div
+                                        className={`absolute z-[95] animate-pop-in pointer-events-none transition-all duration-500`}
+                                        style={{
+                                            top: pfpShape === 'circle' ? '35%' : '10%',
+                                            right: pfpShape === 'circle' ? '15%' : '10%',
+                                        }}
+                                    >
                                         <div className="relative bg-white text-black px-4 py-2 rounded-2xl shadow-xl border-2 border-black font-bold text-lg whitespace-nowrap min-w-[80px] text-center">
                                             {item.text}
                                             {/* Pointer */}
@@ -709,15 +786,25 @@ export default function PfpGenerator() {
                                         }}
                                     />
                                 )}
-                                {item.text && (
-                                    <div className="absolute top-10 left-10 text-4xl font-bold">{item.text}</div>
-                                )}
+
+
                             </div>
                         );
                     })}
 
                     {/* Hidden Canvas for Compositing */}
                     <canvas ref={canvasRef} width={512} height={512} className="hidden" />
+
+                    {/* SVG Filters for Vibes */}
+                    <svg className="hidden">
+                        <filter id="pixelate" x="0" y="0">
+                            <feFlood x="4" y="4" height="2" width="2" />
+                            <feComposite width="10" height="10" />
+                            <feTile result="a" />
+                            <feComposite in="SourceGraphic" in2="a" operator="in" />
+                            <feMorphology operator="dilate" radius="4" />
+                        </filter>
+                    </svg>
                 </div>
 
                 {/* Desktop Action Bar (Fixed Bottom Pill) */}
