@@ -300,7 +300,7 @@ export default function PfpGenerator() {
                         if (pfpShape === 'circle') {
                             ctx.arc(256, 256, 256 - inset, 0, Math.PI * 2);
                         } else {
-                            ctx.roundRect(inset, inset, 512 - inset * 2, 512 - inset * 2, 60 - inset / 2);
+                            ctx.rect(inset, inset, 512 - inset * 2, 512 - inset * 2);
                         }
                     };
 
@@ -736,7 +736,7 @@ export default function PfpGenerator() {
                                 {/* Border Layer (Shape) */}
                                 {cat.id === 'border_color' && item.color && (
                                     <div
-                                        className={`absolute inset-0 pointer-events-none transition-all duration-300 ${pfpShape === 'circle' ? 'rounded-full' : 'rounded-[60px]'}`}
+                                        className={`absolute inset-0 pointer-events-none transition-all duration-300 ${pfpShape === 'circle' ? 'rounded-full' : 'rounded-none'}`}
                                         style={{
                                             border: (() => {
                                                 const s = selectedAttributes['border_style']?.value || 'solid';
