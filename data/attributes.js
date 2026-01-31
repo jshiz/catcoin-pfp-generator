@@ -109,9 +109,11 @@ export const attributesConfig = [
       { id: 'hat_3', label: 'Cowboy', src: '/assets/hat/cowboy.png', type: 'image' },
       { id: 'hat_4', label: 'Crown', src: '/assets/hat/crown.png', type: 'image' },
       { id: 'hat_7', label: 'Police', src: '/assets/hat/police.png', type: 'image' },
+      { id: 'hat_11', label: 'Red Hat', src: '/assets/hat/red-hat.png', type: 'image' },
       { id: 'hat_8', label: 'Taxi', src: '/assets/hat/taxi.png', type: 'image' },
       { id: 'hat_9', label: 'Top Hat', src: '/assets/hat/tophat.png', type: 'image' },
       { id: 'hat_10', label: 'Viking', src: '/assets/hat/viking.png', type: 'image' },
+      { id: 'hat_12', label: 'White Hat', src: '/assets/hat/white-hat.png', type: 'image' },
     ]
   },
   {
