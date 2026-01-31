@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="./public/assets/catcoin-logo.png" alt="Catcoin Logo" width="200"/>
+  <img src="./public/assets/logotp.png" alt="Catcoin Logo" width="200"/>
 
   # Catcoin PFP Generator
 
