@@ -4,7 +4,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
 import { attributesConfig } from '@/data/attributes';
 import ScrollingBackground from './ScrollingBackground';
-import { Download, Share2, Copy, Check, Shuffle, Camera, Play, Pause, SkipForward, SkipBack, Music, Trash2 } from 'lucide-react';
+import { Download, Share2, Copy, Check, Shuffle, Camera, Play, Pause, SkipForward, SkipBack, Music, Trash2, Globe } from 'lucide-react';
 
 export default function PfpGenerator() {
     // Initialize state with random items
@@ -787,46 +787,66 @@ export default function PfpGenerator() {
                     </span>
                 </div>
 
-                {/* Right: Music Player */}
-                <div className="flex items-center gap-2 lg:gap-4 px-3 py-1 bg-white/5 backdrop-blur-md rounded-full border border-white/5 transition-all shadow-lg overflow-hidden max-w-[60%] sm:max-w-none">
-                    <div className="flex items-center gap-1.5 lg:gap-3">
-                        <button
-                            onClick={skipBack}
-                            className="text-white/30 hover:text-cat-yellow transition-colors"
-                        >
-                            <SkipBack size={14} fill="currentColor" />
-                        </button>
-
-                        <button
-                            onClick={togglePlay}
-                            className="w-8 h-8 lg:w-9 lg:h-9 flex items-center justify-center bg-cat-yellow text-black rounded-full hover:scale-105 active:scale-95 transition-all shadow-lg shrink-0"
-                        >
-                            {isPlaying ? <Pause size={16} fill="currentColor" /> : <Play size={16} fill="currentColor" className="ml-0.5" />}
-                        </button>
-
-                        <button
-                            onClick={skipForward}
-                            className="text-white/30 hover:text-cat-yellow transition-colors"
-                        >
-                            <SkipForward size={14} fill="currentColor" />
-                        </button>
+                {/* Right Area: Social Links + Music Player */}
+                <div className="flex items-center gap-2 lg:gap-4 ml-auto">
+                    {/* Official Links (Desktop) */}
+                    <div className="hidden lg:flex items-center gap-4 mr-2 border-r border-white/10 pr-4 h-8">
+                        <a href="https://www.catcoin.io/" target="_blank" rel="noopener noreferrer" className="text-white/40 hover:text-cat-yellow transition-all hover:scale-110 active:scale-90" title="Official Website">
+                            <Globe size={20} />
+                        </a>
+                        <a href="https://x.com/officialcatcoin" target="_blank" rel="noopener noreferrer" className="text-white/40 hover:text-cat-yellow transition-all hover:scale-110 active:scale-90" title="X (Twitter)">
+                            <svg viewBox="0 0 24 24" fill="currentColor" className="w-[18px] h-[18px]">
+                                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                            </svg>
+                        </a>
+                        <a href="https://t.me/officialcatcoin" target="_blank" rel="noopener noreferrer" className="text-white/40 hover:text-cat-yellow transition-all hover:scale-110 active:scale-90" title="Telegram">
+                            <svg viewBox="0 0 24 24" fill="currentColor" className="w-[20px] h-[20px]">
+                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.07-.2-.08-.06-.19-.04-.27-.02-.11.02-1.93 1.23-5.46 3.62-.51.35-.98.52-1.4.51-.46-.01-1.35-.26-2.01-.48-.81-.27-1.46-.42-1.4-.88.03-.24.38-.49 1.04-.74 4.06-1.77 6.76-2.93 8.12-3.47 3.86-1.54 4.66-1.81 5.19-1.81.11 0 .37.03.53.17.14.12.18.28.2.4l-.01.07z" />
+                            </svg>
+                        </a>
                     </div>
 
-                    <div className="hidden sm:flex flex-col min-w-[100px] lg:min-w-[150px] max-w-[200px] border-l border-white/10 pl-3">
-                        <div className="flex items-center gap-1.5 text-[8px] font-bold text-cat-yellow tracking-widest opacity-60 uppercase">
-                            <Music size={8} />
-                            Radio
-                        </div>
-                        <div className="text-[10px] lg:text-[11px] font-bold text-white truncate animate-pulse leading-none mt-0.5">
-                            {songs[currentSongIndex].title}
-                        </div>
-                    </div>
+                    {/* Right: Music Player */}
+                    <div className="flex items-center gap-2 lg:gap-4 px-3 py-1 bg-white/5 backdrop-blur-md rounded-full border border-white/5 transition-all shadow-lg overflow-hidden max-w-[60%] sm:max-w-none">
+                        <div className="flex items-center gap-1.5 lg:gap-3">
+                            <button
+                                onClick={skipBack}
+                                className="text-white/30 hover:text-cat-yellow transition-colors"
+                            >
+                                <SkipBack size={14} fill="currentColor" />
+                            </button>
 
-                    <audio
-                        ref={audioRef}
-                        src={songs[currentSongIndex].src}
-                        onEnded={skipForward}
-                    />
+                            <button
+                                onClick={togglePlay}
+                                className="w-8 h-8 lg:w-9 lg:h-9 flex items-center justify-center bg-cat-yellow text-black rounded-full hover:scale-105 active:scale-95 transition-all shadow-lg shrink-0"
+                            >
+                                {isPlaying ? <Pause size={16} fill="currentColor" /> : <Play size={16} fill="currentColor" className="ml-0.5" />}
+                            </button>
+
+                            <button
+                                onClick={skipForward}
+                                className="text-white/30 hover:text-cat-yellow transition-colors"
+                            >
+                                <SkipForward size={14} fill="currentColor" />
+                            </button>
+                        </div>
+
+                        <div className="hidden sm:flex flex-col min-w-[100px] lg:min-w-[150px] max-w-[200px] border-l border-white/10 pl-3">
+                            <div className="flex items-center gap-1.5 text-[8px] font-bold text-cat-yellow tracking-widest opacity-60 uppercase">
+                                <Music size={8} />
+                                Radio
+                            </div>
+                            <div className="text-[10px] lg:text-[11px] font-bold text-white truncate animate-pulse leading-none mt-0.5">
+                                {songs[currentSongIndex].title}
+                            </div>
+                        </div>
+
+                        <audio
+                            ref={audioRef}
+                            src={songs[currentSongIndex].src}
+                            onEnded={skipForward}
+                        />
+                    </div>
                 </div>
             </header>
 
