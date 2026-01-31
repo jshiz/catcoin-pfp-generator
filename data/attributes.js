@@ -74,6 +74,7 @@ export const attributesConfig = [
       { id: 'shirt_2', label: 'Trucker', src: '/assets/shirt/trucker.png', type: 'image' },
       { id: 'shirt_3', label: 'Biker', src: '/assets/shirt/biker.png', type: 'image' },
       { id: 'shirt_4', label: 'Freddy', src: '/assets/shirt/freddy.png', type: 'image' },
+      { id: 'shirt_5', label: 'Snowy', src: '/assets/shirt/snowy.png', type: 'image' },
     ]
   },
   {
