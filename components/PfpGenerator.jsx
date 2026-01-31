@@ -405,11 +405,8 @@ export default function PfpGenerator() {
                                         className="absolute inset-0"
                                         style={{ background: item.color || '#333' }}
                                     />
-                                ) : cat.id === 'costume' ? (
-                                    // For Costume: transparent/dark base, no body underlay
-                                    <div className="absolute inset-0 bg-[#2a2a2e]/50" />
                                 ) : (
-                                    // For others: Basic Cat is Base
+                                    // For others (and costume now): Basic Cat is Base
                                     <div className="absolute inset-0 bg-[#2a2a2e]">
                                         <Image
                                             src="/assets/body/basic.png"
@@ -463,7 +460,12 @@ export default function PfpGenerator() {
                                                 }}
                                             />
                                         )}
-                                        {item.type === 'none' && <div className="flex items-center justify-center w-full h-full text-red-500 font-bold text-xs">X</div>}
+                                        {item.type === 'none' && (
+                                            <div className="absolute inset-0 z-20 opacity-70">
+                                                <div className="absolute inset-0 border-[2px] border-red-500/50"></div>
+                                                <div className="absolute top-0 left-0 w-full h-full border-t-[2px] border-red-500/50 origin-top-left rotate-45 scale-[1.45]"></div>
+                                            </div>
+                                        )}
                                     </div>
                                 ) : (
                                     // For others: Item is Top
