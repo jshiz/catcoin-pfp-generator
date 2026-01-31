@@ -718,8 +718,7 @@ export default function PfpGenerator() {
                     </div>
                     <div className="w-px h-6 bg-white/20 mx-1 hidden xs:block" />
                     <span className="text-cat-yellow font-black tracking-tighter text-lg lg:text-2xl uppercase select-none">
-                        <span className="hidden lg:inline">CATCOIN | Cat-O-Matic</span>
-                        <span className="lg:hidden">catcoin</span>
+                        CATCOIN | Cat-O-Matic
                     </span>
                 </div>
 
