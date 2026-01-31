@@ -509,16 +509,22 @@ export default function PfpGenerator() {
 
                                 {/* OVERLAY LAYER (The Item) */}
                                 {cat.id === 'background' ? (
-                                    // For background: Basic Cat is Top (to show contrast)
-                                    <div className="absolute inset-0 pointer-events-none">
-                                        <Image
-                                            src="/assets/body/basic.png"
-                                            alt="Cat Preview"
-                                            fill
-                                            className="object-contain"
-                                            sizes="100px"
-                                        />
-                                    </div>
+                                    item.type === 'custom' ? (
+                                        <div className="absolute inset-0 flex items-center justify-center text-xl z-20">
+                                            🎨
+                                        </div>
+                                    ) : (
+                                        // For background: Basic Cat is Top (to show contrast)
+                                        <div className="absolute inset-0 pointer-events-none">
+                                            <Image
+                                                src="/assets/body/basic.png"
+                                                alt="Cat Preview"
+                                                fill
+                                                className="object-contain"
+                                                sizes="100px"
+                                            />
+                                        </div>
+                                    )
                                 ) : (cat.id.startsWith('border') || cat.id === 'vibe' || cat.id === 'speech') ? (
                                     // Border Control Previews
                                     <div className="absolute inset-0">
@@ -610,29 +616,51 @@ export default function PfpGenerator() {
                             </button>
                         ))}
 
-                        {/* Compact Mixer UI inside grid */}
+                        {/* Redesigned Mixer UI */}
                         {cat.id === 'background' && selectedAttributes['background']?.id === 'bg_custom' && (
-                            <div className="col-span-8 md:col-span-5 flex items-center gap-1.5 p-1 bg-white/5 rounded-md border border-white/10 animate-fade-in group">
-                                <div className="flex flex-col gap-0.5 justify-center">
-                                    <button onClick={() => setCustomBackground(prev => ({ ...prev, type: 'solid' }))} className={`text-[7px] font-bold px-1 rounded-sm ${customBackground.type === 'solid' ? 'bg-cat-yellow text-black' : 'hover:bg-white/10 text-white/40'}`}>S</button>
-                                    <button onClick={() => setCustomBackground(prev => ({ ...prev, type: 'linear' }))} className={`text-[7px] font-bold px-1 rounded-sm ${customBackground.type === 'linear' ? 'bg-cat-yellow text-black' : 'hover:bg-white/10 text-white/40'}`}>L</button>
-                                    <button onClick={() => setCustomBackground(prev => ({ ...prev, type: 'radial' }))} className={`text-[7px] font-bold px-1 rounded-sm ${customBackground.type === 'radial' ? 'bg-cat-yellow text-black' : 'hover:bg-white/10 text-white/40'}`}>R</button>
+                            <div className="col-span-8 md:col-span-4 flex flex-col gap-1 p-1.5 bg-white/5 rounded-md border border-white/10 animate-fade-in">
+                                <div className="flex bg-black/40 rounded-sm p-0.5 gap-0.5">
+                                    <button
+                                        onClick={() => setCustomBackground(prev => ({ ...prev, type: 'solid' }))}
+                                        className={`flex-1 text-[8px] font-bold py-1 rounded-sm transition-colors ${customBackground.type === 'solid' ? 'bg-cat-yellow text-black' : 'hover:bg-white/5 text-white/50'}`}
+                                    >
+                                        SOLID
+                                    </button>
+                                    <button
+                                        onClick={() => setCustomBackground(prev => ({ ...prev, type: 'linear' }))}
+                                        className={`flex-1 text-[8px] font-bold py-1 rounded-sm transition-colors ${customBackground.type === 'linear' ? 'bg-cat-yellow text-black' : 'hover:bg-white/5 text-white/50'}`}
+                                    >
+                                        LIN
+                                    </button>
+                                    <button
+                                        onClick={() => setCustomBackground(prev => ({ ...prev, type: 'radial' }))}
+                                        className={`flex-1 text-[8px] font-bold py-1 rounded-sm transition-colors ${customBackground.type === 'radial' ? 'bg-cat-yellow text-black' : 'hover:bg-white/5 text-white/50'}`}
+                                    >
+                                        RAD
+                                    </button>
                                 </div>
-                                <div className="h-6 w-px bg-white/10 mx-0.5"></div>
-                                <div className="flex flex-1 gap-1 h-full items-center">
-                                    <input
-                                        type="color"
-                                        value={customBackground.color1}
-                                        onChange={(e) => setCustomBackground(prev => ({ ...prev, color1: e.target.value }))}
-                                        className="flex-1 h-6 w-full bg-transparent border-none p-0 cursor-pointer rounded-sm overflow-hidden"
-                                    />
-                                    {customBackground.type !== 'solid' && (
+                                <div className="flex justify-center items-center gap-3 py-1">
+                                    <div className="relative group/swatch">
                                         <input
                                             type="color"
-                                            value={customBackground.color2}
-                                            onChange={(e) => setCustomBackground(prev => ({ ...prev, color2: e.target.value }))}
-                                            className="flex-1 h-6 w-full bg-transparent border-none p-0 cursor-pointer rounded-sm overflow-hidden"
+                                            value={customBackground.color1}
+                                            onChange={(e) => setCustomBackground(prev => ({ ...prev, color1: e.target.value }))}
+                                            className="w-7 h-7 rounded-full bg-transparent border-2 border-white/20 cursor-pointer overflow-hidden p-0"
+                                            style={{ color: 'transparent' }}
                                         />
+                                        <div className="absolute -top-4 left-1/2 -translate-x-1/2 text-[6px] font-bold text-white/40 opacity-0 group-hover/swatch:opacity-100 uppercase">A</div>
+                                    </div>
+
+                                    {customBackground.type !== 'solid' && (
+                                        <div className="relative group/swatch">
+                                            <input
+                                                type="color"
+                                                value={customBackground.color2}
+                                                onChange={(e) => setCustomBackground(prev => ({ ...prev, color2: e.target.value }))}
+                                                className="w-7 h-7 rounded-full bg-transparent border-2 border-white/20 cursor-pointer overflow-hidden p-0"
+                                            />
+                                            <div className="absolute -top-4 left-1/2 -translate-x-1/2 text-[6px] font-bold text-white/40 opacity-0 group-hover/swatch:opacity-100 uppercase">B</div>
+                                        </div>
                                     )}
                                 </div>
                             </div>
