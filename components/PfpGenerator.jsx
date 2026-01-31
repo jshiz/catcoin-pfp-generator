@@ -839,7 +839,7 @@ export default function PfpGenerator() {
 
                         {/* Main Composition Area */}
                         <div
-                            className={`relative w-auto h-[85%] lg:h-[95%] aspect-square bg-black shadow-2xl overflow-hidden border-4 border-white/10 group z-10 transition-all duration-300 ease-spring ${pfpShape === 'circle' ? 'rounded-full' : 'rounded-none'}`}
+                            className={`relative w-auto h-[85%] lg:h-[95%] aspect-square bg-black shadow-2xl overflow-hidden ring-1 ring-white/10 group z-10 transition-all duration-300 ease-spring ${pfpShape === 'circle' ? 'rounded-full' : 'rounded-none'}`}
                             style={{
                                 filter: selectedAttributes['vibe']?.value || 'none'
                             }}
@@ -880,7 +880,7 @@ export default function PfpGenerator() {
                                             }} />
                                         )}
                                         {cat.id === 'border_color' && item.color && (
-                                            <div className={`absolute inset-0 pointer-events-none transition-all duration-300 ${pfpShape === 'circle' ? 'rounded-full' : 'rounded-none'}`}
+                                            <div className={`absolute inset-[0.5px] pointer-events-none transition-all duration-300 box-border ${pfpShape === 'circle' ? 'rounded-full' : 'rounded-none'}`}
                                                 style={{
                                                     border: (() => {
                                                         const s = selectedAttributes['border_style']?.value || 'solid';
