@@ -119,6 +119,8 @@ export const attributesConfig = [
     zIndex: 30,
     items: [
       { id: 'mouth_1', label: 'None', type: 'none' },
+      { id: 'mouth_2', label: 'Grill', src: '/assets/mouth/grill.png', type: 'image' },
+      { id: 'mouth_3', label: 'Tongue', src: '/assets/mouth/tongue.png', type: 'image' },
     ]
   },
   {
