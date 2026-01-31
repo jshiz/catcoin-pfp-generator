@@ -835,7 +835,7 @@ export default function PfpGenerator() {
 
                     {/* Right: Music Player */}
                     <div className="flex items-center gap-1.5 lg:gap-4 px-2 lg:px-3 py-1 bg-white/5 backdrop-blur-md rounded-full border border-white/5 transition-all shadow-lg overflow-hidden min-w-0 max-w-[50%] xs:max-w-none">
-                        <div className="flex items-center gap-1 lg:gap-3">
+                        <div className="flex items-center gap-3 lg:gap-3">
                             <button
                                 onClick={skipBack}
                                 className="text-white/30 hover:text-cat-yellow transition-colors"
