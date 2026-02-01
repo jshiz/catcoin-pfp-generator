@@ -508,6 +508,24 @@ export default function PfpGenerator() {
         ctx.restore(); // Restore scale
     };
 
+    // Save/Copy Modal State
+    const [saveModalOpen, setSaveModalOpen] = useState(false);
+    const [saveModalImage, setSaveModalImage] = useState(null);
+
+    const openSaveModal = (blob) => {
+        const url = URL.createObjectURL(blob);
+        setSaveModalImage(url);
+        setSaveModalOpen(true);
+    };
+
+    const closeSaveModal = () => {
+        setSaveModalOpen(false);
+        if (saveModalImage) {
+            URL.revokeObjectURL(saveModalImage);
+            setSaveModalImage(null);
+        }
+    };
+
     const handleDownload = async () => {
         const canvas = canvasRef.current;
         if (!canvas) return;
@@ -521,11 +539,44 @@ export default function PfpGenerator() {
 
         await drawToCanvas(ctx);
 
-        canvas.toBlob((blob) => {
+        canvas.toBlob(async (blob) => {
             if (!blob) {
                 console.error('Blob generation failed');
                 return;
             }
+
+            // 1. Try Native Mobile Share (Best for Mobile/Telegram)
+            if (navigator.share && navigator.canShare && navigator.canShare({ files: [new File([blob], 'test.png', { type: blob.type })] })) {
+                try {
+                    const file = new File([blob], `catcoin-pfp-${Date.now()}.png`, { type: 'image/png' });
+                    await navigator.share({
+                        files: [file],
+                        title: 'catcoin-pfp',
+                    });
+                    // Cleanup canvas
+                    canvas.width = 512;
+                    canvas.height = 512;
+                    return;
+                } catch (err) {
+                    console.log('Share API failed or closed, trying fallback...', err);
+                    // Fallthrough to other methods if share was cancelled or failed
+                }
+            }
+
+            // 2. Fallback for Telegram/In-App Browsers where 'download' attribute fails
+            // If we are on mobile (rudimentary check or user agent) and share failed/didn't exist, show modal
+            const isTelegram = typeof navigator !== 'undefined' && navigator.userAgent.match(/Telegram/i);
+            // We check matching 'Android' or 'iPhone' to catch most mobile webviews that struggle with downloads
+            const isMobileUA = typeof navigator !== 'undefined' && navigator.userAgent.match(/Android|iPhone|iPad|iPod/i);
+
+            if (isTelegram || isMobileUA) {
+                openSaveModal(blob);
+                canvas.width = 512;
+                canvas.height = 512;
+                return;
+            }
+
+            // 3. Desktop / Standard Browser Download
             const url = URL.createObjectURL(blob);
             const link = document.createElement('a');
             link.download = `catcoin-pfp-${Date.now()}.png`;
@@ -551,7 +602,7 @@ export default function PfpGenerator() {
         canvas.height = 2048;
 
         const ctx = canvas.getContext('2d');
-        await drawToCanvas(ctx); // await needed now
+        await drawToCanvas(ctx);
 
         canvas.toBlob(async blob => {
             if (blob) {
@@ -562,10 +613,8 @@ export default function PfpGenerator() {
                     setTimeout(() => setShowCopyCheck(false), 2000);
                 } catch (err) {
                     console.error('Clipboard failed:', err);
-                    // Minimal alert for Telegram where clipboard often fails silently
-                    if (navigator.userAgent.match(/Telegram/i)) {
-                        alert("Please long-press the image to copy/save on this browser.");
-                    }
+                    // Fallback to modal for visual copy
+                    openSaveModal(blob);
                 }
                 canvas.width = 512;
                 canvas.height = 512;
@@ -1096,6 +1145,44 @@ export default function PfpGenerator() {
                     </button>
                 </div>
             </div>
+
+            {/* Save/Copy Fallback Modal */}
+            {saveModalOpen && saveModalImage && (
+                <div className="fixed inset-0 z-[1000] bg-black/90 backdrop-blur-sm flex items-center justify-center p-4 animate-in fade-in duration-200" onClick={closeSaveModal}>
+                    <div className="bg-[#1e1e24] border border-white/10 rounded-2xl p-6 flex flex-col items-center gap-4 max-w-sm w-full shadow-2xl relative" onClick={e => e.stopPropagation()}>
+                        <button
+                            onClick={closeSaveModal}
+                            className="absolute top-2 right-2 p-2 text-white/50 hover:text-white transition-colors bg-white/5 rounded-full"
+                        >
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                <path d="M18 6L6 18M6 6l12 12" />
+                            </svg>
+                        </button>
+
+                        <h3 className="text-xl font-black text-white uppercase tracking-tight">Save Your PFP</h3>
+
+                        <div className="relative w-64 h-64 rounded-xl overflow-hidden shadow-[0_0_30px_rgba(250,210,5,0.2)] border-2 border-cat-yellow/20">
+                            <img src={saveModalImage} alt="Generated PFP" className="w-full h-full object-contain" />
+                        </div>
+
+                        <div className="text-center space-y-1">
+                            <p className="text-cat-yellow font-bold text-sm uppercase tracking-wide">
+                                Long press the image above
+                            </p>
+                            <p className="text-white/40 text-xs">
+                                Select "Save to Photos" or "Copy"
+                            </p>
+                        </div>
+
+                        <button
+                            onClick={closeSaveModal}
+                            className="bg-white/10 hover:bg-white/20 text-white font-bold py-3 px-6 rounded-xl w-full transition-colors uppercase text-sm"
+                        >
+                            Close
+                        </button>
+                    </div>
+                </div>
+            )}
 
             {/* SVG Filters for Vibes */}
             <svg style={{ position: 'absolute', width: 0, height: 0, overflow: 'hidden' }} aria-hidden="true">
