@@ -182,6 +182,11 @@ export const attributesConfig = [
       { id: 'shirt_13', label: 'SWAT', src: '/assets/shirt/swat.png', type: 'image' },
       { id: 'shirt_14', label: 'Open Claw', src: '/assets/shirt/openclaw.png', type: 'image' },
       { id: 'shirt_15', label: 'White Tee', src: '/assets/shirt/white.png', type: 'image' },
+      { id: 'shirt_16', label: 'Bulls', src: '/assets/shirt/bulls.png', type: 'image' },
+      { id: 'shirt_17', label: 'Game Over', src: '/assets/shirt/game-over.png', type: 'image' },
+      { id: 'shirt_18', label: 'Lakers', src: '/assets/shirt/lakers.png', type: 'image' },
+      { id: 'shirt_19', label: 'Tux', src: '/assets/shirt/tux.png', type: 'image' },
+      { id: 'shirt_20', label: 'VB', src: '/assets/shirt/vb.png', type: 'image' },
     ]
   },
   {
@@ -207,6 +212,12 @@ export const attributesConfig = [
       { id: 'glasses_4', label: 'Ski', src: '/assets/glasses/ski.png', type: 'image' },
       { id: 'glasses_5', label: 'Rayban', src: '/assets/glasses/rayban.png', type: 'image' },
       { id: 'glasses_6', label: 'Neovision', src: '/assets/glasses/neovision.png', type: 'image' },
+      { id: 'glasses_7', label: 'Black', src: '/assets/glasses/black.png', type: 'image' },
+      { id: 'glasses_8', label: 'Green', src: '/assets/glasses/green.png', type: 'image' },
+      { id: 'glasses_9', label: 'Purple', src: '/assets/glasses/purple.png', type: 'image' },
+      { id: 'glasses_10', label: 'Red', src: '/assets/glasses/red.png', type: 'image' },
+      { id: 'glasses_11', label: 'Teal', src: '/assets/glasses/teal.png', type: 'image' },
+      { id: 'glasses_12', label: 'Yellow', src: '/assets/glasses/yellow.png', type: 'image' },
     ]
   },
   {
@@ -227,6 +238,9 @@ export const attributesConfig = [
       { id: 'hat_9', label: 'Top Hat', src: '/assets/hat/tophat.png', type: 'image' },
       { id: 'hat_10', label: 'Viking', src: '/assets/hat/viking.png', type: 'image' },
       { id: 'hat_12', label: 'White Hat', src: '/assets/hat/white-hat.png', type: 'image' },
+      { id: 'hat_15', label: 'Blue Cap', src: '/assets/hat/blue-cap.png', type: 'image' },
+      { id: 'hat_16', label: 'Roaring Kitty', src: '/assets/hat/roaring-kitty.png', type: 'image' },
+      { id: 'hat_17', label: 'Tan Hat', src: '/assets/hat/tan-hat.png', type: 'image' },
     ]
   },
   {
@@ -239,6 +253,7 @@ export const attributesConfig = [
       { id: 'mouth_3', label: 'Tongue', src: '/assets/mouth/tongue.png', type: 'image' },
       { id: 'mouth_4', label: 'Crazy', src: '/assets/mouth/crazy.png', type: 'image' },
       { id: 'mouth_5', label: 'Vamp', src: '/assets/mouth/vamp.png', type: 'image' },
+      { id: 'mouth_6', label: 'Cigar', src: '/assets/mouth/cigar.png', type: 'image' },
     ]
   },
   {
