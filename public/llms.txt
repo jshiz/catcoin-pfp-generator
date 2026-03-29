@@ -1,0 +1,15 @@
+# CatCoin PFP Generator
+> Generate custom CatCoin profile pictures for your social media. $CAT community PFP tool built for the feline faithful.
+
+CatCoin PFP Generator is a free web tool for the $CAT memecoin community. Generate custom profile pictures featuring the CatCoin mascot with unique traits and attributes. Show your community membership across Twitter/X, Telegram, and Discord with a one-of-a-kind CatCoin PFP.
+
+## Key Facts
+
+- Free PFP generation tool for the $CAT community
+- Custom trait and attribute combinations
+- Instant download for use on social media
+- Built for the CatCoin memecoin community
+
+## Use the Tool
+
+- Website: https://catcoinpfp.fun
