@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { attributesConfig } from '@/data/attributes';
 import ScrollingBackground from './ScrollingBackground';
 import { Download, Share2, Copy, Check, Shuffle, Camera, Play, Pause, SkipForward, SkipBack, Music, Trash2, Globe, AlertTriangle } from 'lucide-react';
+import { W7StationTag } from "@/components/W7StationTag";
 
 export default function PfpGenerator() {
     // Initialize state with random items
@@ -333,7 +334,6 @@ export default function PfpGenerator() {
         // 2. Base Cat Layer (zIndex 20) - Deprecated, now handled by dynamic "body" attribute (zIndex 20)
         // If no body is selected (rare), render nothing or fallback?
         // We rely on attributesConfig loop.
-
 
         // 3. Accessory Layers (sorted zIndex > 20)
         const sortedCategories = [...attributesConfig].sort((a, b) => a.zIndex - b.zIndex);
@@ -1201,6 +1201,7 @@ export default function PfpGenerator() {
                     <feMorphology operator="dilate" radius="10" />
                 </filter>
             </svg>
+            <W7StationTag />
         </div>
     );
 }
